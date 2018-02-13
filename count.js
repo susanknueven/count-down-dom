@@ -6,9 +6,11 @@ const secondsElement = document.getElementById('seconds');
 const headingElement = document.getElementById('heading');
 const airHornElement = document.getElementById('airHorn');
 
-// initialize counter
-minutesElement.innerHTML = getMinutes(countSeconds);
-secondsElement.innerHTML = getSeconds(countSeconds);
+function reset() {
+  minutesElement.innerHTML = getMinutes(countSeconds);
+  secondsElement.innerHTML = getSeconds(countSeconds);
+  headingElement.innerHTML = "Counting Down...";
+}
 
 function pad(number) {
   return number < 10 ? `0${number}` : number;
@@ -42,3 +44,5 @@ function countDown(countInSeconds) {
 function startCountDown() {
   countDown(countSeconds);
 }
+
+reset();
