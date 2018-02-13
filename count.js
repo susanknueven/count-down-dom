@@ -1,8 +1,14 @@
-const countMinutes = 5;
+const countMinutes = .05;
 const minToSec = 60;
 let countSeconds = countMinutes * minToSec;
 const minutesElement = document.getElementById('minutes'); 
 const secondsElement = document.getElementById('seconds');
+const headingElement = document.getElementById('heading');
+const airHornElement = document.getElementById('airHorn');
+
+// initialize counter
+minutesElement.innerHTML = getMinutes(countSeconds);
+secondsElement.innerHTML = getSeconds(countSeconds);
 
 function pad(number) {
   return number < 10 ? `0${number}` : number;
@@ -16,23 +22,23 @@ function getSeconds(seconds) {
   return pad(seconds%minToSec);
 }
 
+function playSound(soundElement) {
+  soundElement.play();
+}
+
 function countDown(countInSeconds) {
   const timer = setInterval(function() {
+    countInSeconds --;
     minutesElement.innerHTML = getMinutes(countInSeconds);
     secondsElement.innerHTML = getSeconds(countInSeconds);
-    countInSeconds --;
-    if(countInSeconds < 0) {
+    if (countInSeconds == 0) {
       clearInterval(timer);
-      playSound('airHorn');
+      playSound(airHornElement);
+      headingElement.innerHTML = "TIME'S UP!"
     }
   }, 1000);
 }
 
-function playSound(soundObj) {
-  document.getElementById(soundObj).play();
+function startCountDown() {
+  countDown(countSeconds);
 }
-
-//initialize counter and start count
-minutesElement.innerHTML = getMinutes(countSeconds);
-secondsElement.innerHTML = getSeconds(countSeconds);
-countDown(countSeconds);
