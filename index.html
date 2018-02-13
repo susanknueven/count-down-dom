@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <div id="heading">Counting Down...</div>
+
+    <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>
+
+  </body>
+  <script>
+    count = 1
+    const timer = setInterval(function() {
+      document.getElementById('heading').innerHTML = count; 
+      count --;
+      if(count < 0) {
+        clearInterval(timer);
+        playSound('airHorn');
+      }
+    }, 1000);
+
+    function playSound(soundObj) {
+      document.getElementById(soundObj).play();
+    }
+  </script>
+</html>
