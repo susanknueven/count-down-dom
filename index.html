@@ -2,24 +2,13 @@
 <html>
   <body>
 
-    <div id="heading">Counting Down...</div>
+    <div id="counter">Counting Down...</div>
+    <div>
+      <span id="minutes"></span>:<span id="seconds"></span>
+    </div>
 
     <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>
 
   </body>
-  <script>
-    count = 1
-    const timer = setInterval(function() {
-      document.getElementById('heading').innerHTML = count; 
-      count --;
-      if(count < 0) {
-        clearInterval(timer);
-        playSound('airHorn');
-      }
-    }, 1000);
-
-    function playSound(soundObj) {
-      document.getElementById(soundObj).play();
-    }
-  </script>
+  <script src="./count.js"></script>
 </html>
