@@ -4,9 +4,10 @@
 
     <div id="heading">Counting Down...</div>
     <div>
-      <span id="minutes"></span>:<span id="seconds"></span>
+      <input id="minutes" type="text"/>:<input id="seconds" type="text"/>
     </div>
-    <button onClick=startCountDown()>Start</button>
+    <button id="startButton" onClick=startCountDown()>Start</button>
+    <button id="stopButton" onClick=stopCountDown()>Stop</button>
     <button onClick=reset()>Reset</button>
 
     <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>

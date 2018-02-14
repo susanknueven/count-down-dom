@@ -1,15 +1,32 @@
-const countMinutes = .05;
 const minToSec = 60;
-let countSeconds = countMinutes * minToSec;
 const minutesElement = document.getElementById('minutes'); 
 const secondsElement = document.getElementById('seconds');
 const headingElement = document.getElementById('heading');
 const airHornElement = document.getElementById('airHorn');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+const READY_TO_COUNT = 'READY_TO_COUNT';
+const COUNTING = 'COUNTING';
+let countStatus;
+let timer;
 
-function reset() {
-  minutesElement.innerHTML = getMinutes(countSeconds);
-  secondsElement.innerHTML = getSeconds(countSeconds);
-  headingElement.innerHTML = "Counting Down...";
+function setInputReadOnlyAttribute(readOnly) {
+  minutesElement.readOnly = readOnly;
+  secondsElement.readOnly = readOnly;
+}
+
+function setDefaultCount() {
+  minutesElement.value = 0;
+  secondsElement.value = 3;
+  headingElement.innerHTML = 'Counting Down...';
+  startButton.disabled = false;
+}
+
+function retrieveUserCount() {
+  const userCountMinutes = parseInt(minutesElement.value);
+  const userCountSeconds = parseInt(secondsElement.value);
+  const countSeconds = userCountSeconds + userCountMinutes * minToSec;
+  return countSeconds;
 }
 
 function pad(number) {
@@ -17,24 +34,30 @@ function pad(number) {
 }
 
 function getMinutes(seconds) {
-  return pad(parseInt(seconds/minToSec,10));
+  return pad(parseInt(seconds / minToSec, 10));
 }
 
 function getSeconds(seconds) {
-  return pad(seconds%minToSec);
+  return pad(seconds % minToSec);
 }
 
 function playSound(soundElement) {
   soundElement.play();
 }
 
+
+function stopTimer() {
+  clearInterval(timer);
+  return retrieveUserCount();
+}
+
 function countDown(countInSeconds) {
-  const timer = setInterval(function() {
+  timer = setInterval(function() {
     countInSeconds --;
-    minutesElement.innerHTML = getMinutes(countInSeconds);
-    secondsElement.innerHTML = getSeconds(countInSeconds);
-    if (countInSeconds == 0) {
-      clearInterval(timer);
+    minutesElement.value = getMinutes(countInSeconds);
+    secondsElement.value = getSeconds(countInSeconds);
+    if (countInSeconds === 0) {
+      stopTimer();
       playSound(airHornElement);
       headingElement.innerHTML = "TIME'S UP!"
     }
@@ -42,7 +65,31 @@ function countDown(countInSeconds) {
 }
 
 function startCountDown() {
-  countDown(countSeconds);
+  const count = retrieveUserCount();
+  countDown(count);
+  startButton.disabled = true;
+  setInputReadOnlyAttribute(true);
+  countStatus = COUNTING;
+}
+
+function stopCountDown() {
+  if (countStatus === COUNTING) {
+    const currentCount = stopTimer();
+    setInputReadOnlyAttribute(false);
+    if (currentCount > 0) {
+      startButton.disabled = false;
+      countStatus = READY_TO_COUNT;
+    }
+  }
+}
+
+function reset() {
+  if (countStatus === COUNTING) {
+    stopTimer();
+    setInputReadOnlyAttribute(false);
+  } 
+  setDefaultCount();
+  countStatus = READY_TO_COUNT;
 }
 
 reset();
