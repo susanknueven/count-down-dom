@@ -16,8 +16,8 @@ function setInputReadOnlyAttribute(readOnly) {
 }
 
 function setDefaultCount() {
-  minutesElement.value = 0;
-  secondsElement.value = 3;
+  minutesElement.value = pad(0);
+  secondsElement.value = pad(3);
   headingElement.innerHTML = 'Counting Down...';
   startButton.disabled = false;
 }
@@ -44,7 +44,6 @@ function getSeconds(seconds) {
 function playSound(soundElement) {
   soundElement.play();
 }
-
 
 function stopTimer() {
   clearInterval(timer);
