@@ -4,7 +4,17 @@
 
     <div id="heading">Counting Down...</div>
     <div>
-      <input id="minutes" type="text" />:<input id="seconds" type="text" />
+      <input
+        id="minutes"
+        type="text"
+        onchange="validateInputAndSetHeadingText()"
+      />
+        :
+      <input
+        id="seconds"
+        type="text"
+        onchange="validateInputAndSetHeadingText()"
+      />
     </div>
     <button id="startButton" onClick=startCountDown()>Start</button>
     <button id="stopButton" onClick=stopCountDown()>Stop</button>
