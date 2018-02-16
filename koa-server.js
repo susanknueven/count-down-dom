@@ -8,7 +8,7 @@ const api = new koa();
 const app = new koa();
 const router = new Router();
 
-ui.use(serve('app'));
+ui.use(serve('ui'));
 
 function apiCall(ctx, next) {
     ctx.body='response from api';

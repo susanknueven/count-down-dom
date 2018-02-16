@@ -7,6 +7,7 @@ const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
 const READY_TO_COUNT = 'READY_TO_COUNT';
 const COUNTING = 'COUNTING';
+const COUNT_FINISHED = 'COUNT_FINISHED';
 const COUNTING_DOWN_TEXT = 'Counting Down...';
 const TIMES_UP_TEXT = `TIME'S UP!`;
 const INVALID_INPUT = 'INVALID_INPUT';
@@ -14,6 +15,52 @@ let countStatus;
 let timer;
 let defaultCount = { min: 0, sec: 3 };
 let userDefaultCount = {};
+
+window.addEventListener('storage', function(e) {  
+  // getScoresfromLS();
+  const scores = JSON.parse(localStorage.getItem('scores'));
+  generateScoreTable(scores);
+});
+
+function generateScoreTable(scores) {
+  var body = document.getElementsByTagName('body')[0];
+  var oldTable = document.getElementById('table');
+  if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
+
+  // creates a <table> element and a <tbody> element
+  var tbl = document.createElement('table');
+  tbl.setAttribute('id', 'table');
+  var tblBody = document.createElement('tbody');
+  tblBody.setAttribute('id', 'tableBody');
+ 
+  scoresArray.forEach(team => {
+    var row = document.createElement('tr');
+    var nameCell = document.createElement('td');
+    var nameCellText = document.createTextNode(team.teamName);
+    nameCell.appendChild(nameCellText);
+    row.appendChild(nameCell);
+    
+    var scoreCell = document.createElement('td');
+    var scoreCellText = document.createTextNode(sumScores(team.scores));
+    scoreCell.appendChild(scoreCellText);
+    row.appendChild(scoreCell);
+    tblBody.appendChild(row);
+  }); 
+  
+  tbl.appendChild(tblBody);
+  body.appendChild(tbl);
+  tbl.setAttribute('border', '10');
+}
+
+// function getScoresfromLS() {
+//   const scores = JSON.parse(localStorage.getItem('scores'));
+//   document.getElementById('team1Score').innerHTML = sumScores(scores.team1);
+//   document.getElementById('team2Score').innerHTML = sumScores(scores.team2);
+// }
+
+function sumScores(scoresArray) {
+  return scoresArray.reduce((prev, current) => prev + current);
+}
 
 function userHasDefault() {
   return (!isNaN(userDefaultCount.min) && !isNaN(userDefaultCount.sec));
