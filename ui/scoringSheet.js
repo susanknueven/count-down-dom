@@ -1,10 +1,45 @@
+const inGameToolsWrapperElement = document.getElementById('inGameTools');
+const PRE_GAME = 'PRE_GAME';
+const IN_GAME = 'IN_GAME';
+const gameStateKey = 'gameState';
+
+function startGame() {
+  setGameState(IN_GAME);
+  initializeGame();
+}
+
+function setGameState(gameState) {
+  localStorage.setItem(gameStateKey, JSON.stringify(gameState));
+}
+
+function getGameState() {
+  return JSON.parse(localStorage.getItem(gameStateKey));
+}
+
+function initializePage() {
+  setGameState(PRE_GAME);
+  inGameToolsWrapperElement.style.display = 'none';
+}
+
+function hidePreGameTools() {
+  document.getElementById('preGameTools').style.display = 'none';
+}
+
+function showInGameTools() {
+  document.getElementById('inGameTools').style.display = 'block';
+}
+
 const questionIndex = 0;
 const numOfQuestions = 6;
-setQuestionIndex(questionIndex);
-const teamArray = initializeTeams();
-initializeDropdown(numOfQuestions);
-initializeScoresInLS(teamArray, numOfQuestions);
-generateScoringSheetForQuestion(0);
+function initializeGame() {
+  setQuestionIndex(questionIndex);
+  const teamArray = initializeTeams();
+  initializeDropdown(numOfQuestions);
+  initializeScoresInLS(teamArray, numOfQuestions);
+  generateScoringSheetForQuestion(0);
+  hidePreGameTools();
+  showInGameTools();
+}
 
 function getQuestionIndex() {
   return parseInt(JSON.parse(localStorage.getItem('questionIndex')));
@@ -60,7 +95,7 @@ function generateScoringSheetForQuestion(index) {
     tableBody.appendChild(row);
   }); 
   table.appendChild(tableBody);
-
+  
   const tableWrapperElement = document.getElementById('scoreTableWrapper');
   tableWrapperElement.appendChild(table);
 }
@@ -68,14 +103,6 @@ function generateScoringSheetForQuestion(index) {
 function setQuestionIndex(index) {
   localStorage.setItem('questionIndex', JSON.stringify(index));
 }
-
-const dropdownElement = document.getElementById('dropdown');
-dropdownElement.addEventListener('change', function(e) {
-  const questionIndex = dropdownElement.value;
-  setQuestionIndex(questionIndex);
-  initializeTeamScoresForQuestion(questionIndex);
-  generateScoringSheetForQuestion(questionIndex);
-});
 
 function initializeTeamScoresForQuestion(index) {
   const scoresArray = getScores();
@@ -90,12 +117,24 @@ function initializeTeams() {
   return [ 'team1', 'team2', 'team3', 'team4'];
 }
 
+function createEventListenerForDropdown() {
+  const dropdownElement = document.getElementById('dropdown');
+  dropdownElement.addEventListener('change', function(e) {
+    const questionIndex = dropdownElement.value;
+    setQuestionIndex(questionIndex);
+    initializeTeamScoresForQuestion(questionIndex);
+    generateScoringSheetForQuestion(questionIndex);
+  });
+}
+
 function initializeDropdown(numOfQuestions) {
   const dropdownWrapper = document.getElementById('dropdownWrapper');
   
   const selectElement = document.createElement('select');
   selectElement.id = 'dropdown';
   dropdownWrapper.appendChild(selectElement);
+
+  createEventListenerForDropdown();
   
   createOptionsForSelect(selectElement, numOfQuestions, 0);
 }
@@ -130,3 +169,5 @@ function createOptionsForSelect(selectElement, max, current) {
   selectElement.appendChild(option);
   return createOptionsForSelect(selectElement, max, current + 1);
 }
+
+initializePage();

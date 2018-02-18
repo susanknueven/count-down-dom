@@ -16,7 +16,7 @@ let timer;
 let defaultCount = { min: 0, sec: 3 };
 let userDefaultCount = {};
 
-window.addEventListener('storage', function(e) {  
+window.addEventListener('storage', function(e) {
   const scores = JSON.parse(localStorage.getItem('scores'));
   generateScoreBoardFromLS(scores);
 });
