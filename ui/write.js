@@ -1,51 +1,132 @@
-const scores = [];
+const questionIndex = 0;
+const numOfQuestions = 6;
+setQuestionIndex(questionIndex);
+const teamArray = initializeTeams();
+initializeDropdown(numOfQuestions);
+initializeScoresInLS(teamArray, numOfQuestions);
+generateScoringSheetForQuestion(0);
 
-localStorage.setItem('scores', JSON.stringify(scores));
-
-function writeToLS() {
-    let newScores;
-    const team1Correct = document.getElementById('team1CorrectBox').checked;
-    const team2Correct = document.getElementById('team2CorrectBox').checked;
-
-    const prevScores = JSON.parse(localStorage.getItem('scores'));
-    const prevTeam1Score = prevScores.team1;
-    team1Points = team1Correct ? 1 : 0;
-    prevTeam1Score.push(team1Points);
-
-    const prevTeam2Score = prevScores.team2;
-    team2Points = team2Correct ? 1 : 0;
-    prevTeam2Score.push(team2Points);
-
-    newScores = { ...prevScores, "team1" : prevTeam1Score, "team2" : prevTeam2Score };
-    localStorage.setItem('scores', JSON.stringify(newScores));
+function getQuestionIndex() {
+  return parseInt(JSON.parse(localStorage.getItem('questionIndex')));
 }
 
-const teams = ['team1', 'team2', 'team3'];
+function getScores() {
+  return JSON.parse(localStorage.getItem('scores'));
+}
 
-function generateScoringSheet() {
+function writeToLS(element) {
+  let newScores;
+  const teamName = element.id;
+  const questionIndex = getQuestionIndex();
+
+  const prevScores = getScores();
+  teamIndex = prevScores.findIndex((team) => team.teamName === teamName);
+  
+  prevTeamScores = prevScores[teamIndex].scores;
+  prevTeamScores[questionIndex] = element.checked ? 1 : 0;
+
+  prevScores[teamIndex] = { ...prevScores[teamIndex], scores: prevTeamScores }
+
+  localStorage.setItem('scores', JSON.stringify(prevScores));
+}
+
+function isScorePositive(scoresArray, index) {
+  return (scoresArray[index] > 0);
+}
+
+function generateScoringSheetForQuestion(index) {
   const body = document.getElementsByTagName('body')[0];
-  const oldTable = document.getElementsByTagName('table');
+  const oldTable = document.getElementsByTagName('table')[0];
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 
   const table = document.createElement('table');
   const tableBody = document.createElement('tbody');
 
-  teams.forEach(team => {
-    console.log(team.value)
+  const scoresArray = getScores();
+
+  scoresArray.forEach(team => {
     const row = document.createElement('tr');
-    const nameCell = document.createElement('td');
-    const nameCellText = document.createTextNode(team.value);
-    nameCell.appendChild(nameCellText);
-    row.appendChild(nameCell);
-    
     const scoreCell = document.createElement('td');
-    const scoreCellText = document.createTextNode('correct');
+    const scoreCellText = document.createTextNode(team.teamName);
     const checkBox = document.createElement('input');
     checkBox.type = 'checkbox';
     checkBox.value = 'correct';
-    checkBox.appendChild(scoreCellText);
+    checkBox.id = team.teamName;
+    checkBox.checked = isScorePositive(team.scores, index);
+    checkBox.onclick = () => writeToLS(checkBox);
+    scoreCell.appendChild(scoreCellText);
     scoreCell.appendChild(checkBox);
     row.appendChild(scoreCell);
-    tblBody.appendChild(row);
+    tableBody.appendChild(row);
   }); 
+  table.appendChild(tableBody);
+
+  const tableWrapperElement = document.getElementById('scoreTableWrapper');
+  tableWrapperElement.appendChild(table);
+}
+
+function setQuestionIndex(index) {
+  localStorage.setItem('questionIndex', JSON.stringify(index));
+}
+
+const dropdownElement = document.getElementById('dropdown');
+dropdownElement.addEventListener('change', function(e) {
+  const questionIndex = dropdownElement.value;
+  setQuestionIndex(questionIndex);
+  initializeTeamScoresForQuestion(questionIndex);
+  generateScoringSheetForQuestion(questionIndex);
+});
+
+function initializeTeamScoresForQuestion(index) {
+  const scoresArray = getScores();
+  scoresArray.forEach(team => {
+    if(!team.scores[index]) {
+      team.scores[index] = 0;
+    }
+  });
+}
+
+function initializeTeams() {
+  return [ 'team1', 'team2', 'team3', 'team4'];
+}
+
+function initializeDropdown(numOfQuestions) {
+  const dropdownWrapper = document.getElementById('dropdownWrapper');
+  
+  const selectElement = document.createElement('select');
+  selectElement.id = 'dropdown';
+  dropdownWrapper.appendChild(selectElement);
+  
+  createOptionsForSelect(selectElement, numOfQuestions, 0);
+}
+
+function buildEmptyScoresArray(array, length, current) {
+  if (current === length) {
+    return array;
+  }
+  array.push(0);
+  return buildEmptyScoresArray(array, length, current +1);
+}
+
+function initializeScoresInLS(teamArray, numOfQuestions) {
+  let teamScores = [];
+  teamScores = buildEmptyScoresArray(teamScores, numOfQuestions, 0);
+  let scores = [];
+  teamArray.forEach(teamName => {
+    scores.push({ teamName, scores: teamScores });
+  })
+  localStorage.setItem('scores', JSON.stringify(scores));
+}
+
+function createOptionsForSelect(selectElement, max, current) {
+  if (max === current) {
+    return;
+  }
+  const option = document.createElement('option');
+  // value is zero-based- corresponds to index in array
+  option.value = current;
+  // text (displayed) is one-based- corresponds to question number
+  option.text = current + 1;
+  selectElement.appendChild(option);
+  return createOptionsForSelect(selectElement, max, current + 1);
 }

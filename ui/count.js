@@ -17,17 +17,15 @@ let defaultCount = { min: 0, sec: 3 };
 let userDefaultCount = {};
 
 window.addEventListener('storage', function(e) {  
-  // getScoresfromLS();
   const scores = JSON.parse(localStorage.getItem('scores'));
-  generateScoreTable(scores);
+  generateScoreBoardFromLS(scores);
 });
 
-function generateScoreTable(scores) {
+function generateScoreBoardFromLS(scoresArray) {
   var body = document.getElementsByTagName('body')[0];
   var oldTable = document.getElementById('table');
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 
-  // creates a <table> element and a <tbody> element
   var tbl = document.createElement('table');
   tbl.setAttribute('id', 'table');
   var tblBody = document.createElement('tbody');
@@ -49,14 +47,7 @@ function generateScoreTable(scores) {
   
   tbl.appendChild(tblBody);
   body.appendChild(tbl);
-  tbl.setAttribute('border', '10');
 }
-
-// function getScoresfromLS() {
-//   const scores = JSON.parse(localStorage.getItem('scores'));
-//   document.getElementById('team1Score').innerHTML = sumScores(scores.team1);
-//   document.getElementById('team2Score').innerHTML = sumScores(scores.team2);
-// }
 
 function sumScores(scoresArray) {
   return scoresArray.reduce((prev, current) => prev + current);
