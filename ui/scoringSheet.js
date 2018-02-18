@@ -4,7 +4,6 @@ const IN_GAME = 'IN_GAME';
 const gameStateKey = 'gameState';
 
 function startGame() {
-  setGameState(IN_GAME);
   initializeGame();
 }
 
@@ -18,6 +17,10 @@ function getGameState() {
 
 function hidePreGameTools() {
   document.getElementById('preGameTools').style.display = 'none';
+}
+
+function hideInGameTools() {
+  document.getElementById('inGameTools').style.display = 'none';
 }
 
 function showInGameTools() {
@@ -38,7 +41,7 @@ function generateTeamInputElement() {
   teamNamesWrapper.appendChild(teamNamesInputElement);
 }
 
-function initializePreGame() {
+function generatePreGameTools() {
   generateTeamInputElement();
   generateQuestionInput();
 }
@@ -57,20 +60,34 @@ function generateQuestionInput() {
   numOfQsWrapper.appendChild(numOfQsInputElement);
 }
 
-function getQuestionIndexFromInput(){
+function getNumOfQsFromInput(){
   return document.getElementById('numOfQsInput').value;
 }
 
+function initializePreGame() {
+    generatePreGameTools();
+    setGameState(PRE_GAME);
+    hideInGameTools();
+}
+
 function initializeGame() {
-  const questionIndex = 0;
-  setQuestionIndex(questionIndex);
-  const teamArray = initializeTeams();
-  const numOfQuestions = parseInt(getQuestionIndexFromInput());
-  initializeDropdown(numOfQuestions);
-  initializeScoresInLS(teamArray, numOfQuestions);
+  let questionIndex;
+  let numOfQuestions;
+  if (getGameState() != IN_GAME) {
+    questionIndex = 0;
+    setQuestionIndex(questionIndex);
+    const teamArray = initializeTeams();
+    numOfQuestions = parseInt(getNumOfQsFromInput());
+    initializeScoresInLS(teamArray, numOfQuestions);
+  }
+
+  questionIndex = getQuestionIndex();
   generateScoringSheetForQuestion(questionIndex);
+  numOfQuestions = getScores()[0].scores.length; 
+  initializeDropdown(numOfQuestions);
   hidePreGameTools();
   showInGameTools();
+  setGameState(IN_GAME);
 }
 
 function getQuestionIndex() {
@@ -165,7 +182,6 @@ function createEventListenerForDropdown() {
     generateScoringSheetForQuestion(questionIndex);
   });
 }
-
 function initializeDropdown(numOfQuestions) {
   const dropdownWrapper = document.getElementById('dropdownWrapper');
   
@@ -176,6 +192,11 @@ function initializeDropdown(numOfQuestions) {
   createEventListenerForDropdown();
   
   createOptionsForSelect(selectElement, numOfQuestions, 0);
+  if (getGameState() === IN_GAME) {
+    const questionIndex = getQuestionIndex();
+    const dropdownElement = document.getElementById('dropdown');
+    dropdownElement.selectedIndex = questionIndex;
+  }
 }
 
 function buildEmptyScoresArray(array, length, current) {
@@ -210,9 +231,11 @@ function createOptionsForSelect(selectElement, max, current) {
 }
 
 function initializePage() {
-  setGameState(PRE_GAME);
-  inGameToolsWrapperElement.style.display = 'none';
+  if (getGameState() != IN_GAME) {
+    initializePreGame();
+  } else {
+    initializeGame();
+  }
 }
 
 initializePage();
-initializePreGame();
