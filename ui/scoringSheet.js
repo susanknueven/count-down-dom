@@ -16,11 +16,6 @@ function getGameState() {
   return JSON.parse(localStorage.getItem(gameStateKey));
 }
 
-function initializePage() {
-  setGameState(PRE_GAME);
-  inGameToolsWrapperElement.style.display = 'none';
-}
-
 function hidePreGameTools() {
   document.getElementById('preGameTools').style.display = 'none';
 }
@@ -29,14 +24,51 @@ function showInGameTools() {
   document.getElementById('inGameTools').style.display = 'block';
 }
 
-const questionIndex = 0;
-const numOfQuestions = 6;
+function generateTeamInputElement() {
+  const teamNamesWrapper = document.getElementById('teamNames');
+  const teamNamesHeadingElement = document.createElement('div');
+  teamNamesHeadingElement.innerHTML = 'Enter team names, separated by commas:';
+  const teamNamesInputElement = document.createElement('textarea');
+  teamNamesInputElement.id = 'teamNamesInput';
+  teamNamesInputElement.maxLength = '500';
+  teamNamesInputElement.cols = '40';
+  teamNamesInputElement.rows = '10';
+
+  teamNamesWrapper.appendChild(teamNamesHeadingElement);
+  teamNamesWrapper.appendChild(teamNamesInputElement);
+}
+
+function initializePreGame() {
+  generateTeamInputElement();
+  generateQuestionInput();
+}
+
+function generateQuestionInput() {
+  const numOfQsWrapper = document.getElementById('numOfQs');
+  const numOfQsHeadingElement = document.createElement('div');
+  numOfQsHeadingElement.innerHTML = 'Enter # of Questions for the Game';
+  const numOfQsInputElement = document.createElement('textarea');
+  numOfQsInputElement.id = 'numOfQsInput';
+  numOfQsInputElement.maxLength = '50';
+  numOfQsInputElement.cols = '10';
+  numOfQsInputElement.rows = '1';
+
+  numOfQsWrapper.appendChild(numOfQsHeadingElement);
+  numOfQsWrapper.appendChild(numOfQsInputElement);
+}
+
+function getQuestionIndexFromInput(){
+  return document.getElementById('numOfQsInput').value;
+}
+
 function initializeGame() {
+  const questionIndex = 0;
   setQuestionIndex(questionIndex);
   const teamArray = initializeTeams();
+  const numOfQuestions = parseInt(getQuestionIndexFromInput());
   initializeDropdown(numOfQuestions);
   initializeScoresInLS(teamArray, numOfQuestions);
-  generateScoringSheetForQuestion(0);
+  generateScoringSheetForQuestion(questionIndex);
   hidePreGameTools();
   showInGameTools();
 }
@@ -75,6 +107,7 @@ function generateScoringSheetForQuestion(index) {
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 
   const table = document.createElement('table');
+  table.id = 'scoreTable';
   const tableBody = document.createElement('tbody');
 
   const scoresArray = getScores();
@@ -113,8 +146,14 @@ function initializeTeamScoresForQuestion(index) {
   });
 }
 
+function getTeamNamesInputString() {
+  return document.getElementById('teamNamesInput').value;
+}
+
 function initializeTeams() {
-  return [ 'team1', 'team2', 'team3', 'team4'];
+  const teamNamesInString = getTeamNamesInputString();
+  const teamArray = teamNamesInString.split(',');
+  return teamArray.map(teamName => teamName.trim());
 }
 
 function createEventListenerForDropdown() {
@@ -170,4 +209,10 @@ function createOptionsForSelect(selectElement, max, current) {
   return createOptionsForSelect(selectElement, max, current + 1);
 }
 
+function initializePage() {
+  setGameState(PRE_GAME);
+  inGameToolsWrapperElement.style.display = 'none';
+}
+
 initializePage();
+initializePreGame();
