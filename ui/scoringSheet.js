@@ -1,10 +1,9 @@
-const inGameToolsWrapperElement = document.getElementById('inGameTools');
 const PRE_GAME = 'PRE_GAME';
 const IN_GAME = 'IN_GAME';
 const gameStateKey = 'gameState';
 
 function startGame() {
-  initializeGame();
+  initializeInGame();
 }
 
 function setGameState(gameState) {
@@ -13,6 +12,22 @@ function setGameState(gameState) {
 
 function getGameState() {
   return JSON.parse(localStorage.getItem(gameStateKey));
+}
+
+function getNumOfQsFromInput(){
+  return document.getElementById('numOfQsInput').value;
+}
+
+function setQuestionIndex(index) {
+  localStorage.setItem('questionIndex', JSON.stringify(index));
+}
+
+function getQuestionIndex() {
+  return parseInt(JSON.parse(localStorage.getItem('questionIndex')));
+}
+
+function getScores() {
+  return JSON.parse(localStorage.getItem('scores'));
 }
 
 function hidePreGameTools() {
@@ -41,12 +56,7 @@ function generateTeamInputElement() {
   teamNamesWrapper.appendChild(teamNamesInputElement);
 }
 
-function generatePreGameTools() {
-  generateTeamInputElement();
-  generateQuestionInput();
-}
-
-function generateQuestionInput() {
+function generateQuestionInputElement() {
   const numOfQsWrapper = document.getElementById('numOfQs');
   const numOfQsHeadingElement = document.createElement('div');
   numOfQsHeadingElement.innerHTML = 'Enter # of Questions for the Game';
@@ -60,8 +70,9 @@ function generateQuestionInput() {
   numOfQsWrapper.appendChild(numOfQsInputElement);
 }
 
-function getNumOfQsFromInput(){
-  return document.getElementById('numOfQsInput').value;
+function generatePreGameTools() {
+  generateTeamInputElement();
+  generateQuestionInputElement();
 }
 
 function initializePreGame() {
@@ -70,7 +81,17 @@ function initializePreGame() {
     hideInGameTools();
 }
 
-function initializeGame() {
+function getTeamNamesInputString() {
+  return document.getElementById('teamNamesInput').value;
+}
+
+function initializeTeams() {
+  const teamNamesInString = getTeamNamesInputString();
+  const teamArray = teamNamesInString.split(',');
+  return teamArray.map(teamName => teamName.trim());
+}
+
+function initializeInGame() {
   let questionIndex;
   let numOfQuestions;
   if (getGameState() != IN_GAME) {
@@ -79,6 +100,7 @@ function initializeGame() {
     const teamArray = initializeTeams();
     numOfQuestions = parseInt(getNumOfQsFromInput());
     initializeScoresInLS(teamArray, numOfQuestions);
+    setGameState(IN_GAME);
   }
 
   questionIndex = getQuestionIndex();
@@ -87,18 +109,9 @@ function initializeGame() {
   initializeDropdown(numOfQuestions);
   hidePreGameTools();
   showInGameTools();
-  setGameState(IN_GAME);
 }
 
-function getQuestionIndex() {
-  return parseInt(JSON.parse(localStorage.getItem('questionIndex')));
-}
-
-function getScores() {
-  return JSON.parse(localStorage.getItem('scores'));
-}
-
-function writeToLS(element) {
+function updateScoresInLS(element) {
   let newScores;
   const teamName = element.id;
   const questionIndex = getQuestionIndex();
@@ -138,7 +151,7 @@ function generateScoringSheetForQuestion(index) {
     checkBox.value = 'correct';
     checkBox.id = team.teamName;
     checkBox.checked = isScorePositive(team.scores, index);
-    checkBox.onclick = () => writeToLS(checkBox);
+    checkBox.onclick = () => updateScoresInLS(checkBox);
     scoreCell.appendChild(scoreCellText);
     scoreCell.appendChild(checkBox);
     row.appendChild(scoreCell);
@@ -150,10 +163,6 @@ function generateScoringSheetForQuestion(index) {
   tableWrapperElement.appendChild(table);
 }
 
-function setQuestionIndex(index) {
-  localStorage.setItem('questionIndex', JSON.stringify(index));
-}
-
 function initializeTeamScoresForQuestion(index) {
   const scoresArray = getScores();
   scoresArray.forEach(team => {
@@ -161,16 +170,6 @@ function initializeTeamScoresForQuestion(index) {
       team.scores[index] = 0;
     }
   });
-}
-
-function getTeamNamesInputString() {
-  return document.getElementById('teamNamesInput').value;
-}
-
-function initializeTeams() {
-  const teamNamesInString = getTeamNamesInputString();
-  const teamArray = teamNamesInString.split(',');
-  return teamArray.map(teamName => teamName.trim());
 }
 
 function createEventListenerForDropdown() {
@@ -234,7 +233,7 @@ function initializePage() {
   if (getGameState() != IN_GAME) {
     initializePreGame();
   } else {
-    initializeGame();
+    initializeInGame();
   }
 }
 
