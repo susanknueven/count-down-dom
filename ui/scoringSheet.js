@@ -1,5 +1,6 @@
 const PRE_GAME = 'PRE_GAME';
 const IN_GAME = 'IN_GAME';
+const GAME_OVER = 'GAME_OVER';
 const gameStateKey = 'gameState';
 
 function startGame() {
@@ -16,6 +17,14 @@ function getGameState() {
 
 function getNumOfQsFromInput(){
   return document.getElementById('numOfQsInput').value;
+}
+
+function setNumOfQsInLS(numOfQs) {
+  localStorage.setItem('numOfQs', JSON.stringify(numOfQs));
+}
+
+function getNumOfQsFromLS() {
+  return parseInt(JSON.parse(localStorage.getItem('numOfQs')));
 }
 
 function setQuestionIndex(index) {
@@ -91,13 +100,22 @@ function initializeTeams() {
   return teamArray.map(teamName => teamName.trim());
 }
 
-function getTrivia() {
+function getTrivia(numOfQs) {
   const trivia = [
     {"q":"What is my favorite thing to eat?", "a":"chocolate"},
     {"q":"Which leg do I put in my pants first?", "a":"right"},
+    {"q":"How old is Zeke?", "a":"I don't know!!"},
+    {"q":"When did George Washington discover America?", "a":"1776- same time as everyone else!"},
+    {"q":"Knock Knock", "a":"pbbbbbbbt"},
+    {"q":"How can you make it snow in summer?", "a":"live at the North Pole"},
+    {"q":"What time is bedtime?", "a":"whenever mom says"},
+    {"q":"Where do babies come from?", "a":"ask your father"},
+    {"q":"What should you do if you are in a car accident?", "a":"wait"},
+    {"q":"How many more trivia questions do we need?", "a":"too many"},
+    {"q":"How many polar bears can a penguin eat?", "a":"none"},
     {"q":"What is my favorite animal?", "a":"dog, of course!"}
     ];
-  localStorage.setItem('trivia', JSON.stringify(trivia));
+  localStorage.setItem('trivia', JSON.stringify(trivia.slice(0, numOfQs)));
 }
 
 function setTriviaIndex(index) {
@@ -115,9 +133,11 @@ function initializeInGame() {
     setQuestionIndex(0);
     const teamArray = initializeTeams();
     numOfQuestions = parseInt(getNumOfQsFromInput());
+    setNumOfQsInLS(numOfQuestions);
     initializeScoresInLS(teamArray, numOfQuestions);
-    setTriviaIndex(0);
-    getTrivia();
+    getTrivia(numOfQuestions);
+    setTriviaState("");
+    setTriviaIndex("");
     setGameState(IN_GAME);
   }
 
@@ -211,9 +231,13 @@ function initializeDropdown(numOfQuestions) {
   createOptionsForSelect(selectElement, numOfQuestions, 0);
   if (getGameState() === IN_GAME) {
     const questionIndex = getQuestionIndex();
-    const dropdownElement = document.getElementById('dropdown');
-    dropdownElement.selectedIndex = questionIndex;
+    updateDropdownQuestionIndex(questionIndex);
   }
+}
+
+function updateDropdownQuestionIndex(index) {
+    const dropdownElement = document.getElementById('dropdown');
+    dropdownElement.selectedIndex = index;
 }
 
 function buildEmptyScoresArray(array, length, current) {
@@ -432,7 +456,6 @@ function reset() {
 reset();
 
 // Trivia Question and Answer Controls
-
 const triviaStateKey = 'triviaState';
 const SHOW_TRIVIA = 'SHOW_TRIVIA';
 const SHOW_ANSWER = 'SHOW_ANSWER';
@@ -446,11 +469,63 @@ function setTriviaState(triviaState) {
   localStorage.setItem(triviaStateKey, JSON.stringify(triviaState));
 }
 
-function showNextTrivia() {
-  setTriviaIndex(getTriviaIndex()+1);
+function isValidTriviaIndex(index) {
+  return index >=0 && index < getNumOfQsFromLS();
+}
+
+function returnNextTriviaIndex(currentTriviaIndex) {
+  if (isNaN(currentTriviaIndex)) {
+    return 0;
+  } else {
+    return currentTriviaIndex + 1;
+  }
+}
+
+function showNextTriviaAndSetQuestionIndex() {
+  const currentTriviaIndex = getTriviaIndex();
+  const nextTriviaIndex = returnNextTriviaIndex(currentTriviaIndex);
+  if (!isValidTriviaIndex(nextTriviaIndex)){
+    console.log('out of questions');
+    // setGameState(GAME_OVER); ???
+    return;
+  }
+  setTriviaIndex(nextTriviaIndex);
+  setQuestionIndex(nextTriviaIndex);
+  updateDropdownQuestionIndex(nextTriviaIndex);
+  // manually update the score sheet
+  generateScoringSheetForQuestion(nextTriviaIndex);
   setTriviaState(SHOW_TRIVIA);
+  disableTriviaButton();
+  enableAnswerButton();
 }
 
 function showAnswer() {
   setTriviaState(SHOW_ANSWER);
+  disableAnswerButton();
+  if (!isLastQuestion()) {
+    enableTriviaButton();
+  }
+}
+
+function isLastQuestion() {
+  return getTriviaIndex() + 1 === getNumOfQsFromLS();
+}
+
+const answerButton = document.getElementById('showTriviaAnswer');
+const triviaButton = document.getElementById('showNextTrivia');
+
+function disableAnswerButton() {
+  answerButton.disabled = true;
+}
+
+function enableAnswerButton() {
+  answerButton.disabled = false;
+}
+
+function disableTriviaButton() {
+  triviaButton.disabled = true;
+}
+
+function enableTriviaButton() {
+  triviaButton.disabled = false;
 }

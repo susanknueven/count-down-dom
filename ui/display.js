@@ -35,9 +35,6 @@ function getTriviaIndex() {
 }
 
 function getTriviaByIndex(index) {
-
-  console.log(JSON.parse(localStorage.getItem(triviaKey)));
-  console.log(JSON.parse(localStorage.getItem(triviaKey))[index]);
   return JSON.parse(localStorage.getItem(triviaKey))[index];
 }
 
@@ -74,7 +71,6 @@ function handleTriviaStateChange(triviaState) {
     case SHOW_ANSWER:
       loadAnswerAndDisplay();
   }
-
 }
 
 function getCountDownHeadingFromLS() {
@@ -144,7 +140,8 @@ function loadInGame() {
   generateScoreBoardFromLS(getScores());
   updateMinutesElement(getMinutesFromLS());
   updateSecondsElement(getSecondsFromLS());
-  updateCountDownHeadingElement(getCountDownHeadingFromLS())
+  updateCountDownHeadingElement(getCountDownHeadingFromLS());
+  handleTriviaStateChange(getTriviaState());
 }
 
 function hidePreGameDisplay() {
@@ -188,6 +185,8 @@ function loadTriviaAndDisplay() {
 function loadAnswerAndDisplay() {
   const trivia = getTriviaByIndex(getTriviaIndex());
   document.getElementById('answer').innerHTML = trivia.a;
+  document.getElementById('trivia').innerHTML = trivia.q;
+  showTrivia();
   showAnswer();
 }
 
