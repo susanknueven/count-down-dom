@@ -91,15 +91,33 @@ function initializeTeams() {
   return teamArray.map(teamName => teamName.trim());
 }
 
+function getTrivia() {
+  const trivia = [
+    {"q":"What is my favorite thing to eat?", "a":"chocolate"},
+    {"q":"Which leg do I put in my pants first?", "a":"right"},
+    {"q":"What is my favorite animal?", "a":"dog, of course!"}
+    ];
+  localStorage.setItem('trivia', JSON.stringify(trivia));
+}
+
+function setTriviaIndex(index) {
+  localStorage.setItem('triviaIndex', JSON.stringify(index));
+}
+
+function getTriviaIndex() {
+  return parseInt(JSON.parse(localStorage.getItem('triviaIndex')));
+}
+
 function initializeInGame() {
   let questionIndex;
   let numOfQuestions;
   if (getGameState() != IN_GAME) {
-    questionIndex = 0;
-    setQuestionIndex(questionIndex);
+    setQuestionIndex(0);
     const teamArray = initializeTeams();
     numOfQuestions = parseInt(getNumOfQsFromInput());
     initializeScoresInLS(teamArray, numOfQuestions);
+    setTriviaIndex(0);
+    getTrivia();
     setGameState(IN_GAME);
   }
 
@@ -412,3 +430,27 @@ function reset() {
 }
 
 reset();
+
+// Trivia Question and Answer Controls
+
+const triviaStateKey = 'triviaState';
+const SHOW_TRIVIA = 'SHOW_TRIVIA';
+const SHOW_ANSWER = 'SHOW_ANSWER';
+const SHOW_RESULTS = 'SHOW_RESULTS';
+
+function getTriviaState() {
+  return JSON.parse(localStorage.getItem(triviaStateKey));
+}
+
+function setTriviaState(triviaState) {
+  localStorage.setItem(triviaStateKey, JSON.stringify(triviaState));
+}
+
+function showNextTrivia() {
+  setTriviaIndex(getTriviaIndex()+1);
+  setTriviaState(SHOW_TRIVIA);
+}
+
+function showAnswer() {
+  setTriviaState(SHOW_ANSWER);
+}

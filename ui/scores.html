@@ -17,26 +17,30 @@
       <div>Update Team Scores</div>
       <div id="scoreTableWrapper">
       </div>
-    </div>
-    <div id="countDownWrapper">
-      <div id="countDownHeading">Counting Down...</div>
-      <div>
-        <input
-          id="minutes"
-          type="text"
-          onchange="validateInputAndSetHeadingText()"
-        />
-          :
-        <input
-          id="seconds"
-          type="text"
-          onchange="validateInputAndSetHeadingText()"
-        />
+      <div id="countDownWrapper">
+        <div id="countDownHeading">Counting Down...</div>
+        <div>
+          <input
+            id="minutes"
+            type="text"
+            onchange="validateInputAndSetHeadingText()"
+          />
+            :
+          <input
+            id="seconds"
+            type="text"
+            onchange="validateInputAndSetHeadingText()"
+          />
+        </div>
+        <button id="startButton" onClick=startCountDown()>Start</button>
+        <button id="stopButton" onClick=stopCountDown()>Stop</button>
+        <button onClick=reset()>Reset</button>
+        <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>
       </div>
-      <button id="startButton" onClick=startCountDown()>Start</button>
-      <button id="stopButton" onClick=stopCountDown()>Stop</button>
-      <button onClick=reset()>Reset</button>
-      <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>
+      <div id="triviaControlsWrapper">
+        <button id="showNextTrivia" onClick=showNextTrivia()>Show Next Trivia</button>
+        <button id="showTriviaAnswer" onClick=showAnswer()>Show Answer</button>
+      </div>
     </div>
   </body>
   <script src="./scoringSheet.js"></script>
