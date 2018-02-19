@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="./count.css" rel="stylesheet" type="text/css" />
+    <link href="display.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-
-    <div id="heading">Counting Down...</div>
-    <div>
-      <input
-        id="minutes"
-        type="text"
-        onchange="validateInputAndSetHeadingText()"
-      />
-        :
-      <input
-        id="seconds"
-        type="text"
-        onchange="validateInputAndSetHeadingText()"
-      />
+    <div id="preGameDisplay">
+      WELCOME TO TRIVIA!
     </div>
-    <button id="startButton" onClick=startCountDown()>Start</button>
-    <button id="stopButton" onClick=stopCountDown()>Stop</button>
-    <button onClick=reset()>Reset</button>
-    <button onClick=getScoresfromLS()>UPDATE SCORES</button>
-    <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>
+    <div id="inGameDisplay">
+      <div id="countDownHeading">Counting Down...</div>
+      <div>
+        <span id="minutes"></span>
+          :
+        <span id="seconds"></span>
+      </div>
+      <div id="scoreTableWrapper"></div>
+    </div>
   </body>
-  <script src="count.js"></script>
+  <script src="display.js"></script>
 </html>

@@ -6,3 +6,7 @@
 #scoreTable input {
   margin: 10px;
 }
+
+#countDownWrapper input {
+  width: 20px;
+}
