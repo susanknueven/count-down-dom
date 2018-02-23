@@ -53,7 +53,6 @@ function isScorePositive(scoresArray, index) {
 }
 
 function generateScoringSheetForQuestion(index) {
-  const body = document.getElementsByTagName('body')[0];
   const oldTable = document.getElementsByTagName('table')[0];
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 

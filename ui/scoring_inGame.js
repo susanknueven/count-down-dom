@@ -16,14 +16,6 @@ function getTrivia(numOfQs) {
   localStorage.setItem('trivia', JSON.stringify(trivia.slice(0, numOfQs)));
 }
 
-function setTriviaIndex(index) {
-  localStorage.setItem('triviaIndex', JSON.stringify(index));
-}
-
-function getTriviaIndex() {
-  return parseInt(JSON.parse(localStorage.getItem('triviaIndex')));
-}
-
 function updateDropdownQuestionIndex(index) {
     const dropdownElement = document.getElementById('dropdown');
     dropdownElement.selectedIndex = index;
@@ -64,8 +56,18 @@ function initializeInGame() {
   generateScoringSheetForQuestion(questionIndex);
   numOfQuestions = getScores()[0].scores.length; 
   initializeDropdown(numOfQuestions);
+  initializeTriviaButtons();
   hidePreGameTools();
   showInGameTools();
+}
+
+function initializeTriviaButtons() {
+  if (getTriviaState() == SHOW_ANSWER) {
+    showAnswer();
+  }
+  if (getTriviaState() == SHOW_TRIVIA) {
+    showTrivia();
+  }
 }
 
 function startGame() {

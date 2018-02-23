@@ -11,6 +11,14 @@ function setTriviaState(triviaState) {
   localStorage.setItem(triviaStateKey, JSON.stringify(triviaState));
 }
 
+function setTriviaIndex(index) {
+  localStorage.setItem('triviaIndex', JSON.stringify(index));
+}
+
+function getTriviaIndex() {
+  return parseInt(JSON.parse(localStorage.getItem('triviaIndex')));
+}
+
 function isValidTriviaIndex(index) {
   return index >=0 && index < getNumOfQsFromLS();
 }
@@ -31,11 +39,17 @@ function showNextTriviaAndSetQuestionIndex() {
     // setGameState(GAME_OVER); ???
     return;
   }
+  resetCountDown();
+  startCountDown();
   setTriviaIndex(nextTriviaIndex);
   setQuestionIndex(nextTriviaIndex);
   updateDropdownQuestionIndex(nextTriviaIndex);
   // manually update the score sheet
   generateScoringSheetForQuestion(nextTriviaIndex);
+  showTrivia();
+}
+
+function showTrivia() {
   setTriviaState(SHOW_TRIVIA);
   disableTriviaButton();
   enableAnswerButton();
@@ -46,6 +60,8 @@ function showAnswer() {
   disableAnswerButton();
   if (!isLastQuestion()) {
     enableTriviaButton();
+  } else {
+    disableTriviaButton();
   }
 }
 

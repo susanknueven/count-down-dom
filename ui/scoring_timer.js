@@ -159,7 +159,7 @@ function stopCountDown() {
   }
 }
 
-function reset() {
+function resetCountDown() {
   if (getCountStatus() === COUNTING) {
     stopTimer();
     setInputReadOnlyAttribute(false);
@@ -168,4 +168,4 @@ function reset() {
   setCountStatus(READY_TO_COUNT);
 }
 
-reset();
+resetCountDown();
