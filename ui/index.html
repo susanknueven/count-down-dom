@@ -5,18 +5,22 @@
   </head>
   <body>
     <div id="preGameDisplay">
-      WELCOME TO TRIVIA!
+      <span>WELCOME TO TRIVIA!</span>
     </div>
     <div id="inGameDisplay">
-      <div id="countDownHeading">Counting Down...</div>
-      <div>
-        <span id="minutes"></span>
-          :
-        <span id="seconds"></span>
+      <div class="leftColumn">
+        <div id="trivia"></div>
+        <div id="answer"></div>
       </div>
-      <div id="scoreTableWrapper"></div>
-      <div id="trivia"></div>
-      <div id="answer"></div>
+      <div class="rightColumn">
+        <div id="countDownHeading">Counting Down...</div>
+        <div>
+          <span id="minutes"></span>
+            :
+          <span id="seconds"></span>
+        </div>
+        <div id="scoreTableWrapper"></div>
+      </div>
     </div>
   </body>
   <script src="display_scoreBoard.js"></script>
