@@ -1,41 +1,125 @@
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
+body {
+  height: 98vh;
+  width: 98vw;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
 }
+
 
 #inGameDisplay {
-  display: flex;
+  height: 100%;
+  width: 100%;
+  color: #0086C6;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: 3fr 3fr 2fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 15px;
+  grid-template-areas: "trivia     timer"
+                       "answer     timer"
+                       "scoreBoard scoreBoard"
 }
 
-.leftColumn {
-  flex-grow: 4;
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.rightColumn {
-  flex-grow: 1;
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 30px;
-}
-
-#trivia, #answer {
+.trivia {
+  grid-area: trivia;
   font-size: 50px;
-  padding: 20px;
+  margin: auto;
+  /* text-shadow: -6px 4px 51px #888; */
 }
 
-#countDownHeading, #scoreTableWrapper {
-  padding-top: 20px;
+.answer {
+  grid-area: answer;
+  font-size: 50px;
+  margin: auto;
+  /* text-shadow: -6px 4px 51px #888; */
 }
 
-#preGameDisplay {
-  font-size: 100px;
-  top: 50%;
-  transform: translateY(100%);
+.timer {
+  grid-area: timer;
+  background-color: #FF6D00;
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 5%;
+}
+
+.scoreBoard {
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
+  grid-area: scoreBoard;
+  background-color: #66CC00;
+  padding: 2%;
+}
+
+table {
+  border-spacing: 10px;
+  margin: auto;
+}
+
+.scoreBoardRow span {
+  padding: 4px;
+}
+
+.scoreBoardRow {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.teamScoreBlock {
+  flex: 1 0 16%;
+  display: flex;
+  flex-flow: row nowrap;
+  padding: .5em;
+  margin: .5em;
+  width: 100px;
+  border: 0px solid gray;
+  background-color: white;
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
+  border-radius: 8px;
+}
+
+.rank {
+  background-color: #0086C6;
+  color: white;
+  border-radius: 1em;
+  width: 1em;
+  line-height: 1em;
+  display: inline-block;
+  text-align: center;
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
+  padding: .5em;
+}
+
+.teamName {
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.teamScore {
+  flex-shrink: 1;
+}
+
+.leaderScoreBlock {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: .5em;
+  margin: .5em;
+  width: 100px;
+  border: 0px solid gray;
+  background-color: white;
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
+  border-radius: 8px;
+}
+
+.leaderName {
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+}
+.leaderScore {
+  flex-shrink: 1;
 }

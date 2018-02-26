@@ -8,19 +8,24 @@
       <span>WELCOME TO TRIVIA!</span>
     </div>
     <div id="inGameDisplay">
-      <div class="leftColumn">
-        <div id="trivia"></div>
-        <div id="answer"></div>
-      </div>
-      <div class="rightColumn">
-        <div id="countDownHeading">Counting Down...</div>
-        <div>
-          <span id="minutes"></span>
-            :
-          <span id="seconds"></span>
-        </div>
+        <section class="trivia">
+          <div id="trivia"></div>
+        </section>
+        <section class="answer">
+          <div id="answer"></div>
+        </section>
+        <section class="timer">
+          <div id="countDownHeading">Counting Down...</div>
+          <div>
+            <span id="minutes"></span>
+              :
+            <span id="seconds"></span>
+          </div>
+          <div id="leaderBoardWrapper"></div>
+        </section>
+      <secion class="scoreBoard">
         <div id="scoreTableWrapper"></div>
-      </div>
+      </section>
     </div>
   </body>
   <script src="display_scoreBoard.js"></script>

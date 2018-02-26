@@ -42,6 +42,7 @@ window.addEventListener('storage', function(e) {
     case scoresKey:
       if (getScores()) {
         generateScoreBoardFromLS(getScores());
+        generateLeaderBoardFromLS(getScores());
       }
       break;
     case triviaStateKey:
@@ -51,6 +52,7 @@ window.addEventListener('storage', function(e) {
 
 function loadInGame() {
   generateScoreBoardFromLS(getScores());
+  generateLeaderBoardFromLS(getScores());
   updateMinutesElement(getMinutesFromLS());
   updateSecondsElement(getSecondsFromLS());
   updateCountDownHeadingElement(getCountDownHeadingFromLS());
