@@ -16,7 +16,7 @@ const minutesKey = 'minutes';
 const secondsKey = 'seconds';
 const countDownHeadingKey = 'countDownHeading';
 let timer;
-let defaultCount = { min: 0, sec: 3 };
+let defaultCount = { min: 1, sec: 30 };
 let userDefaultCount = {};
 
 function getCountStatus() {

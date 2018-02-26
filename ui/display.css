@@ -3,8 +3,8 @@ body {
   width: 98vw;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
+  font-size: 1em;
 }
-
 
 #inGameDisplay {
   height: 100%;
@@ -20,35 +20,51 @@ body {
                        "scoreBoard scoreBoard"
 }
 
-.trivia {
-  grid-area: trivia;
+.trivia, .answer {
   font-size: 50px;
   margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
   /* text-shadow: -6px 4px 51px #888; */
 }
 
-.answer {
-  grid-area: answer;
-  font-size: 50px;
-  margin: auto;
-  /* text-shadow: -6px 4px 51px #888; */
-}
+.trivia { grid-area: trivia }
 
-.timer {
+.answer { grid-area: answer }
+
+.timerSidebar {
   grid-area: timer;
   background-color: #FF6D00;
-  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 5%;
 }
 
+#countDownHeading, #minutes, #seconds, #colon, .scoreBoardHeading {
+  color: white;
+  text-shadow: -6px 4px 31px #000;
+  text-decoration: black;
+  font-size: 1.8em;
+}
+
+.leadersHeading {
+  margin-top: 2em;
+  text-shadow: -6px 4px 31px #000;
+  text-decoration: black;
+  font-size: 1.3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
 .scoreBoard {
-  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
   grid-area: scoreBoard;
   background-color: #66CC00;
-  padding: 2%;
+  padding: .8em;
 }
 
 table {
@@ -57,25 +73,12 @@ table {
 }
 
 .scoreBoardRow span {
-  padding: 4px;
+  padding: .3em;
 }
 
 .scoreBoardRow {
   display: flex;
   flex-flow: row wrap;
-}
-
-.teamScoreBlock {
-  flex: 1 0 16%;
-  display: flex;
-  flex-flow: row nowrap;
-  padding: .5em;
-  margin: .5em;
-  width: 100px;
-  border: 0px solid gray;
-  background-color: white;
-  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
-  border-radius: 8px;
 }
 
 .rank {
@@ -86,40 +89,36 @@ table {
   line-height: 1em;
   display: inline-block;
   text-align: center;
-  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
   padding: .5em;
 }
 
-.teamName {
-  flex-grow: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+.leaderScoreBlock, .teamScoreBlock,
+.rank, .scoreBoard, .timerSidebar {
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
 }
 
-.teamScore {
-  flex-shrink: 1;
-}
-
-.leaderScoreBlock {
+.leaderScoreBlock, .teamScoreBlock {
   display: flex;
   flex-flow: row nowrap;
   padding: .5em;
-  margin: .5em;
+  margin: .3em;
   width: 100px;
   border: 0px solid gray;
   background-color: white;
-  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
   border-radius: 8px;
 }
 
-.leaderName {
+.teamScoreBlock {
+  flex: 1 0 16%;
+}
+
+.leaderName, .teamName {
   flex-grow: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 
 }
-.leaderScore {
+.leaderScore, .teamScore {
   flex-shrink: 1;
 }
