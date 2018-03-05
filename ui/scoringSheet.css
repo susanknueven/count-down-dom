@@ -1,14 +1,19 @@
+#inGameTools {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+}
+
 #scoreTable input {
   margin: 3px;
 }
 
-#countDownWrapper input {
-  width: 20px;
+.scoreEntryTable, #scoreTableWrapper {
+  overflow-x: scroll;
 }
 
-#inGameTools {
-  display: flex;
-  flex-direction: row;
+#countDownWrapper input {
+  width: 20px;
 }
 
 .scoreEntryTable {
@@ -29,4 +34,9 @@ table, th, td {
 
 .highlightColumn {
   background-color: lightblue;
+}
+
+.triviaControls {
+  min-width: 250px;
+  padding-left: 10px;
 }
