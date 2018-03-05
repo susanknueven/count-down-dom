@@ -8,7 +8,7 @@ function generateScoreBoardFromLS(scoresArray) {
   if(!!oldScoreBoard) { oldScoreBoard.parentNode.removeChild(oldScoreBoard); }
 
   const row = document.createElement('div');
-  row.className = 'scoreBoardRow';
+  row.id = 'scoreBoardRow';
   scoresArray.forEach(team => {
     const teamCell = document.createElement('div');
     teamCell.className = 'teamScoreBlock';
@@ -25,7 +25,7 @@ function generateScoreBoardFromLS(scoresArray) {
     teamCell.appendChild(scoreCell);
     row.appendChild(teamCell);
   });
-  
+
   tableWrapperElement.appendChild(row);
 }
 
@@ -38,7 +38,6 @@ function getLeadersScores(scoresArray) {
     const rank = sortedScoresArray.findIndex(t => {
       return sumScores(team.scores) === sumScores(t.scores);
     }) + 1;
-    console.log('rank', `${team.teamName} ${rank}`);
     return { ...team, rank }
   })
   .filter(team => team.rank <= 3);

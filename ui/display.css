@@ -72,11 +72,11 @@ table {
   margin: auto;
 }
 
-.scoreBoardRow span {
+#scoreBoardRow span {
   padding: .3em;
 }
 
-.scoreBoardRow {
+#scoreBoardRow {
   display: flex;
   flex-flow: row wrap;
 }

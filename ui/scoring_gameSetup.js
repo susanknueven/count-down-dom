@@ -3,6 +3,9 @@ const PRE_GAME = 'PRE_GAME';
 const IN_GAME = 'IN_GAME';
 const GAME_OVER = 'GAME_OVER';
 const gameStateKey = 'gameState';
+const GOT_IT = 'Y';
+const NOPE = 'N';
+const CUSTOM = 'C';
 
 function setGameState(gameState) {
   localStorage.setItem(gameStateKey, JSON.stringify(gameState));
@@ -45,15 +48,15 @@ function hideInGameTools() {
 }
 
 function showInGameTools() {
-  document.getElementById('inGameTools').style.display = 'block';
+  document.getElementById('inGameTools').style.display = 'flex';
 }
 
 function isScorePositive(scoresArray, index) {
   return (scoresArray[index] > 0);
 }
 
-function generateScoringSheetForQuestion(index) {
-  const oldTable = document.getElementsByTagName('table')[0];
+function generateScoringTable(index) {
+  const oldTable = document.getElementById('scoreTable');
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 
   const table = document.createElement('table');
@@ -64,18 +67,53 @@ function generateScoringSheetForQuestion(index) {
 
   scoresArray.forEach(team => {
     const row = document.createElement('tr');
-    const scoreCell = document.createElement('td');
-    const scoreCellText = document.createTextNode(team.teamName);
-    const checkBox = document.createElement('input');
-    checkBox.type = 'checkbox';
-    checkBox.value = 'correct';
-    checkBox.id = team.teamName;
-    checkBox.checked = isScorePositive(team.scores, index);
-    checkBox.onclick = () => updateScoresInLS(checkBox);
-    scoreCell.appendChild(scoreCellText);
-    scoreCell.appendChild(checkBox);
-    row.appendChild(scoreCell);
+    const questionCell = document.createElement('td');
+    const radioGotItButton = document.createElement('input');
+    radioGotItButton.type = 'radio';
+    radioGotItButton.name = team.teamName;
+    radioGotItButton.value = GOT_IT;
+    radioGotItButton.id = `${team.teamName}${GOT_IT}`;
+    radioGotItButton.onclick = () => updateScoresInLS(radioGotItButton.name, index, 1);
+    const labelGotItRadio = document.createElement('label');
+    labelGotItRadio.for = radioGotItButton.id;
+    labelGotItRadio.innerHTML = radioGotItButton.value;
+    const radioNopeButton= document.createElement('input');
+    radioNopeButton.type = 'radio';
+    radioNopeButton.name = team.teamName;
+    radioNopeButton.value = NOPE;
+    radioNopeButton.id = `${team.teamName}${NOPE}`;
+    radioNopeButton.onclick = () => updateScoresInLS(radioNopeButton.name, index, 0);
+    const labelNopeRadio= document.createElement('label');
+    labelNopeRadio.for = radioNopeButton.id;
+    labelNopeRadio.innerHTML = radioNopeButton.value;
+    // const radioCustomButton= document.createElement('input');
+    // radioCustomButton.type = 'radio';
+    // radioCustomButton.name = team.teamName;
+    // radioCustomButton.value = CUSTOM;
+    // radioCustomButton.id = `${team.teamName}${CUSTOM}Button`;
+    // radioCustomButton.onclick = () => { document.getElementById(`${team.teamName}${CUSTOM}Input`).disabled = false };
+    // const labelCustomRadio= document.createElement('label');
+    // labelCustomRadio.for = radioCustomButton.id;
+    // labelCustomRadio.innerHTML = radioCustomButton.value;
+    // const inputCustomPoints= document.createElement('input');
+    // inputCustomPoints.type = 'text';
+    // inputCustomPoints.id = `${team.teamName}${CUSTOM}Input`;
+    // inputCustomPoints.disabled = true;
+    // inputCustomPoints.value = 0;
+
+    questionCell.appendChild(radioGotItButton);
+    questionCell.appendChild(labelGotItRadio);
+    questionCell.appendChild(radioNopeButton);
+    questionCell.appendChild(labelNopeRadio);
+    // questionCell.appendChild(radioCustomButton);
+    // questionCell.appendChild(labelCustomRadio);
+    // questionCell.appendChild(inputCustomPoints);
+    row.appendChild(questionCell);
     tableBody.appendChild(row);
+
+    // checkBox.checked = isScorePositive(team.scores, index);
+    // checkBox.onclick = () => updateScoresInLS(checkBox);
+
   }); 
   table.appendChild(tableBody);
   
@@ -132,7 +170,7 @@ function createEventListenerForDropdown() {
     const questionIndex = dropdownElement.value;
     setQuestionIndex(questionIndex);
     initializeTeamScoresForQuestion(questionIndex);
-    generateScoringSheetForQuestion(questionIndex);
+    generateScoringTable(questionIndex);
   });
 }
 

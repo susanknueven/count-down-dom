@@ -21,17 +21,14 @@ function updateDropdownQuestionIndex(index) {
     dropdownElement.selectedIndex = index;
 }
 
-function updateScoresInLS(element) {
+function updateScoresInLS(teamName, questionIndex, score) {
   let newScores;
-  const teamName = element.id;
-  const questionIndex = getQuestionIndex();
 
   const prevScores = getScores();
   teamIndex = prevScores.findIndex((team) => team.teamName === teamName);
   
-  prevTeamScores = prevScores[teamIndex].scores;
-  prevTeamScores[questionIndex] = element.checked ? 1 : 0;
-
+  prevTeamScores = Array.from(prevScores[teamIndex].scores);
+  prevTeamScores[questionIndex] = score;
   prevScores[teamIndex] = { ...prevScores[teamIndex], scores: prevTeamScores }
 
   localStorage.setItem('scores', JSON.stringify(prevScores));
@@ -53,8 +50,8 @@ function initializeInGame() {
   }
 
   questionIndex = getQuestionIndex();
-  generateScoringSheetForQuestion(questionIndex);
-  numOfQuestions = getScores()[0].scores.length; 
+  generateScoringTable(questionIndex);
+  numOfQuestions = parseInt(getNumOfQsFromLS());
   initializeDropdown(numOfQuestions);
   initializeTriviaButtons();
   hidePreGameTools();

@@ -5,8 +5,18 @@
 
 #scoreTable input {
   margin: 10px;
+  width: 20px;
 }
 
 #countDownWrapper input {
   width: 20px;
+}
+
+#inGameTools {
+  display: flex;
+  flex-direction: row;
+}
+
+.scoreEntryTable {
+  flex-grow: 1;
 }

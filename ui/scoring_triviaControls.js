@@ -36,7 +36,7 @@ function showNextTriviaAndSetQuestionIndex() {
   const nextTriviaIndex = returnNextTriviaIndex(currentTriviaIndex);
   if (!isValidTriviaIndex(nextTriviaIndex)){
     console.log('out of questions');
-    // setGameState(GAME_OVER); ???
+    // TODO: setGameState(GAME_OVER); ???
     return;
   }
   resetCountDown();
@@ -45,7 +45,7 @@ function showNextTriviaAndSetQuestionIndex() {
   setQuestionIndex(nextTriviaIndex);
   updateDropdownQuestionIndex(nextTriviaIndex);
   // manually update the score sheet
-  generateScoringSheetForQuestion(nextTriviaIndex);
+  generateScoringTable(nextTriviaIndex);
   showTrivia();
 }
 
