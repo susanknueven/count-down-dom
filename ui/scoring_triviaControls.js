@@ -45,7 +45,8 @@ function showNextTriviaAndSetQuestionIndex() {
   setQuestionIndex(nextTriviaIndex);
   updateDropdownQuestionIndex(nextTriviaIndex);
   // manually update the score sheet
-  generateScoringTable(nextTriviaIndex);
+  // generateScoringTable(nextTriviaIndex);
+  highlightQuestionInScoringTable(getQuestionNumberFromQuestionIndex(nextTriviaIndex));
   showTrivia();
 }
 
@@ -66,7 +67,7 @@ function showAnswer() {
 }
 
 function isLastQuestion() {
-  return getTriviaIndex() + 1 === getNumOfQsFromLS();
+  return getQuestionNumberFromQuestionIndex(getTriviaIndex()) === getNumOfQsFromLS();
 }
 
 const answerButton = document.getElementById('showTriviaAnswer');
