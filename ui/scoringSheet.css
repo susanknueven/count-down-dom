@@ -8,7 +8,11 @@
   margin: 3px;
 }
 
-.scoreEntryTable, #scoreTableWrapper {
+.scoreEntryTable {
+  overflow-x: hidden;
+}
+
+#scoreTableWrapper {
   overflow-x: scroll;
 }
 

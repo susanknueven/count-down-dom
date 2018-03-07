@@ -78,7 +78,7 @@ function generateScoringTable(numOfQs) {
   const columnNames = document.createElement('col');
   columnNames.id = 'teamNamesColumn';
   columnGroupElement.appendChild(columnNames);
-  for (qIndex=1; qIndex<=numOfQs; qIndex++) {
+  for (qIndex=0; qIndex<=numOfQs; qIndex++) {
     const qColumn = document.createElement('col');
     qColumn.id = `Q${qIndex}`;
     qColumn.className = 'plainColumn';
@@ -91,9 +91,9 @@ function generateScoringTable(numOfQs) {
   const teamNameHeader = document.createElement('th');
   teamNameHeader.innerHTML = 'Team Name';
   tableHeader.appendChild(teamNameHeader);
-  for (qIndex=1; qIndex<=numOfQs; qIndex++) {
+  for (qIndex=0; qIndex<=numOfQs; qIndex++) {
     const questionNumHeader = document.createElement('th');
-    questionNumHeader.innerHTML = qIndex;
+    questionNumHeader.innerHTML = getQuestionNumberFromQuestionIndex(qIndex);
     tableHeader.appendChild(questionNumHeader);
   };
   tableBody.appendChild(tableHeader);
@@ -106,16 +106,16 @@ function generateScoringTable(numOfQs) {
     const teamNameCell = document.createElement('td');
     teamNameCell.innerHTML = teamName;
     row.appendChild(teamNameCell);
-    for (qNumber=1; qNumber<=numOfQs; qNumber++) {
-      const radioGroupName = `${teamName}_Q${qNumber}`;
+    for (qIndex=0; qIndex<numOfQs; qIndex++) {
+      const radioGroupName = `${teamName}_Q${qIndex}`;
       const questionCell = document.createElement('td');
       const radioGotItButton = document.createElement('input');
       radioGotItButton.type = 'radio';
       radioGotItButton.name = radioGroupName;
       radioGotItButton.value = GOT_IT;
-      radioGotItButton.id = `${teamName}${GOT_IT}_Q${qNumber}`;
+      radioGotItButton.id = `${teamName}${GOT_IT}_Q${qIndex}`;
       radioGotItButton.onclick = () => updateScoresInLS(radioGroupName, 1);
-      radioGotItButton.checked = isScorePositive(team.scores, getQuestionIndexFromQuestionNumber(qNumber)); 
+      radioGotItButton.checked = isScorePositive(team.scores, qIndex);
       const labelGotItRadio = document.createElement('label');
       labelGotItRadio.for = radioGotItButton.id;
       labelGotItRadio.innerHTML = radioGotItButton.value;
@@ -125,7 +125,7 @@ function generateScoringTable(numOfQs) {
       radioNopeButton.value = NOPE;
       radioNopeButton.id = `${teamName}${NOPE}_Q${qIndex}`;
       radioNopeButton.onclick = () => updateScoresInLS(radioGroupName, 0);
-      radioNopeButton.checked = isScoreZero(team.scores, getQuestionIndexFromQuestionNumber(qNumber));
+      radioNopeButton.checked = isScoreZero(team.scores, qIndex);
       const labelNopeRadio= document.createElement('label');
       labelNopeRadio.for = radioNopeButton.id;
       labelNopeRadio.innerHTML = radioNopeButton.value;
@@ -145,15 +145,15 @@ function generateScoringTable(numOfQs) {
 
 function unhighlightAllColumns() {
   const numOfQs = getNumOfQsFromLS();
-  for (qNumber=1; qNumber<=numOfQs; qNumber++) {
-    const column = document.getElementById(`Q${qNumber}`);
+  for (qIndex=0; qIndex<numOfQs; qIndex++) {
+    const column = document.getElementById(`Q${qIndex}`);
     column.className = 'plainColumn';
   };
 }
 
-function highlightQuestionInScoringTable(qNumber) {
+function highlightQuestionInScoringTable(qIndex) {
   unhighlightAllColumns();
-  const tableColumn = document.getElementById(`Q${qNumber}`);
+  const tableColumn = document.getElementById(`Q${qIndex}`);
   tableColumn.className = 'highlightColumn';
 }
 
@@ -164,22 +164,6 @@ function initializeTeamScoresForQuestion(index) {
       team.scores[index] = 0;
     }
   });
-}
-
-function initializeDropdown(numOfQuestions) {
-  const dropdownWrapper = document.getElementById('dropdownWrapper');
-  
-  const selectElement = document.createElement('select');
-  selectElement.id = 'dropdown';
-  dropdownWrapper.appendChild(selectElement);
-
-  createEventListenerForDropdown();
-  
-  createOptionsForSelect(selectElement, numOfQuestions, 0);
-  if (getGameState() === IN_GAME) {
-    const questionIndex = getQuestionIndex();
-    updateDropdownQuestionIndex(questionIndex);
-  }
 }
 
 function buildEmptyScoresArray(array, length, current) {
@@ -198,29 +182,6 @@ function initializeScoresInLS(teamArray, numOfQuestions) {
     scores.push({ teamName, scores: teamScores });
   })
   localStorage.setItem('scores', JSON.stringify(scores));
-}
-
-function createEventListenerForDropdown() {
-  const dropdownElement = document.getElementById('dropdown');
-  dropdownElement.addEventListener('change', function(e) {
-    const questionIndex = parseInt(dropdownElement.value);
-    setQuestionIndex(questionIndex);
-    initializeTeamScoresForQuestion(questionIndex);
-    highlightQuestionInScoringTable(getQuestionNumberFromQuestionIndex(questionIndex));
-  });
-}
-
-function createOptionsForSelect(selectElement, max, current) {
-  if (max === current) {
-    return;
-  }
-  const option = document.createElement('option');
-  // value is zero-based- corresponds to index in array
-  option.value = current;
-  // text (displayed) is one-based- corresponds to question number
-  option.text = current + 1;
-  selectElement.appendChild(option);
-  return createOptionsForSelect(selectElement, max, current + 1);
 }
 
 function initializePage() {

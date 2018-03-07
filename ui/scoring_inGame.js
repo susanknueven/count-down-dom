@@ -24,22 +24,19 @@ function updateDropdownQuestionIndex(index) {
 function getTeamAndQuestionFromRadioGroup(radioGroupName) {
   const teamNameAndQuestionIndex = radioGroupName.split('_Q');
   const teamName = teamNameAndQuestionIndex[0];
-  const questionIndex = parseInt(teamNameAndQuestionIndex[1]) - 1;
+  const questionIndex = parseInt(teamNameAndQuestionIndex[1]);
   return { teamName, questionIndex };
 }
 
-function updateScoresInLS(radioGroupName, score) {
+function updateScoresInLS(radioGroupName, teamScore) {
   const { teamName, questionIndex } = getTeamAndQuestionFromRadioGroup(radioGroupName);
-  let newScores;
 
-  const prevScores = getScores();
-  teamIndex = prevScores.findIndex((team) => team.teamName === teamName);
+  const scores = getScores();
+  teamIndex = scores.findIndex((team) => team.teamName === teamName);
   
-  prevTeamScores = Array.from(prevScores[teamIndex].scores);
-  prevTeamScores[questionIndex] = score;
-  prevScores[teamIndex] = { ...prevScores[teamIndex], scores: prevTeamScores }
+  scores[teamIndex].scores[questionIndex] = teamScore;
 
-  localStorage.setItem('scores', JSON.stringify(prevScores));
+  localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 function initializeInGame() {
@@ -60,8 +57,7 @@ function initializeInGame() {
   numOfQuestions = parseInt(getNumOfQsFromLS());
   generateScoringTable(numOfQuestions);
   questionIndex = getQuestionIndex();
-  highlightQuestionInScoringTable(getQuestionNumberFromQuestionIndex(questionIndex));
-  initializeDropdown(numOfQuestions);
+  highlightQuestionInScoringTable(questionIndex);
   initializeTriviaButtons();
   hidePreGameTools();
   showInGameTools();

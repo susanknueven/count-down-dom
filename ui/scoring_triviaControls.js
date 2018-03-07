@@ -43,10 +43,7 @@ function showNextTriviaAndSetQuestionIndex() {
   startCountDown();
   setTriviaIndex(nextTriviaIndex);
   setQuestionIndex(nextTriviaIndex);
-  updateDropdownQuestionIndex(nextTriviaIndex);
-  // manually update the score sheet
-  // generateScoringTable(nextTriviaIndex);
-  highlightQuestionInScoringTable(getQuestionNumberFromQuestionIndex(nextTriviaIndex));
+  highlightQuestionInScoringTable(nextTriviaIndex);
   showTrivia();
 }
 
