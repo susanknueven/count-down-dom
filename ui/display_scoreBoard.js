@@ -30,17 +30,32 @@ function generateScoreBoardFromLS(scoresArray) {
 }
 
 function getLeadersScores(scoresArray) {
-  const sortedScoresArray = scoresArray.sort(function(a, b) {
+  const sortedScoresArray = scoresArray.sort((a, b) => {
     return sumScores(b.scores)-sumScores(a.scores);
   });
 
-  return scoresArray.map(team => {
+  const rankedTeamsArray = scoresArray.map(team => {
     const rank = sortedScoresArray.findIndex(t => {
       return sumScores(team.scores) === sumScores(t.scores);
-    }) + 1;
-    return { ...team, rank }
+    });
+    return { name: team.teamName, rank }
   })
   .filter(team => team.rank <= 3);
+
+  const rankedLeaders = [];
+  for(rank = 0; rank < 3; rank++) {
+    if (rankedTeamsArray.find(t => t.rank === rank)) {
+      const teamNames = rankedTeamsArray.filter(team => {
+        return team.rank === rank;
+      }).map(team => { return {name: team.name} });
+
+      const placeNames = teamNames.reduce((p,c) => {
+        return {name: p.name + ', ' + c.name };
+      });
+      rankedLeaders.push({ rank, ...placeNames });
+    }
+  };
+  return rankedLeaders;
 }
 
 function generateLeaderBoardFromLS(scoresArray) {
@@ -63,21 +78,21 @@ function generateLeaderBoardFromLS(scoresArray) {
     teamCell.className = 'leaderScoreBlock';
     const rankCell = document.createElement('td');
     rankCell.className = 'rank';
-    const rankCellText = document.createTextNode(team.rank);
+    const rankCellText = document.createTextNode(team.rank + 1);
     rankCell.appendChild(rankCellText);
     const nameCell = document.createElement('td');
     nameCell.className = 'leaderName';
-    const nameCellText = document.createTextNode(team.teamName);
+    const nameCellText = document.createTextNode(team.name);
     nameCell.appendChild(nameCellText);
     teamCell.appendChild(nameCell);
     scoreCell.appendChild(rankCell);
     scoreCell.appendChild(teamCell);
       
-    const teamScoreCell = document.createElement('td');
-    const teamScoreCellText = document.createTextNode(sumScores(team.scores));
-    teamScoreCell.className = 'leaderScore';
-    teamScoreCell.appendChild(teamScoreCellText);
-    teamCell.appendChild(teamScoreCell);
+    // const teamScoreCell = document.createElement('td');
+    // const teamScoreCellText = document.createTextNode(sumScores(team.scores));
+    // teamScoreCell.className = 'leaderScore';
+    // teamScoreCell.appendChild(teamScoreCellText);
+    // teamCell.appendChild(teamScoreCell);
     row.appendChild(scoreCell);
     row.appendChild(teamCell);
     tblBody.appendChild(row);
