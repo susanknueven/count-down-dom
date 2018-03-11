@@ -30,32 +30,34 @@ function generateScoreBoardFromLS(scoresArray) {
 }
 
 function getLeadersScores(scoresArray) {
-  const sortedScoresArray = scoresArray.sort((a, b) => {
-    return sumScores(b.scores)-sumScores(a.scores);
-  });
+  const groupedTeams = scoresArray
+              .filter(team => sumScores(team.scores) > 0)
+              .reduce((rv, team) => {
+                const teamScore = sumScores(team.scores);
+              	if(!rv[teamScore]) {
+              	  rv[teamScore] = [];
+              	}
+              	rv[teamScore].push(team.teamName);
+              	return rv;
+              }, {});
 
-  const rankedTeamsArray = scoresArray.map(team => {
-    const rank = sortedScoresArray.findIndex(t => {
-      return sumScores(team.scores) === sumScores(t.scores);
-    });
-    return { name: team.teamName, rank }
-  })
-  .filter(team => team.rank <= 3);
-
-  const rankedLeaders = [];
-  for(rank = 0; rank < 3; rank++) {
-    if (rankedTeamsArray.find(t => t.rank === rank)) {
-      const teamNames = rankedTeamsArray.filter(team => {
-        return team.rank === rank;
-      }).map(team => { return {name: team.name} });
-
-      const placeNames = teamNames.reduce((p,c) => {
-        return {name: p.name + ', ' + c.name };
+  const leaderScores = [];
+  for (const score of Object.keys(groupedTeams).sort((a,b)=>b-a)) {
+    const rankedScore = groupedTeams[score];
+    leaderScores.push(rankedScore.reduce((acc, x)=> acc + ', ' + x));
+    
+    if(leaderScores.length < 3) {
+      rankedScore.slice(1,3).map(()=>{
+      leaderScores.push(undefined);
       });
-      rankedLeaders.push({ rank, ...placeNames });
     }
-  };
-  return rankedLeaders;
+    if(leaderScores.length >= 3) {
+      leaderScores.splice(3);
+      break;
+    }
+  }
+
+  return leaderScores;
 }
 
 function generateLeaderBoardFromLS(scoresArray) {
@@ -70,32 +72,29 @@ function generateLeaderBoardFromLS(scoresArray) {
   
   const leadersScoresArray = getLeadersScores(scoresArray);
 
-  leadersScoresArray.forEach(team => {
-    const row = document.createElement('tr');
-    const scoreCell = document.createElement('td');
-    scoreCell.className = 'leaderScoreWithRank';
-    const teamCell = document.createElement('td');
-    teamCell.className = 'leaderScoreBlock';
-    const rankCell = document.createElement('td');
-    rankCell.className = 'rank';
-    const rankCellText = document.createTextNode(team.rank + 1);
-    rankCell.appendChild(rankCellText);
-    const nameCell = document.createElement('td');
-    nameCell.className = 'leaderName';
-    const nameCellText = document.createTextNode(team.name);
-    nameCell.appendChild(nameCellText);
-    teamCell.appendChild(nameCell);
-    scoreCell.appendChild(rankCell);
-    scoreCell.appendChild(teamCell);
-      
-    // const teamScoreCell = document.createElement('td');
-    // const teamScoreCellText = document.createTextNode(sumScores(team.scores));
-    // teamScoreCell.className = 'leaderScore';
-    // teamScoreCell.appendChild(teamScoreCellText);
-    // teamCell.appendChild(teamScoreCell);
-    row.appendChild(scoreCell);
-    row.appendChild(teamCell);
-    tblBody.appendChild(row);
+  leadersScoresArray.map((team, index) => {
+    if(team) {
+      const row = document.createElement('tr');
+      const scoreCell = document.createElement('td');
+      scoreCell.className = 'leaderScoreWithRank';
+      const teamCell = document.createElement('td');
+      teamCell.className = 'leaderScoreBlock';
+      const rankCell = document.createElement('td');
+      rankCell.className = 'rank';
+      const rankCellText = document.createTextNode(index + 1);
+      rankCell.appendChild(rankCellText);
+      const nameCell = document.createElement('td');
+      nameCell.className = 'leaderName';
+      const nameCellText = document.createTextNode(team);
+      nameCell.appendChild(nameCellText);
+      teamCell.appendChild(nameCell);
+      scoreCell.appendChild(rankCell);
+      scoreCell.appendChild(teamCell);
+        
+      row.appendChild(scoreCell);
+      row.appendChild(teamCell);
+      tblBody.appendChild(row);
+    }
   }); 
   
   tbl.appendChild(tblBody);

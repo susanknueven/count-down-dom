@@ -118,13 +118,13 @@ table {
   flex: 1 0 16%;
 }
 
-.leaderName, .teamName {
+.teamName {
   flex-grow: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-
 }
-.leaderScore, .teamScore {
+
+.teamScore {
   flex-shrink: 1;
 }
