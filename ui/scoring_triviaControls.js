@@ -56,6 +56,7 @@ function showTrivia() {
 function showAnswer() {
   setTriviaState(SHOW_ANSWER);
   disableAnswerButton();
+  resetCountDown();
   if (!isLastQuestion()) {
     enableTriviaButton();
   } else {

@@ -69,6 +69,9 @@ function isScoreZero(scoresArray, index) {
 }
 
 function generateScoringTable(numOfQs) {
+  const scoresArray = getScores();
+  const questionArray = scoresArray[0].scores;
+  
   const oldTable = document.getElementById('scoreTable');
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 
@@ -78,7 +81,7 @@ function generateScoringTable(numOfQs) {
   const columnNames = document.createElement('col');
   columnNames.id = 'teamNamesColumn';
   columnGroupElement.appendChild(columnNames);
-  for (qIndex=0; qIndex<=numOfQs; qIndex++) {
+  for (qIndex=0; qIndex<numOfQs; qIndex++) {
     const qColumn = document.createElement('col');
     qColumn.id = `Q${qIndex}`;
     qColumn.className = 'plainColumn';
@@ -91,22 +94,21 @@ function generateScoringTable(numOfQs) {
   const teamNameHeader = document.createElement('th');
   teamNameHeader.innerHTML = 'Team Name';
   tableHeader.appendChild(teamNameHeader);
-  for (qIndex=0; qIndex<=numOfQs; qIndex++) {
+  for (qIndex=0; qIndex<numOfQs; qIndex++) {
     const questionNumHeader = document.createElement('th');
     questionNumHeader.innerHTML = getQuestionNumberFromQuestionIndex(qIndex);
     tableHeader.appendChild(questionNumHeader);
   };
   tableBody.appendChild(tableHeader);
 
-  const scoresArray = getScores();
 
-  scoresArray.forEach(team => {
+  scoresArray.map(team => {
     const row = document.createElement('tr');
     const teamName = team.teamName;
     const teamNameCell = document.createElement('td');
     teamNameCell.innerHTML = teamName;
     row.appendChild(teamNameCell);
-    for (qIndex=0; qIndex<numOfQs; qIndex++) {
+    team.scores.map((score, qIndex) => {
       const radioGroupName = `${teamName}_Q${qIndex}`;
       const questionCell = document.createElement('td');
       const radioGotItButton = document.createElement('input');
@@ -135,7 +137,7 @@ function generateScoringTable(numOfQs) {
       questionCell.appendChild(radioNopeButton);
       questionCell.appendChild(labelNopeRadio);
       row.appendChild(questionCell);
-    };  
+    });  
     tableBody.appendChild(row);
   }); 
   table.appendChild(tableBody);
