@@ -68,78 +68,92 @@ function isScoreZero(scoresArray, index) {
   return questionIndex > index && scoresArray[index] ===0;
 }
 
-function generateScoringTable(numOfQs) {
-  const scoresArray = getScores();
-  const questionArray = scoresArray[0].scores;
-  
-  const oldTable = document.getElementById('scoreTable');
-  if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
+function appendNewColGroupElement(columnGroupElement, qIndex) {
+  const qColumn = document.createElement('col');
+  qColumn.id = `Q${qIndex}`;
+  qColumn.className = 'plainColumn';
+  columnGroupElement.appendChild(qColumn);
+}
 
+function appendNewQuestionHeader(tableHeader, qIndex) {
+  const questionNumHeader = document.createElement('th');
+  questionNumHeader.innerHTML = getQuestionNumberFromQuestionIndex(qIndex);
+  tableHeader.appendChild(questionNumHeader);
+}
+
+function appendRadioButtonAndLabel(buttonValue, score, questionCell, qIndex, team, radioGroupName) {
+  const radioButton = document.createElement('input');
+  radioButton.type = 'radio';
+  radioButton.name = radioGroupName;
+  radioButton.value = buttonValue;
+  radioButton.id = `${team.teamName}${buttonValue}_Q${qIndex}`;
+  radioButton.onclick = () => updateScoresInLS(radioGroupName, score);
+  radioButton.checked = score ? isScorePositive(team.scores, qIndex) : isScoreZero(team.scores, qIndex);
+  const labelRadio = document.createElement('label');
+  labelRadio.for = radioButton.id;
+  labelRadio.innerHTML = radioButton.value;
+  questionCell.appendChild(radioButton);
+  questionCell.appendChild(labelRadio);
+}
+
+function removeOldTableAndCreateNew(oldTable) {
+  if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
   const table = document.createElement('table');
   table.id = 'scoreTable';
+  return table;
+}
+
+function appendColumnGroupToTable(table) {
   const columnGroupElement = document.createElement('colgroup');
   const columnNames = document.createElement('col');
   columnNames.id = 'teamNamesColumn';
   columnGroupElement.appendChild(columnNames);
-  for (qIndex=0; qIndex<numOfQs; qIndex++) {
-    const qColumn = document.createElement('col');
-    qColumn.id = `Q${qIndex}`;
-    qColumn.className = 'plainColumn';
-    columnGroupElement.appendChild(qColumn);
-  };
   table.appendChild(columnGroupElement);
+  return columnGroupElement;
+}
 
-  const tableBody = document.createElement('tbody');
+function appendTableHeaderToTableBody(tableBody) {
   const tableHeader = document.createElement('tr');
   const teamNameHeader = document.createElement('th');
   teamNameHeader.innerHTML = 'Team Name';
   tableHeader.appendChild(teamNameHeader);
-  for (qIndex=0; qIndex<numOfQs; qIndex++) {
-    const questionNumHeader = document.createElement('th');
-    questionNumHeader.innerHTML = getQuestionNumberFromQuestionIndex(qIndex);
-    tableHeader.appendChild(questionNumHeader);
-  };
   tableBody.appendChild(tableHeader);
+  return tableHeader;
+}
 
+function createRowForTeam(teamName) {
+  const row = document.createElement('tr');
+  const teamNameCell = document.createElement('td');
+  teamNameCell.innerHTML = teamName;
+  row.appendChild(teamNameCell);
+  return row;
+}
 
-  scoresArray.map(team => {
-    const row = document.createElement('tr');
-    const teamName = team.teamName;
-    const teamNameCell = document.createElement('td');
-    teamNameCell.innerHTML = teamName;
-    row.appendChild(teamNameCell);
+function generateScoringTable() {
+  const scoresArray = getScores();
+  const questionArray = scoresArray[0].scores;
+  
+  const table = removeOldTableAndCreateNew(document.getElementById('scoreTable'));
+  const columnGroupElement = appendColumnGroupToTable(table);
+  const tableBody = document.createElement('tbody');
+  const tableHeader = appendTableHeaderToTableBody(tableBody);
+
+  scoresArray.map((team, tIndex) => {
+    const row = createRowForTeam(team.teamName);
     team.scores.map((score, qIndex) => {
-      const radioGroupName = `${teamName}_Q${qIndex}`;
+      if (tIndex === 0) {
+        appendNewColGroupElement(columnGroupElement, qIndex);
+        appendNewQuestionHeader(tableHeader, qIndex);
+      }
+      const radioGroupName = `${team.teamName}_Q${qIndex}`;
       const questionCell = document.createElement('td');
-      const radioGotItButton = document.createElement('input');
-      radioGotItButton.type = 'radio';
-      radioGotItButton.name = radioGroupName;
-      radioGotItButton.value = GOT_IT;
-      radioGotItButton.id = `${teamName}${GOT_IT}_Q${qIndex}`;
-      radioGotItButton.onclick = () => updateScoresInLS(radioGroupName, 1);
-      radioGotItButton.checked = isScorePositive(team.scores, qIndex);
-      const labelGotItRadio = document.createElement('label');
-      labelGotItRadio.for = radioGotItButton.id;
-      labelGotItRadio.innerHTML = radioGotItButton.value;
-      const radioNopeButton= document.createElement('input');
-      radioNopeButton.type = 'radio';
-      radioNopeButton.name = radioGroupName;
-      radioNopeButton.value = NOPE;
-      radioNopeButton.id = `${teamName}${NOPE}_Q${qIndex}`;
-      radioNopeButton.onclick = () => updateScoresInLS(radioGroupName, 0);
-      radioNopeButton.checked = isScoreZero(team.scores, qIndex);
-      const labelNopeRadio= document.createElement('label');
-      labelNopeRadio.for = radioNopeButton.id;
-      labelNopeRadio.innerHTML = radioNopeButton.value;
-
-      questionCell.appendChild(radioGotItButton);
-      questionCell.appendChild(labelGotItRadio);
-      questionCell.appendChild(radioNopeButton);
-      questionCell.appendChild(labelNopeRadio);
+      appendRadioButtonAndLabel(GOT_IT, 1, questionCell, qIndex, team, radioGroupName);
+      appendRadioButtonAndLabel(NOPE, 0, questionCell, qIndex, team, radioGroupName);
       row.appendChild(questionCell);
     });  
     tableBody.appendChild(row);
   }); 
+  
   table.appendChild(tableBody);
   const tableWrapperElement = document.getElementById('scoreTableWrapper');
   tableWrapperElement.appendChild(table);
@@ -186,7 +200,7 @@ function initializeScoresInLS(teamArray, numOfQuestions) {
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
-function initializePage() {
+function initializeScoresPageByGameState() {
   if (getGameState() != IN_GAME) {
     initializePreGame();
   } else {
@@ -194,4 +208,4 @@ function initializePage() {
   }
 }
 
-initializePage();
+initializeScoresPageByGameState();

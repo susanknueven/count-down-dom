@@ -16,10 +16,10 @@ function getTrivia(numOfQs) {
   localStorage.setItem('trivia', JSON.stringify(trivia.slice(0, numOfQs)));
 }
 
-function updateDropdownQuestionIndex(index) {
-    const dropdownElement = document.getElementById('dropdown');
-    dropdownElement.selectedIndex = index;
-}
+// function updateDropdownQuestionIndex(index) {
+//     const dropdownElement = document.getElementById('dropdown');
+//     dropdownElement.selectedIndex = index;
+// }
 
 function getTeamAndQuestionFromRadioGroup(radioGroupName) {
   const teamNameAndQuestionIndex = radioGroupName.split('_Q');
@@ -55,7 +55,7 @@ function initializeInGame() {
   }
 
   numOfQuestions = parseInt(getNumOfQsFromLS());
-  generateScoringTable(numOfQuestions);
+  generateScoringTable();
   questionIndex = getQuestionIndex();
   highlightQuestionInScoringTable(questionIndex);
   initializeTriviaButtons();

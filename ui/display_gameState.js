@@ -37,7 +37,7 @@ window.addEventListener('storage', function(e) {
       updateCountDownHeadingElement(getCountDownHeadingFromLS());
       break;
     case gameStateKey:
-      initializePage();
+      initializeDisplayPageByGameState();
       break;
     case scoresKey:
       if (getScores()) {
@@ -78,7 +78,7 @@ function loadPreGame() {
   showPreGameDisplay();
 }
 
-function initializePage() {
+function initializeDisplayPageByGameState() {
   if (getGameState() === IN_GAME) {
     loadInGame();
     hidePreGameDisplay();
@@ -89,4 +89,4 @@ function initializePage() {
   }
 }
 
-initializePage();
+initializeDisplayPageByGameState();
