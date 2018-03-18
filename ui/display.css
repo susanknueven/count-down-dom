@@ -126,17 +126,26 @@ table {
 }
 
 .leaderScoreBlock, .teamScoreBlock {
-  display: flex;
-  flex-flow: row nowrap;
   padding: .5em;
   margin: .3em;
   border: 0px solid gray;
   background-color: white;
   border-radius: 8px;
 }
+.leaderScoreBlock{
+  flex-grow: 1;
+  min-width: 60px;
+  display: flex;
+  flex-flow: column nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
 .teamScoreBlock {
+  display: flex;
   flex: 1 0 16%;
+  flex-flow: row nowrap;
 }
 
 .teamName {
@@ -150,6 +159,7 @@ table {
   flex-shrink: 1;
 }
 
-.leaderName {
-  overflow: hidden;
+.leaderRankRow {
+  display: flex;
+  align-items: center;
 }

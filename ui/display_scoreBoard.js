@@ -32,32 +32,43 @@ function generateScoreBoardFromLS(scoresArray) {
 function getLeadersScores(scoresArray) {
   const groupedTeams = scoresArray
               .filter(team => sumScores(team.scores) > 0)
-              .reduce((rv, team) => {
+              .reduce((acc, team) => {
                 const teamScore = sumScores(team.scores);
-              	if(!rv[teamScore]) {
-              	  rv[teamScore] = [];
+              	if(!acc[teamScore]) {
+              	  acc[teamScore] = [];
               	}
-              	rv[teamScore].push(team.teamName);
-              	return rv;
+              	acc[teamScore].push(team.teamName);
+              	return acc;
               }, {});
 
   const leaderScores = [];
   for (const score of Object.keys(groupedTeams).sort((a,b)=>b-a)) {
     const rankedScore = groupedTeams[score];
-    leaderScores.push(rankedScore.reduce((acc, x)=> acc + ', ' + x));
-    
-    if(leaderScores.length < 3) {
-      rankedScore.slice(1,3).map(()=>{
-      leaderScores.push(undefined);
-      });
+    leaderScores.push(rankedScore);
+    if (leaderScores.length < 3) {
+      leaderScores.push(...rankedScore.slice(1, 3).map(() => []));
     }
-    if(leaderScores.length >= 3) {
-      leaderScores.splice(3);
-      break;
-    }
+    if (leaderScores.length >= 3) break;
   }
 
   return leaderScores;
+}
+
+function createRankCell(text) {
+  const cell = document.createElement('td');
+  cell.className = 'rank';
+  const cellText = document.createTextNode(text);
+  cell.appendChild(cellText);
+  return cell;
+}
+
+function appendTeamNamesToTeamCell(teamCell, rank) {
+  rank.forEach((team) => {
+    const teamDiv = document.createElement('div');
+    teamDiv.innerHTML = team;
+    teamDiv.className = 'leaderName';
+    teamCell.appendChild(teamDiv);
+  });
 }
 
 function generateLeaderBoardFromLS(scoresArray) {
@@ -71,23 +82,17 @@ function generateLeaderBoardFromLS(scoresArray) {
   tblBody.setAttribute('id', 'tableBody');
   
   const leadersScoresArray = getLeadersScores(scoresArray);
-
-  leadersScoresArray.map((team, index) => {
-    if(team) {
+  leadersScoresArray.forEach((rank, index) => {
+    if(rank.length > 0) {
       const row = document.createElement('tr');
+      row.className = 'leaderRankRow';
       const scoreCell = document.createElement('td');
       scoreCell.className = 'leaderScoreWithRank';
+
       const teamCell = document.createElement('td');
       teamCell.className = 'leaderScoreBlock';
-      const rankCell = document.createElement('td');
-      rankCell.className = 'rank';
-      const rankCellText = document.createTextNode(index + 1);
-      rankCell.appendChild(rankCellText);
-      const nameCell = document.createElement('td');
-      nameCell.className = 'leaderName';
-      const nameCellText = document.createTextNode(team);
-      nameCell.appendChild(nameCellText);
-      teamCell.appendChild(nameCell);
+      const rankCell = createRankCell(index + 1);
+      appendTeamNamesToTeamCell(teamCell, rank);
       scoreCell.appendChild(rankCell);
       scoreCell.appendChild(teamCell);
         
