@@ -1,7 +1,7 @@
 const triviaStateKey = 'triviaState';
 const SHOW_TRIVIA = 'SHOW_TRIVIA';
 const SHOW_ANSWER = 'SHOW_ANSWER';
-const SHOW_RESULTS = 'SHOW_RESULTS';
+const CLEAR_DISPLAY = 'CLEAR_DISPLAY';
 
 function getTriviaState() {
   return JSON.parse(localStorage.getItem(triviaStateKey));
@@ -31,7 +31,7 @@ function returnNextTriviaIndex(currentTriviaIndex) {
   }
 }
 
-function showNextTriviaAndSetQuestionIndex() {
+function showNextTriviaAndSetTriviaIndex() {
   const currentTriviaIndex = getTriviaIndex();
   const nextTriviaIndex = returnNextTriviaIndex(currentTriviaIndex);
   if (!isValidTriviaIndex(nextTriviaIndex)){
@@ -42,7 +42,6 @@ function showNextTriviaAndSetQuestionIndex() {
   resetCountDown();
   startCountDown();
   setTriviaIndex(nextTriviaIndex);
-  setQuestionIndex(nextTriviaIndex);
   highlightQuestionInScoringTable(nextTriviaIndex);
   showTrivia();
 }
@@ -85,4 +84,10 @@ function disableTriviaButton() {
 
 function enableTriviaButton() {
   triviaButton.disabled = false;
+}
+
+function clearTriviaDisplay() {
+  setTriviaState(CLEAR_DISPLAY);
+  enableTriviaButton();
+  enableAnswerButton();
 }

@@ -27,20 +27,8 @@ function getNumOfQsFromLS() {
   return parseInt(JSON.parse(localStorage.getItem('numOfQs')));
 }
 
-function setQuestionIndex(index) {
-  localStorage.setItem('questionIndex', JSON.stringify(index));
-}
-
-function getQuestionIndex() {
-  return parseInt(JSON.parse(localStorage.getItem('questionIndex')));
-}
-
-function getQuestionIndexFromQuestionNumber(questionNumber) {
-  return questionNumber - 1;
-}
-
-function getQuestionNumberFromQuestionIndex(questionIndex) {
-  return questionIndex + 1;
+function getQuestionNumberFromQuestionIndex(index) {
+  return index + 1;
 }
 
 function getScores() {
@@ -64,7 +52,7 @@ function isScorePositive(scoresArray, index) {
 }
 
 function isScoreZero(scoresArray, index) {
-  const questionIndex = getQuestionIndex();
+  const questionIndex = getTriviaIndex();
   return questionIndex > index && scoresArray[index] ===0;
 }
 

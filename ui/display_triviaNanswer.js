@@ -5,6 +5,10 @@ function handleTriviaStateChange(triviaState) {
       break;
     case SHOW_ANSWER:
       loadAnswerAndDisplay();
+      break;
+    case CLEAR_DISPLAY:
+      hideTrivia();
+      hideAnswer();
   }
 }
 
@@ -34,8 +38,14 @@ function getTriviaIndex() {
   return JSON.parse(localStorage.getItem(triviaIndexKey));
 }
 
+function getQuestionNumberFromQuestionIndex(index) {
+  return index + 1;
+}
+
 function loadTrivia() {
-  const trivia = getTriviaByIndex(getTriviaIndex());
+  const triviaIndex = parseInt(getTriviaIndex());
+  const trivia = getTriviaByIndex(triviaIndex);
+  const questionNumber = getQuestionNumberFromQuestionIndex(triviaIndex);
   document.getElementById('category').innerHTML = `${trivia.category}:`;
   document.getElementById('question').innerHTML = trivia.q;
   document.getElementById('answer').innerHTML = trivia.a;

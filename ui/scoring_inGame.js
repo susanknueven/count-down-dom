@@ -40,10 +40,8 @@ function updateScoresInLS(radioGroupName, teamScore) {
 }
 
 function initializeInGame() {
-  let questionIndex = 0;
   let numOfQuestions;
   if (getGameState() != IN_GAME) {
-    setQuestionIndex(questionIndex);
     const teamArray = initializeTeams();
     numOfQuestions = parseInt(getNumOfQsFromInput());
     setNumOfQsInLS(numOfQuestions);
@@ -56,8 +54,7 @@ function initializeInGame() {
 
   numOfQuestions = parseInt(getNumOfQsFromLS());
   generateScoringTable();
-  questionIndex = getQuestionIndex();
-  highlightQuestionInScoringTable(questionIndex);
+  highlightQuestionInScoringTable(0);
   initializeTriviaButtons();
   hidePreGameTools();
   showInGameTools();
