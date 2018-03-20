@@ -93,6 +93,7 @@ function removeOldTableAndCreateNew(oldTable) {
 
 function appendColumnGroupToTable(table) {
   const columnGroupElement = document.createElement('colgroup');
+  columnGroupElement.id = 'colGroup';
   const columnNames = document.createElement('col');
   columnNames.id = 'teamNamesColumn';
   columnGroupElement.appendChild(columnNames);
@@ -148,15 +149,17 @@ function generateScoringTable() {
 }
 
 function unhighlightAllColumns() {
-  const numOfQs = getNumOfQsFromLS();
-  for (qIndex=0; qIndex<numOfQs; qIndex++) {
-    const column = document.getElementById(`Q${qIndex}`);
-    column.className = 'plainColumn';
-  };
+  const columnGroup = document.getElementById('colGroup');
+  columnGroup.childNodes.forEach((column, index) => {
+    if(column.id != 'teamNamesColumn') {
+      document.getElementById(column.id).className = 'plainColumn';
+    }
+  });
 }
 
 function highlightQuestionInScoringTable(qIndex) {
   unhighlightAllColumns();
+  if(qIndex === '') { qIndex = 0 }
   const tableColumn = document.getElementById(`Q${qIndex}`);
   tableColumn.className = 'highlightColumn';
 }
@@ -188,12 +191,12 @@ function initializeScoresInLS(teamArray, numOfQuestions) {
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
-function initializeScoresPageByGameState() {
-  if (getGameState() != IN_GAME) {
-    initializePreGame();
+function initializeScoresPageByGameState(gameState) {
+  if (gameState != IN_GAME) {
+    initializePreGame(gameState);
   } else {
-    initializeInGame();
+    initializeInGame(gameState, getTriviaState(), getTriviaIndex());
   }
 }
 
-initializeScoresPageByGameState();
+initializeScoresPageByGameState(getGameState());

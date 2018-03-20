@@ -78,8 +78,8 @@ function loadPreGame() {
   showPreGameDisplay();
 }
 
-function initializeDisplayPageByGameState() {
-  if (getGameState() === IN_GAME) {
+function initializeDisplayPageByGameState(gameState) {
+  if (gameState === IN_GAME) {
     loadInGame();
     hidePreGameDisplay();
     showInGameDisplay();
@@ -89,4 +89,4 @@ function initializeDisplayPageByGameState() {
   }
 }
 
-initializeDisplayPageByGameState();
+initializeDisplayPageByGameState(getGameState());

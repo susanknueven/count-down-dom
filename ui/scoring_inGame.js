@@ -39,36 +39,38 @@ function updateScoresInLS(radioGroupName, teamScore) {
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
-function initializeInGame() {
+function initializeInGame(gameState, triviaState, triviaIndex) {
   let numOfQuestions;
-  if (getGameState() != IN_GAME) {
+  if (gameState != IN_GAME) {
     const teamArray = initializeTeams();
     numOfQuestions = parseInt(getNumOfQsFromInput());
     setNumOfQsInLS(numOfQuestions);
     initializeScoresInLS(teamArray, numOfQuestions);
     getTrivia(numOfQuestions);
-    setTriviaState("");
-    setTriviaIndex("");
     setGameState(IN_GAME);
+    highlightQuestionInScoringTable(0);
   }
 
   numOfQuestions = parseInt(getNumOfQsFromLS());
   generateScoringTable();
-  highlightQuestionInScoringTable(0);
-  initializeTriviaButtons();
+  highlightQuestionInScoringTable(triviaIndex);
+  initializeTriviaButtons(triviaState);
   hidePreGameTools();
   showInGameTools();
 }
 
-function initializeTriviaButtons() {
-  if (getTriviaState() == SHOW_ANSWER) {
+function initializeTriviaButtons(triviaState) {
+  if (triviaState == SHOW_ANSWER) {
     showAnswer();
   }
-  if (getTriviaState() == SHOW_TRIVIA) {
+  if (triviaState == SHOW_TRIVIA) {
     showTrivia();
   }
 }
 
 function startGame() {
-  initializeInGame();
+  setGameState(PRE_GAME);
+  setTriviaIndex('');
+  setTriviaState('');
+  initializeInGame(getGameState(), getTriviaState(), getTriviaIndex());
 }
