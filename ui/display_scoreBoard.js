@@ -71,6 +71,14 @@ function appendTeamNamesToTeamCell(teamCell, rank) {
   });
 }
 
+function createLeaderBoardHeading(parentElement) {
+  const leaderHeading = document.createElement('div');
+  leaderHeading.className = 'leadersHeading';
+  leaderHeading.id = 'leadersHeading';
+  leaderHeading.innerHTML = 'Leader Board:';
+  parentElement.appendChild(leaderHeading);
+}
+
 function generateLeaderBoardFromLS(scoresArray) {
   const tableWrapperElement = document.getElementById('leaderBoardWrapper');
   const oldTable = document.getElementById('leaderBoardTable');
@@ -83,6 +91,9 @@ function generateLeaderBoardFromLS(scoresArray) {
   
   const leadersScoresArray = getLeadersScores(scoresArray);
   leadersScoresArray.forEach((rank, index) => {
+    if(!document.getElementById('leadersHeading')) {
+      createLeaderBoardHeading(tableWrapperElement);
+    }
     if(rank.length > 0) {
       const row = document.createElement('tr');
       row.className = 'leaderRankRow';
