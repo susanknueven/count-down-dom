@@ -1,6 +1,6 @@
-const minutesElement = document.getElementById('minutes'); 
-const secondsElement = document.getElementById('seconds');
-const countDownHeadingElement = document.getElementById('countDownHeading');
+const minutesElement = getById('minutes'); 
+const secondsElement = getById('seconds');
+const countDownHeadingElement = getById('countDownHeading');
 
 const minutesKey = 'minutes';
 const secondsKey = 'seconds';

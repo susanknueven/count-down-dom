@@ -2,6 +2,7 @@ function handleTriviaStateChange(triviaState) {
   switch (triviaState) {
     case SHOW_TRIVIA:
       loadTriviaAndDisplay();
+      blurTriviaWrapperImage();
       break;
     case SHOW_ANSWER:
       loadAnswerAndDisplay();
@@ -9,29 +10,39 @@ function handleTriviaStateChange(triviaState) {
     case CLEAR_DISPLAY:
       hideTrivia();
       hideAnswer();
+      unBlurTriviaWrapperImage();
   }
 }
 
+function blurTriviaWrapperImage() {
+  const triviaWrapper = getById('triviaWrapper');
+  triviaWrapper.className = "triviaWrapper blur";
+}
+
+function unBlurTriviaWrapperImage() {
+  const triviaWrapper = getById('triviaWrapper');
+  triviaWrapper.className = "triviaWrapper";
+}
 function getTriviaByIndex(index) {
   return JSON.parse(localStorage.getItem(triviaKey))[index];
 }
 
 function showTrivia() {
-  document.getElementById('category').style.display = '';
-  document.getElementById('question').style.display = '';
+  getById('category').style.display = '';
+  getById('question').style.display = '';
 }
 
 function hideTrivia() {
-  document.getElementById('category').style.display = 'none';
-  document.getElementById('question').style.display = 'none';
+  getById('category').style.display = 'none';
+  getById('question').style.display = 'none';
 }
 
 function showAnswer() {
-  document.getElementById('answer').style.display = '';
+  getById('answer').style.display = '';
 }
 
 function hideAnswer() {
-  document.getElementById('answer').style.display = 'none';
+  getById('answer').style.display = 'none';
 }
 
 function getTriviaIndex() {
@@ -46,9 +57,9 @@ function loadTrivia() {
   const triviaIndex = parseInt(getTriviaIndex());
   const trivia = getTriviaByIndex(triviaIndex);
   const questionNumber = getQuestionNumberFromQuestionIndex(triviaIndex);
-  document.getElementById('category').innerHTML = `${trivia.category}:`;
-  document.getElementById('question').innerHTML = trivia.q;
-  document.getElementById('answer').innerHTML = trivia.a;
+  getById('category').innerHTML = `${trivia.category}:`;
+  getById('question').innerHTML = trivia.q;
+  getById('answer').innerHTML = trivia.a;
 }
 
 function displayTriviaQuestion() {

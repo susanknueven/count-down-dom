@@ -1,7 +1,7 @@
 
 
 function generateTeamInputElement() {
-  const teamNamesWrapper = document.getElementById('teamNames');
+  const teamNamesWrapper = getById('teamNames');
   const teamNamesHeadingElement = document.createElement('div');
   teamNamesHeadingElement.innerHTML = 'Enter team names, separated by commas:';
   const teamNamesInputElement = document.createElement('textarea');
@@ -15,7 +15,7 @@ function generateTeamInputElement() {
 }
 
 function generateQuestionInputElement() {
-  const numOfQsWrapper = document.getElementById('numOfQs');
+  const numOfQsWrapper = getById('numOfQs');
   const numOfQsHeadingElement = document.createElement('div');
   numOfQsHeadingElement.innerHTML = 'Enter # of Questions for the Game';
   const numOfQsInputElement = document.createElement('textarea');
@@ -40,7 +40,7 @@ function initializePreGame() {
 }
 
 function getTeamNamesInputString() {
-  return document.getElementById('teamNamesInput').value;
+  return getById('teamNamesInput').value;
 }
 
 function initializeTeams() {

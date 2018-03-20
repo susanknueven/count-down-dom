@@ -60,18 +60,18 @@ function loadInGame() {
 }
 
 function hidePreGameDisplay() {
-  document.getElementById('preGameDisplay').style.display = 'none';
+  getById('preGameDisplay').style.display = 'none';
 }
 
 function showPreGameDisplay() {
-  document.getElementById('preGameDisplay').style.display = '';
+  getById('preGameDisplay').style.display = '';
 }
 function showInGameDisplay() {
-  document.getElementById('inGameDisplay').style.display = '';
+  getById('inGameDisplay').style.display = '';
 }
 
 function hideInGameDisplay() {
-  document.getElementById('inGameDisplay').style.display = 'none';
+  getById('inGameDisplay').style.display = 'none';
 }
 
 function loadPreGame() {

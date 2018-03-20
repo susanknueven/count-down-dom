@@ -1,4 +1,3 @@
-
 const PRE_GAME = 'PRE_GAME';
 const IN_GAME = 'IN_GAME';
 const GAME_OVER = 'GAME_OVER';
@@ -16,7 +15,7 @@ function getGameState() {
 }
 
 function getNumOfQsFromInput(){
-  return document.getElementById('numOfQsInput').value;
+  return getById('numOfQsInput').value;
 }
 
 function setNumOfQsInLS(numOfQs) {
@@ -36,15 +35,15 @@ function getScores() {
 }
 
 function hidePreGameTools() {
-  document.getElementById('preGameTools').style.display = 'none';
+  getById('preGameTools').style.display = 'none';
 }
 
 function hideInGameTools() {
-  document.getElementById('inGameTools').style.display = 'none';
+  getById('inGameTools').style.display = 'none';
 }
 
 function showInGameTools() {
-  document.getElementById('inGameTools').style.display = 'flex';
+  getById('inGameTools').style.display = 'flex';
 }
 
 function isScorePositive(scoresArray, index) {
@@ -122,7 +121,7 @@ function generateScoringTable() {
   const scoresArray = getScores();
   const questionArray = scoresArray[0].scores;
   
-  const table = removeOldTableAndCreateNew(document.getElementById('scoreTable'));
+  const table = removeOldTableAndCreateNew(getById('scoreTable', false));
   const columnGroupElement = appendColumnGroupToTable(table);
   const tableBody = document.createElement('tbody');
   const tableHeader = appendTableHeaderToTableBody(tableBody);
@@ -144,23 +143,25 @@ function generateScoringTable() {
   }); 
   
   table.appendChild(tableBody);
-  const tableWrapperElement = document.getElementById('scoreTableWrapper');
+  const tableWrapperElement = getById('scoreTableWrapper');
   tableWrapperElement.appendChild(table);
 }
 
 function unhighlightAllColumns() {
-  const columnGroup = document.getElementById('colGroup');
-  columnGroup.childNodes.forEach((column, index) => {
-    if(column.id != 'teamNamesColumn') {
-      document.getElementById(column.id).className = 'plainColumn';
-    }
-  });
+  const columnGroup = getById('colGroup');
+  const highlightedColumn = Array.from(columnGroup.childNodes)
+    .filter(column => column.className === 'highlightColumn');
+  if(highlightedColumn.length > 0) { 
+    highlightedColumn.forEach(column =>{
+      column.className = 'plainColumn'; 
+    });
+  }
 }
 
 function highlightQuestionInScoringTable(qIndex) {
   unhighlightAllColumns();
-  if(qIndex === '') { qIndex = 0 }
-  const tableColumn = document.getElementById(`Q${qIndex}`);
+  if(isNaN(qIndex)) { qIndex = 0 }
+  const tableColumn = getById(`Q${qIndex}`);
   tableColumn.className = 'highlightColumn';
 }
 

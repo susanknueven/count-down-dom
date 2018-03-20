@@ -3,8 +3,8 @@ function sumScores(scoresArray) {
 }
 
 function generateScoreBoardFromLS(scoresArray) {
-  const tableWrapperElement = document.getElementById('scoreTableWrapper');
-  const oldScoreBoard = document.getElementById('scoreBoardRow');
+  const tableWrapperElement = getById('scoreTableWrapper');
+  const oldScoreBoard = getById('scoreBoardRow', false);
   if(!!oldScoreBoard) { oldScoreBoard.parentNode.removeChild(oldScoreBoard); }
 
   const row = document.createElement('div');
@@ -80,8 +80,8 @@ function createLeaderBoardHeading(parentElement) {
 }
 
 function generateLeaderBoardFromLS(scoresArray) {
-  const tableWrapperElement = document.getElementById('leaderBoardWrapper');
-  const oldTable = document.getElementById('leaderBoardTable');
+  const tableWrapperElement = getById('leaderBoardWrapper');
+  const oldTable = getById('leaderBoardTable', false);
   if(!!oldTable) { oldTable.parentNode.removeChild(oldTable); }
 
   const tbl = document.createElement('table');
@@ -91,7 +91,7 @@ function generateLeaderBoardFromLS(scoresArray) {
   
   const leadersScoresArray = getLeadersScores(scoresArray);
   leadersScoresArray.forEach((rank, index) => {
-    if(!document.getElementById('leadersHeading')) {
+    if(!getById('leadersHeading', false)) {
       createLeaderBoardHeading(tableWrapperElement);
     }
     if(rank.length > 0) {

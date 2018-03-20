@@ -1,25 +1,6 @@
 function getTrivia(numOfQs) {
-  const trivia = [
-    {"category":"Fun", "q":"How fast does a lasertag gun shoot?", "a":"at the speed of light!"},
-    {"category":"Dressing", "q":"Which leg do I put in my pants first?", "a":"right"},
-    {"category":"Pets", "q":"How old is Zeke?", "a":"I don't know!!"},
-    {"category":"History", "q":"When did George Washington discover America?", "a":"1776- same time as everyone else!"},
-    {"category":"Jokes", "q":"Knock Knock", "a":"pbbbbbbbt"},
-    {"category":"Climate", "q":"How can you make it snow in summer?", "a":"live at the North Pole"},
-    {"category":"Family Life", "q":"What time is bedtime?", "a":"whenever mom says"},
-    {"category":"Awkward Questions", "q":"Where do babies come from?", "a":"ask your father"},
-    {"category":"Life Skills", "q":"What should you do if you are in a car accident?", "a":"wait"},
-    {"category":"Something", "q":"How many more trivia questions do we need?", "a":"too many"},
-    {"category":"Nature", "q":"How many polar bears can a penguin eat?", "a":"none"},
-    {"category":"Susan", "q":"What is my favorite animal?", "a":"dog, of course!"}
-    ];
-  localStorage.setItem('trivia', JSON.stringify(trivia.slice(0, numOfQs)));
+  localStorage.setItem('trivia', JSON.stringify(TRIVIA_QUESTIONS.slice(0, numOfQs)));
 }
-
-// function updateDropdownQuestionIndex(index) {
-//     const dropdownElement = document.getElementById('dropdown');
-//     dropdownElement.selectedIndex = index;
-// }
 
 function getTeamAndQuestionFromRadioGroup(radioGroupName) {
   const teamNameAndQuestionIndex = radioGroupName.split('_Q');
@@ -48,7 +29,6 @@ function initializeInGame(gameState, triviaState, triviaIndex) {
     initializeScoresInLS(teamArray, numOfQuestions);
     getTrivia(numOfQuestions);
     setGameState(IN_GAME);
-    highlightQuestionInScoringTable(0);
   }
 
   numOfQuestions = parseInt(getNumOfQsFromLS());

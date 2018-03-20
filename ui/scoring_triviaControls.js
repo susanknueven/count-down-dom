@@ -67,8 +67,8 @@ function isLastQuestion() {
   return getQuestionNumberFromQuestionIndex(getTriviaIndex()) === getNumOfQsFromLS();
 }
 
-const answerButton = document.getElementById('showTriviaAnswer');
-const triviaButton = document.getElementById('showNextTrivia');
+const answerButton = getById('showTriviaAnswer');
+const triviaButton = getById('showNextTrivia');
 
 function disableAnswerButton() {
   answerButton.disabled = true;
