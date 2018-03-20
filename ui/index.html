@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="display.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="preGameDisplay">
+    </div>
+    <div id="inGameDisplay">
+      <div class="triviaWrapper">
+       <section class="category">
+          <div id="category"></div>
+        </section>
+      
+       <section class="question">
+          <div id="question"></div>
+        </section>
+        <section class="answer">
+          <div id="answer"></div>
+        </section>
+      </div>
+      <section class="timerSidebar">
+        <div id="countDownHeading">Time:</div>
+        <div>
+          <span id="minutes"></span>
+          <span id="colon">:</span>
+          <span id="seconds"></span>
+        </div>
+        <div id="leaderBoardWrapper">
+        </div>
+      </section>
+      <secion class="scoreBoard">
+        <div id="scoreTableWrapper">
+          <div class="scoreBoardHeading">
+            Scores:
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+  <script src="display_scoreBoard.js"></script>
+  <script src="display_timer.js"></script>
+  <script src="display_triviaNanswer.js"></script>
+  <script src="display_gameState.js"></script>
+</html>

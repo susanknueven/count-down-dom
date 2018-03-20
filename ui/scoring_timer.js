@@ -1,19 +1,31 @@
 const minToSec = 60;
 const minutesElement = document.getElementById('minutes'); 
 const secondsElement = document.getElementById('seconds');
-const headingElement = document.getElementById('heading');
+const countDownHeadingElement = document.getElementById('countDownHeading');
 const airHornElement = document.getElementById('airHorn');
 const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
 const READY_TO_COUNT = 'READY_TO_COUNT';
 const COUNTING = 'COUNTING';
-const COUNTING_DOWN_TEXT = 'Counting Down...';
+const COUNT_FINISHED = 'COUNT_FINISHED';
+const COUNTING_DOWN_TEXT = 'Time:';
 const TIMES_UP_TEXT = `TIME'S UP!`;
 const INVALID_INPUT = 'INVALID_INPUT';
-let countStatus;
+const countStatusKey = 'countStatus';
+const minutesKey = 'minutes';
+const secondsKey = 'seconds';
+const countDownHeadingKey = 'countDownHeading';
 let timer;
-let defaultCount = { min: 0, sec: 3 };
+let defaultCount = { min: 1, sec: 30 };
 let userDefaultCount = {};
+
+function getCountStatus() {
+  return JSON.parse(localStorage.getItem(countStatusKey));
+}
+
+function setCountStatus(countStatus) {
+  localStorage.setItem(countStatusKey, JSON.stringify(countStatus));
+}
 
 function userHasDefault() {
   return (!isNaN(userDefaultCount.min) && !isNaN(userDefaultCount.sec));
@@ -38,7 +50,8 @@ function setInputReadOnlyAttribute(readOnly) {
 }
 
 function setHeadingElementText(text) {
-  headingElement.innerHTML = text;
+  countDownHeadingElement.innerHTML = text;
+  localStorage.setItem(countDownHeadingKey, JSON.stringify(text));
 }
 
 function getDefaultCount() {
@@ -79,6 +92,7 @@ function pad(number) {
 
 function setMinutes(minutes) {
   minutesElement.value = pad(minutes);
+  localStorage.setItem(minutesKey, JSON.stringify(pad(minutes)));
 }
 
 function getMinutes() {
@@ -87,6 +101,7 @@ function getMinutes() {
 
 function setSeconds(seconds) {
   secondsElement.value = pad(seconds);
+  localStorage.setItem(secondsKey, JSON.stringify(pad(seconds)));
 }
 
 function getSeconds() {
@@ -130,27 +145,27 @@ function startCountDown() {
   countDown(count);
   setStartButtonDisabled(true);
   setInputReadOnlyAttribute(true);
-  countStatus = COUNTING;
+  setCountStatus(COUNTING);
 }
 
 function stopCountDown() {
-  if (countStatus === COUNTING) {
+  if (getCountStatus() === COUNTING) {
     const currentCount = stopTimer();
     setInputReadOnlyAttribute(false);
     if (currentCount > 0) {
       setStartButtonDisabled(false);
-      countStatus = READY_TO_COUNT;
+      setCountStatus(READY_TO_COUNT);
     }
   }
 }
 
-function reset() {
-  if (countStatus === COUNTING) {
+function resetCountDown() {
+  if (getCountStatus() === COUNTING) {
     stopTimer();
     setInputReadOnlyAttribute(false);
   } 
   getDefaultCount();
-  countStatus = READY_TO_COUNT;
+  setCountStatus(READY_TO_COUNT);
 }
 
-reset();
+resetCountDown();

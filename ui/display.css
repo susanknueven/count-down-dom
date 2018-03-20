@@ -1,0 +1,170 @@
+body {
+  height: 98vh;
+  width: 98vw;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 1em;
+}
+
+#inGameDisplay {
+  height: 100%;
+  width: 100%;
+  color: #006393;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: 6fr 2fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 15px;
+  grid-template-areas: "trivia     timer"
+                       "scoreBoard scoreBoard"
+}
+
+.triviaWrapper {
+  position: relative;
+  grid-area: trivia;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.triviaWrapper:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -25px;
+  height: 110%;
+  width: 100%;
+  margin: 0 10px 35px 0;
+  opacity: .15;
+  background-image: url("triviaFlier600Low.jpg");
+  background-size: cover;
+  z-index: -1;
+}
+
+.question, .answer, .category {
+  position: relative;
+  z-index: 1;
+  font-size: 50px;
+  text-shadow: -6px 4px 31px #7F939C;
+  -webkit-text-stroke: .2px #B2D0DE;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1em;
+}
+
+
+.timerSidebar {
+  grid-area: timer;
+  background-color: #DF6E1B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5%;
+  overflow-y: hidden;
+}
+
+#countDownHeading, #minutes,
+#seconds, #colon,
+.scoreBoardHeading, .leadersHeading {
+  color: white;
+  text-shadow: -6px 4px 31px #000;
+  text-decoration: black;
+  font-size: 1.8em;
+}
+
+.leadersHeading {
+  margin-top: 2em;
+  font-size: 1.3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#leaderBoardWrapper {
+  overflow-y: inherit;
+  width: 100%;
+  height: 100%;
+}
+
+#leaderBoardTable {
+  width: 100%;
+}
+
+.scoreBoard {
+  grid-area: scoreBoard;
+  background-color: #EEB723;
+  padding: .8em;
+}
+
+table {
+  border-spacing: 10px;
+  margin: auto;
+}
+
+#scoreBoardRow span {
+  padding: .3em;
+}
+
+#scoreBoardRow {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.rank {
+  background-color: #0086C6;
+  color: white;
+  border-radius: 1em;
+  width: 1em;
+  line-height: 1em;
+  display: inline-block;
+  text-align: center;
+  padding: .5em;
+}
+
+.leaderScoreBlock, .teamScoreBlock,
+.rank, .scoreBoard, .timerSidebar {
+  box-shadow: -6px 4px 31px 0px rgba(0,0,0,0.75);
+}
+
+.leaderScoreBlock, .teamScoreBlock {
+  padding: .5em;
+  margin: .3em;
+  border: 0px solid gray;
+  background-color: white;
+  border-radius: 8px;
+}
+.leaderScoreBlock{
+  flex-grow: 1;
+  min-width: 60px;
+  display: flex;
+  flex-flow: column nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.teamScoreBlock {
+  display: flex;
+  flex: 1 0 16%;
+  flex-flow: row nowrap;
+}
+
+.teamName {
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.teamScore {
+  flex-shrink: 1;
+}
+
+.leaderRankRow {
+  display: flex;
+  align-items: center;
+}

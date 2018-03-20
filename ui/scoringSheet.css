@@ -1,0 +1,46 @@
+#inGameTools {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+}
+
+#scoreTable input {
+  margin: 3px;
+}
+
+.scoreEntryTable {
+  overflow-x: hidden;
+}
+
+#scoreTableWrapper {
+  overflow-x: scroll;
+}
+
+#countDownWrapper input {
+  width: 20px;
+}
+
+.scoreEntryTable {
+  flex-grow: 1;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+.plainColumn {
+  background-color: white;
+}
+
+.highlightColumn {
+  background-color: lightblue;
+}
+
+.triviaControls {
+  min-width: 250px;
+  padding-left: 10px;
+}

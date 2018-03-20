@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="scoringSheet.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="preGameTools">
+      <div>Set Up A Game</div>
+      <div id="teamNames"></div>
+      <div id="numOfQs"></div>
+      <button id="startGame" onclick="startGame()">Start Game</button>
+    </div>
+    <div id="inGameTools">
+      <div class="scoreEntryTable">
+        <div>Update Team Scores</div>
+        <div id="scoreTableWrapper">
+        </div>
+      </div>
+      <div class="triviaControls">
+        <div id="countDownWrapper">
+          <div id="countDownHeading">Counting Down...</div>
+          <div>
+            <input
+              id="minutes"
+              type="text"
+              onchange="validateInputAndSetHeadingText()"
+            />
+              :
+            <input
+              id="seconds"
+              type="text"
+              onchange="validateInputAndSetHeadingText()"
+            />
+          </div>
+          <button id="startButton" onClick=startCountDown()>Start</button>
+          <button id="stopButton" onClick=stopCountDown()>Stop</button>
+          <button onClick=resetCountDown()>Reset</button>
+          <audio id="airHorn" src="./airHorn.wav" preload="auto"></audio>
+        </div>
+        <div id="triviaControlsWrapper">
+          <button id="showNextTrivia" onClick=showNextTriviaAndSetTriviaIndex()>Show Next Trivia</button>
+          <button id="showTriviaAnswer" disabled="true" onClick=showAnswer()>Show Answer</button>
+          <button id="clearTriviaDisplay" onClick=clearTriviaDisplay()>Clear Display</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="scoring_triviaControls.js"></script>
+  <script src="scoring_timer.js"></script>
+  <script src="scoring_inGame.js"></script>
+  <script src="scoring_preGame.js"></script>
+  <script src="scoring_gameSetup.js"></script>
+</html>

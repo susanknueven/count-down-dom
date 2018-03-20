@@ -1,0 +1,21 @@
+{
+  "name": "trivia-server",
+  "version": "1.0.0",
+  "description": "Trivial server to serve up trivia game!",
+  "main": "koa-server.js",
+  "scripts": {
+    "test": "echo noop"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/susanknueven/count-down-dom.git"
+  },
+  "author": "susan",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "2.5.0",
+    "koa-mount": "3.0.0",
+    "koa-router": "7.4.0",
+    "koa-static": "4.0.2"
+  }
+}
