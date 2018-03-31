@@ -5,6 +5,7 @@ const triviaIndexKey = 'triviaIndex';
 const triviaStateKey = 'triviaState';
 const PRE_GAME = 'PRE_GAME';
 const IN_GAME = 'IN_GAME';
+const SHOW_CATEGORY = 'SHOW_CATEGORY';
 const SHOW_TRIVIA = 'SHOW_TRIVIA';
 const SHOW_ANSWER = 'SHOW_ANSWER';
 const CLEAR_DISPLAY = 'CLEAR_DISPLAY';

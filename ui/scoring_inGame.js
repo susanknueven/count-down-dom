@@ -40,6 +40,9 @@ function initializeInGame(gameState, triviaState, triviaIndex) {
 }
 
 function initializeTriviaButtons(triviaState) {
+  if (triviaState == SHOW_CATEGORY) {
+    showCategory();
+  }
   if (triviaState == SHOW_ANSWER) {
     showAnswer();
   }

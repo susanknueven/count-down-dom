@@ -1,4 +1,5 @@
 const triviaStateKey = 'triviaState';
+const SHOW_CATEGORY = 'SHOW_CATEGORY';
 const SHOW_TRIVIA = 'SHOW_TRIVIA';
 const SHOW_ANSWER = 'SHOW_ANSWER';
 const CLEAR_DISPLAY = 'CLEAR_DISPLAY';
@@ -40,14 +41,20 @@ function showNextTriviaAndSetTriviaIndex() {
     return;
   }
   resetCountDown();
-  startCountDown();
   setTriviaIndex(nextTriviaIndex);
   highlightQuestionInScoringTable(nextTriviaIndex);
-  showTrivia();
+  showCategory();
 }
 
-function showTrivia() {
+function showCategory() {
+  setTriviaState(SHOW_CATEGORY);
+  disableCategoryButton();
+  enableTriviaButton();
+}
+
+function showTriviaAndStartCount() {
   setTriviaState(SHOW_TRIVIA);
+  startCountDown();
   disableTriviaButton();
   enableAnswerButton();
 }
@@ -57,8 +64,9 @@ function showAnswer() {
   disableAnswerButton();
   resetCountDown();
   if (!isLastQuestion()) {
-    enableTriviaButton();
+    enableCategoryButton();
   } else {
+    disableCategoryButton();
     disableTriviaButton();
   }
 }
@@ -68,7 +76,8 @@ function isLastQuestion() {
 }
 
 const answerButton = getById('showTriviaAnswer');
-const triviaButton = getById('showNextTrivia');
+const triviaButton = getById('showTriviaQuestion');
+const categoryButton = getById('showNextTriviaCategory');
 
 function disableAnswerButton() {
   answerButton.disabled = true;
@@ -86,8 +95,17 @@ function enableTriviaButton() {
   triviaButton.disabled = false;
 }
 
+function disableCategoryButton() {
+  categoryButton.disabled = true;
+}
+
+function enableCategoryButton() {
+  categoryButton.disabled = false;
+}
+
 function clearTriviaDisplay() {
   setTriviaState(CLEAR_DISPLAY);
+  enableCategoryButton();
   enableTriviaButton();
   enableAnswerButton();
 }
