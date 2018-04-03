@@ -40,7 +40,9 @@ function showNextTriviaAndSetTriviaIndex() {
     // TODO: setGameState(GAME_OVER); ???
     return;
   }
-  resetCountDown();
+  if (getCountStatus() != READY_TO_COUNT) {
+    resetCountDown();
+  }
   setTriviaIndex(nextTriviaIndex);
   highlightQuestionInScoringTable(nextTriviaIndex);
   showCategory();
@@ -50,6 +52,7 @@ function showCategory() {
   setTriviaState(SHOW_CATEGORY);
   disableCategoryButton();
   enableTriviaButton();
+  resetCountDown();
 }
 
 function showTriviaAndStartCount() {
@@ -62,7 +65,7 @@ function showTriviaAndStartCount() {
 function showAnswer() {
   setTriviaState(SHOW_ANSWER);
   disableAnswerButton();
-  resetCountDown();
+  stopTimer();
   if (!isLastQuestion()) {
     enableCategoryButton();
   } else {

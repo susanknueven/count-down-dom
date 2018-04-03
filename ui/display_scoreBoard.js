@@ -9,12 +9,13 @@ function generateScoreBoardFromLS(scoresArray) {
 
   const row = document.createElement('div');
   row.id = 'scoreBoardRow';
-  scoresArray.forEach(team => {
+  scoresArray.forEach((team, index) => {
+    const teamNumber = index + 1;
     const teamCell = document.createElement('div');
     teamCell.className = 'teamScoreBlock';
     const nameCell = document.createElement('span');
     nameCell.className = 'teamName';
-    const nameCellText = document.createTextNode(team.teamName);
+    const nameCellText = document.createTextNode(`Team ${teamNumber}: ${team.teamName}`);
     nameCell.appendChild(nameCellText);
     teamCell.appendChild(nameCell);
     

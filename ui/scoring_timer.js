@@ -16,7 +16,7 @@ const minutesKey = 'minutes';
 const secondsKey = 'seconds';
 const countDownHeadingKey = 'countDownHeading';
 let timer;
-let defaultCount = { min: 1, sec: 30 };
+let defaultCount = { min: 1, sec: 00 };
 let userDefaultCount = {};
 
 function getCountStatus() {
@@ -133,6 +133,7 @@ function countDown(countInSeconds) {
     if (countInSeconds <= 0) {
       stopTimer();
       playSound(airHornElement);
+      setCountStatus(COUNT_FINISHED);
       setHeadingElementText(TIMES_UP_TEXT);
       setInputReadOnlyAttribute(false);
     }

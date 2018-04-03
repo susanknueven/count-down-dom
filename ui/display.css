@@ -152,6 +152,10 @@ table {
   overflow: hidden;
 }
 
+.leaderName {
+  font-size: 1.2em;
+}
+
 .teamScoreBlock {
   display: flex;
   flex: 1 0 16%;
