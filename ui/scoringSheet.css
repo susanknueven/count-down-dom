@@ -9,19 +9,27 @@
 }
 
 .scoreEntryTable {
+  margin-top: 3em;
   overflow-x: hidden;
+  flex-grow: 1;
 }
 
 #scoreTableWrapper {
   overflow-x: scroll;
+  margin-left: 100px;
+}
+
+.noScroll {
+  position: absolute;
+  width: 100px;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 #countDownWrapper input {
   width: 20px;
-}
-
-.scoreEntryTable {
-  flex-grow: 1;
 }
 
 table {
@@ -30,6 +38,10 @@ table {
 
 table, th, td {
   border: 1px solid black;
+}
+
+td {
+  height: 40px;
 }
 
 .plainColumn {
@@ -41,6 +53,7 @@ table, th, td {
 }
 
 .triviaControls {
+  margin-top: 3em;
   min-width: 250px;
   padding-left: 10px;
 }

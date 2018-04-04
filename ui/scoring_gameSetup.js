@@ -104,6 +104,7 @@ function appendTableHeaderToTableBody(tableBody) {
   const tableHeader = document.createElement('tr');
   const teamNameHeader = document.createElement('th');
   teamNameHeader.innerHTML = 'Team Name';
+  teamNameHeader.className = 'noScroll';
   tableHeader.appendChild(teamNameHeader);
   tableBody.appendChild(tableHeader);
   return tableHeader;
@@ -113,6 +114,7 @@ function createRowForTeam(teamName) {
   const row = document.createElement('tr');
   const teamNameCell = document.createElement('td');
   teamNameCell.innerHTML = teamName;
+  teamNameCell.className = 'noScroll';
   row.appendChild(teamNameCell);
   return row;
 }
