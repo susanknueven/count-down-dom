@@ -1,0 +1,17 @@
+const TRIVIA_QUESTIONS = [
+    {"category":"Initiation", "q":"When did Angela join team Batman?", "a":"Summer 2016"},
+    {"category":"Responsibilities", "q":"What is Angela's new role?", "a":"Epic Owner"},
+    {"category":"Pets", "q":"What kind of pet does Angela have at home?", "a":"A cat"},
+    {"category":"Vehicle", "q":"What could Angela not do on her last car (reason she traded it in)?", "a":"Open the gas tank"},
+    {"category":"Astrology", "q":"What planetary motion is linked to communication problems?", "a":"Mercury Retrograde"},
+    {"category":"Hair", "q":"What is Angela's natural hair color?", "a":"Brown"},
+    {"category":"World Culture", "q":"Which holiday is associated with crystal skulls?", "a":"Day of the Dead"},
+    {"category":"Family", "q":"What is Angela's husband's name?", "a":"Todd"},
+    {"category":"Travel", "q":"Name a foreign country where Angela has lived.", "a":"England, France, more?"},
+    {"category":"Halloween", "q":"What did Angela dress up as for the office party Halloween 2016?", "a":"A fortune teller"},
+    {"category":"Home Improvement", "q":"Which of Angela's appliances needed servicing multiple times in 2017?", "a":"Refrigerator"},
+    {"category":"In Laws", "q":"What does Angela refuse to do at her mother-in-law's house?", "a":"Eat home cooked food"},
+    {"category":"Sports", "q":"What does Angela do for exercise AND fun (not with personal trainer)?", "a":"Belly Dancing"},
+    {"category":"Quotes", "q":"What did Angela accuse Jason of doing (on quote board)?", "a":"'...poncing about...'"},
+    {"category":"Batman", "q":"Which teammate does Angela like the most?", "a":":wink:"},
+];
