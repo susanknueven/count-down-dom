@@ -51,9 +51,8 @@ function initializeTriviaButtons(triviaState) {
   }
 }
 
-function startGame() {
-  setGameState(PRE_GAME);
-  setTriviaIndex('');
-  setTriviaState('');
-  initializeInGame(getGameState(), getTriviaState(), getTriviaIndex());
+function initializeTeams() {
+  const teamNamesInString = getById('teamNamesInput').value;
+  const teamArray = teamNamesInString.split(',');
+  return teamArray.map(teamName => teamName.trim());
 }

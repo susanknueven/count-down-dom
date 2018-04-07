@@ -33,18 +33,15 @@ function generatePreGameTools() {
   generateQuestionInputElement();
 }
 
+function startGame() {
+  // setGameState(PRE_GAME);
+  setTriviaIndex('');
+  setTriviaState('');
+  initializeInGame(getGameState(), getTriviaState(), getTriviaIndex());
+}
+
 function initializePreGame() {
     generatePreGameTools();
     setGameState(PRE_GAME);
     hideInGameTools();
-}
-
-function getTeamNamesInputString() {
-  return getById('teamNamesInput').value;
-}
-
-function initializeTeams() {
-  const teamNamesInString = getTeamNamesInputString();
-  const teamArray = teamNamesInString.split(',');
-  return teamArray.map(teamName => teamName.trim());
 }
