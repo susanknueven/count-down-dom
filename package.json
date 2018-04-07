@@ -10,6 +10,13 @@
     "type": "git",
     "url": "git+https://github.com/susanknueven/count-down-dom.git"
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "testRegex": "/ui/.*/.*\\.test\\.js$",
+    "testPathIgnorePatterns": ["node_modules"]
+  },
   "author": "susan",
   "license": "ISC",
   "dependencies": {
