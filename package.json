@@ -15,12 +15,15 @@
       "js"
     ],
     "testRegex": "/ui/.*/.*\\.test\\.js$",
-    "testPathIgnorePatterns": ["node_modules"]
+    "testPathIgnorePatterns": [
+      "node_modules"
+    ]
   },
   "author": "susan",
   "license": "ISC",
   "dependencies": {
     "koa": "2.5.0",
+    "koa-body": "^2.5.0",
     "koa-mount": "3.0.0",
     "koa-router": "7.4.0",
     "koa-static": "4.0.2"

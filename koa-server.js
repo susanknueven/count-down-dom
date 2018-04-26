@@ -10,14 +10,22 @@ const router = new Router();
 
 ui.use(serve('ui'));
 
-function apiCall(ctx, next) {
-    ctx.body='response from api';
+let teamNames; 
+function getTeamNames(ctx, next) {
+    console.log('getTeamNames: ', teamNames)
+    ctx.response.body = teamNames;
+    ctx.status = 200;
 }
-function defaultCount(ctx, next) {
-    ctx.body= { min: 0, sec: 3 };
+const writeTeamNames = (ctx) => {
+    teamNames = ctx.request.body;
+    console.log('writeTeamNames: ', teamNames)
+    ctx.response.body = JSON.stringify(ctx.request.body);
+    ctx.status = 200;
 }
-router.get('/', apiCall);
-router.get('/defaultCount', defaultCount);
+
+const koaBody = require('koa-body');
+router.get('/teamNames', getTeamNames)
+      .post('/teamNames', koaBody(), writeTeamNames);
 
 api.use(router.routes());
 
