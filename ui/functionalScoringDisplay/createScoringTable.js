@@ -29,13 +29,13 @@ const writeScoreTableHeader = teamNames => {
 
 const identity = val => val;
 
-const calculateTotals = scores =>
-  scores.reduce((acc, row) => {
-    for (let index in row) {
-      acc[index] = (acc[index] || 0) + row[index];
-    }
-    return acc;
-  }, []);
+// const calculateTotals = scores =>
+//   scores.reduce((acc, row) => {
+//     for (let index in row) {
+//       acc[index] = (acc[index] || 0) + row[index];
+//     }
+//     return acc;
+//   }, []);
 
 const writeTableRow = (
   list,
@@ -59,7 +59,7 @@ const writeTableRow = (
     </tr>`;
 };
 
-const writeScoringTable = (scores, teamNames) => {
+const writeScoringTable = (teamNames, scores, totals) => {
   return `<table>
             <thead>
               ${writeTableRow(teamNames, "Q#", "th")}
@@ -70,25 +70,35 @@ const writeScoringTable = (scores, teamNames) => {
                   writeTableRow(row, index, "td", writeRadioCell)
                 )
                 .join("\n")}
-              ${writeTableRow(calculateTotals(scores), "total")}
+              ${writeTableRow(totals, "total")}
             </tbody>
           </table>`;
 };
 
+const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
 const teamNamesLocal = ["hi", "bye", "c-ya", "later"];
 writeTeamNames(teamNamesLocal);
-const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
+writeScores(scores);
 const generateScoreTable = () => {
   const scoreTableWrapperElement = document.getElementById("scoreTableWrapper");
-  getTeamNames()
-    .then(json => {
-      scoreTableWrapperElement.innerHTML = writeScoringTable(scores, json);
+  const teamNamesPromise = getTeamNames();
+  const scoresPromise = getScores();
+  Promise.all([teamNamesPromise, scoresPromise])
+    .then(data => {
+      const teamNames = data[0];
+      const scores = data[1].scores;
+      const totals = data[1].totals;
+      scoreTableWrapperElement.innerHTML = writeScoringTable(
+        teamNames,
+        scores,
+        totals
+      );
     })
     .catch(error => {
-      console.log("error getting team names: ", error);
+      console.log("error getting retrieving from server: ", error);
       scoreTableWrapperElement.innerHTML = `<span>Houston, we have a problem: ${error}</span>`;
     });
 };
 
 document.getElementById("loadTeams").innerHTML =
-  '<button onclick="generateScoreTable()">getTeamNames</button>';
+  '<button onclick="generateScoreTable()">Load Scoring Table</button>';
