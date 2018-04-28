@@ -16,8 +16,23 @@ const writeRadioCell = (score, name) => {
 
 const radioButton = (inputName, label, checked = "") => {
   return `<input type="radio" name="${inputName}"
-    value="${label}" ${checked}><label>${label}</label>`;
+    value="${label}" ${checked} onclick="changeScore(this)"><label>${label}</label>`;
 };
+
+const getIndicesFromRadioName = (string) => {
+  //string is in form: `team${teamIndex}_Q${qIndex}`
+  const strings = string.split("_")
+  const teamIndex = strings[0].replace(/team/g, '')
+  const qIndex = strings[1].replace(/Q/g,'')
+  return { qIndex, teamIndex }
+}
+
+const changeScore = async (el) => {
+  const { qIndex, teamIndex } = getIndicesFromRadioName(el.name)
+  const points = el.value === 'Y' ? 1 : 0
+  await updateTeamScore({ qIndex, teamIndex, points })
+  generateScoreTable()
+}
 
 const writeScoreTableHeader = teamNames => {
   return teamNames
@@ -28,14 +43,6 @@ const writeScoreTableHeader = teamNames => {
 };
 
 const identity = val => val;
-
-// const calculateTotals = scores =>
-//   scores.reduce((acc, row) => {
-//     for (let index in row) {
-//       acc[index] = (acc[index] || 0) + row[index];
-//     }
-//     return acc;
-//   }, []);
 
 const writeTableRow = (
   list,
@@ -76,8 +83,8 @@ const writeScoringTable = (teamNames, scores, totals) => {
 };
 
 const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
-const teamNamesLocal = ["hi", "bye", "c-ya", "later"];
-writeTeamNames(teamNamesLocal);
+const teamNames = ["hi", "bye", "c-ya", "later"];
+writeTeamNames(teamNames);
 writeScores(scores);
 const generateScoreTable = () => {
   const scoreTableWrapperElement = document.getElementById("scoreTableWrapper");
