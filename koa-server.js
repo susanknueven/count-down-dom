@@ -34,23 +34,25 @@ const getScores = ctx => {
 };
 const writeScores = ctx => {
   scores = JSON.parse(ctx.request.body);
-  console.log("writeScores: ", scores);
-  ctx.response.body = JSON.stringify(ctx.request.body);
+  totals = calculateTotals(scores);
+  const responseString = JSON.stringify({scores, totals});
+  console.log("writeScores: ", responseString);
+  ctx.response.body = responseString;
   ctx.status = 200;
 };
 const updateTeamScore = ctx => {
   const { qIndex, teamIndex, points } = JSON.parse(ctx.request.body);
   console.log(
-    `updateTeamScore: qIndex: ${qIndex}, teamIndex: ${teamIndex}, points: ${points}`
+    `updateTeamScore request: qIndex: ${qIndex}, teamIndex: ${teamIndex}, points: ${points}`
   );
   scores[qIndex][teamIndex] = points;
   totals = calculateTotals(scores);
   const responseString = JSON.stringify({scores, totals});
-  console.log('updateTeamScore: ', responseString)
+  console.log('updateTeamScore response: ', responseString)
   ctx.response.body = responseString
   ctx.status = 200;
 };
-const calculateTotals = scores =>
+const calculateTotals = scores => 
   scores.reduce((acc, row) => {
     for (let index in row) {
       acc[index] = (acc[index] || 0) + row[index];
@@ -64,7 +66,7 @@ router
   .post("/teamNames", koaBody(), writeTeamNames)
   .get("/scores", getScores)
   .post("/scores", koaBody(), writeScores)
-  .put("/scores", koaBody(), updateTeamScore);
+  .put("/scores", koaBody(), updateTeamScore)
 
 api.use(router.routes());
 

@@ -1,11 +1,3 @@
-const writeScoringRow = (row, qIndex) => {
-  return row
-    .map((score, teamIndex) => {
-      return answerRadioButtons(score, teamIndex, qIndex);
-    })
-    .join("\n");
-};
-
 const writeRadioCell = (score, name) => {
   const YChecked = score > 0 ? "checked" : "";
   const NChecked = YChecked === "" ? "checked" : "";
@@ -19,27 +11,18 @@ const radioButton = (inputName, label, checked = "") => {
     value="${label}" ${checked} onclick="changeScore(this)"><label>${label}</label>`;
 };
 
-const getIndicesFromRadioName = (string) => {
+const changeScore = el => {
+  const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
+  const points = el.value === "Y" ? 1 : 0;
+  updateTeamScoreAndRefreshScoreTable({ qIndex, teamIndex, points });
+};
+
+const getIndicesFromRadioName = string => {
   //string is in form: `team${teamIndex}_Q${qIndex}`
-  const strings = string.split("_")
-  const teamIndex = strings[0].replace(/team/g, '')
-  const qIndex = strings[1].replace(/Q/g,'')
-  return { qIndex, teamIndex }
-}
-
-const changeScore = async (el) => {
-  const { qIndex, teamIndex } = getIndicesFromRadioName(el.name)
-  const points = el.value === 'Y' ? 1 : 0
-  await updateTeamScore({ qIndex, teamIndex, points })
-  generateScoreTable()
-}
-
-const writeScoreTableHeader = teamNames => {
-  return teamNames
-    .map(teamName => {
-      return `<th>${teamName}</th>`;
-    })
-    .join("\n");
+  const strings = string.split("_");
+  const teamIndex = strings[0].replace(/team/g, "");
+  const qIndex = strings[1].replace(/Q/g, "");
+  return { teamIndex, qIndex };
 };
 
 const identity = val => val;
@@ -82,14 +65,13 @@ const writeScoringTable = (teamNames, scores, totals) => {
           </table>`;
 };
 
-const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
-const teamNames = ["hi", "bye", "c-ya", "later"];
-writeTeamNames(teamNames);
-writeScores(scores);
-const generateScoreTable = () => {
+//side-effects:
+const updateTeamScoreAndRefreshScoreTable = teamScore => {
+  generateScoreTable(getTeamNames(), updateTeamScore(teamScore));
+}
+
+const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
   const scoreTableWrapperElement = document.getElementById("scoreTableWrapper");
-  const teamNamesPromise = getTeamNames();
-  const scoresPromise = getScores();
   Promise.all([teamNamesPromise, scoresPromise])
     .then(data => {
       const teamNames = data[0];
@@ -107,5 +89,8 @@ const generateScoreTable = () => {
     });
 };
 
-document.getElementById("loadTeams").innerHTML =
-  '<button onclick="generateScoreTable()">Load Scoring Table</button>';
+//initialize gameState
+const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
+const teamNames = ["hi", "bye", "c-ya", "later"];
+Promise.all([writeTeamNames(teamNames), writeScores(scores)])
+.then(() => generateScoreTable(getTeamNames(), getScores()));

@@ -1,8 +1,7 @@
 const getTeamNames = () => 
   fetch("http://localhost:3000/api/teamNames", { method: "GET" })
     .then(response => {
-      const promise = response.json();
-      return promise;
+      return response.json();
     });
 
 const writeTeamNames = teamNames =>
@@ -11,11 +10,7 @@ const writeTeamNames = teamNames =>
     body: JSON.stringify(teamNames)
   })
     .then(response => {
-      const promise = response.json();
-      return promise;
-    })
-    .then(myJson => {
-      return myJson;
+      return response.json();
     })
     .catch(err => {
       console.log("error writing team names:", err);
