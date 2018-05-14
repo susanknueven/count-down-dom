@@ -28,3 +28,12 @@ const updateTeamScore = score =>
     .catch(err => {
       console.log("error updating team score:", err);
     });
+
+const getNewRow = () =>
+  fetch("http://localhost:3000/api/getNewRow", { method: "GET" })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => {
+      console.log("error getting new question:", err);
+    });

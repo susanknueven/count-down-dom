@@ -1,6 +1,6 @@
 const writeRadioCell = (score, name) => {
   const YChecked = score > 0 ? "checked" : "";
-  const NChecked = YChecked === "" ? "checked" : "";
+  const NChecked = score === 0 ? "checked" : "";
 
   return `${radioButton(name, "Y", YChecked)}
           ${radioButton(name, "N", NChecked)}`;
@@ -11,11 +11,6 @@ const radioButton = (inputName, label, checked = "") => {
     value="${label}" ${checked} onclick="changeScore(this)"><label>${label}</label>`;
 };
 
-const changeScore = el => {
-  const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
-  const points = el.value === "Y" ? 1 : 0;
-  updateTeamScoreAndRefreshScoreTable({ qIndex, teamIndex, points });
-};
 
 const getIndicesFromRadioName = string => {
   //string is in form: `team${teamIndex}_Q${qIndex}`
@@ -66,8 +61,14 @@ const writeScoringTable = (teamNames, scores, totals) => {
 };
 
 //side-effects:
-const updateTeamScoreAndRefreshScoreTable = teamScore => {
-  generateScoreTable(getTeamNames(), updateTeamScore(teamScore));
+const changeScore = el => {
+  const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
+  const points = el.value === "Y" ? 1 : 0;
+  generateScoreTable(getTeamNames(), updateTeamScore({ qIndex, teamIndex, points }));
+};
+
+const getNewQuestion = () => {
+  generateScoreTable(getTeamNames(), getNewRow())
 }
 
 const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
@@ -93,4 +94,4 @@ const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
 const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
 const teamNames = ["hi", "bye", "c-ya", "later"];
 Promise.all([writeTeamNames(teamNames), writeScores(scores)])
-.then(() => generateScoreTable(getTeamNames(), getScores()));
+  .then(() => generateScoreTable(getTeamNames(), getScores()));

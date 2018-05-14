@@ -17,9 +17,9 @@ const getTeamNames = ctx => {
   ctx.status = 200;
 };
 const writeTeamNames = ctx => {
-  teamNames = ctx.request.body;
+  teamNames = JSON.parse(ctx.request.body);
   console.log("writeTeamNames: ", teamNames);
-  ctx.response.body = JSON.stringify(ctx.request.body);
+  ctx.response.body = ctx.request.body;
   ctx.status = 200;
 };
 
@@ -27,17 +27,17 @@ let scores = [];
 let totals = [];
 const getScores = ctx => {
   totals = calculateTotals(scores);
-  const responseString = JSON.stringify({scores, totals});
-  console.log("getScores: ", responseString);
-  ctx.response.body = responseString;
+  const response = { scores, totals }
+  console.log("getScores: ", response);
+  ctx.response.body = response;
   ctx.status = 200;
 };
 const writeScores = ctx => {
   scores = JSON.parse(ctx.request.body);
   totals = calculateTotals(scores);
-  const responseString = JSON.stringify({scores, totals});
-  console.log("writeScores: ", responseString);
-  ctx.response.body = responseString;
+  const response = { scores, totals }
+  console.log("writeScores: ", response);
+  ctx.response.body = response;
   ctx.status = 200;
 };
 const updateTeamScore = ctx => {
@@ -47,18 +47,24 @@ const updateTeamScore = ctx => {
   );
   scores[qIndex][teamIndex] = points;
   totals = calculateTotals(scores);
-  const responseString = JSON.stringify({scores, totals});
-  console.log('updateTeamScore response: ', responseString)
-  ctx.response.body = responseString
+  const response = { scores, totals }
+  console.log('updateTeamScore response: ', response)
+  ctx.response.body = response
   ctx.status = 200;
 };
 const calculateTotals = scores => 
-  scores.reduce((acc, row) => {
-    for (let index in row) {
-      acc[index] = (acc[index] || 0) + row[index];
-    }
-    return acc;
-  }, []);
+  scores.reduce((acc, row) => row.map((cell, index) => (acc[index] || 0) + (cell || 0)))
+
+const getNewRow = ctx => {
+  const numOfTeams = teamNames.length
+  const emptyRow = new Array(numOfTeams).fill(undefined)
+  scores.push(emptyRow)
+  totals = calculateTotals(scores);
+  const response = { scores, totals };
+  console.log('getNewRow response: ', response)
+  ctx.response.body = response
+  ctx.status = 200;
+}
 
 const koaBody = require("koa-body");
 router
@@ -67,6 +73,7 @@ router
   .get("/scores", getScores)
   .post("/scores", koaBody(), writeScores)
   .put("/scores", koaBody(), updateTeamScore)
+  .get("/getNewRow", getNewRow)
 
 api.use(router.routes());
 
