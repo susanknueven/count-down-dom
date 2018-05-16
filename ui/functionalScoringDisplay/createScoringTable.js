@@ -1,22 +1,23 @@
-const writeRadioCell = (score, name) => {
-  const YChecked = score > 0 ? "checked" : "";
-  const NChecked = score === 0 ? "checked" : "";
+import { writeTeamNames } from './teamNames';
 
-  return `${radioButton(name, "Y", YChecked)}
-          ${radioButton(name, "N", NChecked)}`;
+export const writeRadioCell = (score, name) => {
+  const YChecked = score > 0 ? 'checked' : '';
+  const NChecked = score === 0 ? 'checked' : '';
+
+  return `${radioButton(name, 'Y', YChecked)}
+          ${radioButton(name, 'N', NChecked)}`;
 };
 
-const radioButton = (inputName, label, checked = "") => {
+const radioButton = (inputName, label, checked = '') => {
   return `<input type="radio" name="${inputName}"
     value="${label}" ${checked} onclick="changeScore(this)"><label>${label}</label>`;
 };
 
-
-const getIndicesFromRadioName = string => {
+export const getIndicesFromRadioName = string => {
   //string is in form: `team${teamIndex}_Q${qIndex}`
-  const strings = string.split("_");
-  const teamIndex = strings[0].replace(/team/g, "");
-  const qIndex = strings[1].replace(/Q/g, "");
+  const strings = string.split('_');
+  const teamIndex = strings[0].replace(/team/g, '');
+  const qIndex = strings[1].replace(/Q/g, '');
   return { teamIndex, qIndex };
 };
 
@@ -25,7 +26,7 @@ const identity = val => val;
 const writeTableRow = (
   list,
   rowHeader,
-  tagType = "td",
+  tagType = 'td',
   cellRenderer = identity
 ) => {
   return `
@@ -40,22 +41,22 @@ const writeTableRow = (
         ${cellRenderer(cellValue, `team${index}_Q${rowHeader}`)}
         </${tagType}>`
         )
-        .join("\n")}
+        .join('\n')}
     </tr>`;
 };
 
 const writeScoringTable = (teamNames, scores, totals) => {
   return `<table>
             <thead>
-              ${writeTableRow(teamNames, "Q#", "th")}
+              ${writeTableRow(teamNames, 'Q#', 'th')}
             </thead>
             <tbody>
               ${scores
                 .map((row, index) =>
-                  writeTableRow(row, index, "td", writeRadioCell)
+                  writeTableRow(row, index, 'td', writeRadioCell)
                 )
-                .join("\n")}
-              ${writeTableRow(totals, "total")}
+                .join('\n')}
+              ${writeTableRow(totals, 'total')}
             </tbody>
           </table>`;
 };
@@ -63,16 +64,19 @@ const writeScoringTable = (teamNames, scores, totals) => {
 //side-effects:
 const changeScore = el => {
   const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
-  const points = el.value === "Y" ? 1 : 0;
-  generateScoreTable(getTeamNames(), updateTeamScore({ qIndex, teamIndex, points }));
+  const points = el.value === 'Y' ? 1 : 0;
+  generateScoreTable(
+    getTeamNames(),
+    updateTeamScore({ qIndex, teamIndex, points })
+  );
 };
 
 const getNewQuestion = () => {
-  generateScoreTable(getTeamNames(), getNewRow())
-}
+  generateScoreTable(getTeamNames(), getNewRow());
+};
 
 const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
-  const scoreTableWrapperElement = document.getElementById("scoreTableWrapper");
+  const scoreTableWrapperElement = document.getElementById('scoreTableWrapper');
   Promise.all([teamNamesPromise, scoresPromise])
     .then(data => {
       const teamNames = data[0];
@@ -85,13 +89,13 @@ const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
       );
     })
     .catch(error => {
-      console.log("error getting retrieving from server: ", error);
+      console.log('error getting retrieving from server: ', error);
       scoreTableWrapperElement.innerHTML = `<span>Houston, we have a problem: ${error}</span>`;
     });
 };
 
 //initialize gameState
 const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
-const teamNames = ["hi", "bye", "c-ya", "later"];
-Promise.all([writeTeamNames(teamNames), writeScores(scores)])
-  .then(() => generateScoreTable(getTeamNames(), getScores()));
+const teamNames = ['hi', 'bye', 'c-ya', 'later'];
+// Promise.all([writeTeamNames(teamNames), writeScores(scores)])
+// .then(() => generateScoreTable(getTeamNames(), getScores()));
