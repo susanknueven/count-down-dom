@@ -4,20 +4,17 @@
   "description": "Trivial server to serve up trivia game!",
   "main": "koa-server.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "yarn test --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/susanknueven/count-down-dom.git"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js"
-    ],
-    "testRegex": "/ui/.*/.*\\.test\\.js$",
-    "testPathIgnorePatterns": [
-      "node_modules"
-    ]
+    "moduleFileExtensions": ["js"],
+    "testRegex": "/.*\\.test\\.js$",
+    "testPathIgnorePatterns": ["node_modules"]
   },
   "author": "susan",
   "license": "ISC",

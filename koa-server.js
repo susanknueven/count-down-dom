@@ -11,26 +11,40 @@ const router = new Router();
 ui.use(serve('ui'));
 
 let teamNames = [];
+const teamNameGetter = () => {
+  return teamNames;
+};
+const teamNamesSetter = newTeamNames => {
+  teamNames = newTeamNames;
+};
 const getTeamNames = ctx => {
-  console.log('getTeamNames: ', teamNames);
-  ctx.response.body = teamNames;
+  console.log('getTeamNames: ', teamNameGetter());
+  ctx.response.body = teamNameGetter();
   ctx.status = 200;
 };
 const writeTeamNames = ctx => {
-  teamNames = JSON.parse(ctx.request.body);
-  console.log('writeTeamNames: ', teamNames);
+  teamNamesSetter(ctx.request.body);
+  console.log('writeTeamNames: ', teamNameGetter());
   ctx.response.body = ctx.request.body;
   ctx.status = 200;
+  return ctx;
 };
 
 let scores = [];
 let totals = [];
+const scoresGetter = () => {
+  return scores;
+};
+const scoresSetter = newScores => {
+  scores = newScores;
+};
 const getScores = ctx => {
   totals = calculateTotals(scores);
   const response = { scores, totals };
   console.log('getScores: ', response);
   ctx.response.body = response;
   ctx.status = 200;
+  return ctx;
 };
 const writeScores = ctx => {
   scores = JSON.parse(ctx.request.body);
@@ -39,6 +53,7 @@ const writeScores = ctx => {
   console.log('writeScores: ', response);
   ctx.response.body = response;
   ctx.status = 200;
+  return ctx;
 };
 const updateTeamScore = ctx => {
   const { qIndex, teamIndex, points } = JSON.parse(ctx.request.body);
@@ -53,12 +68,12 @@ const updateTeamScore = ctx => {
   ctx.status = 200;
 };
 const calculateTotals = scores =>
-  scores.reduce((acc, row) =>
-    row.map((cell, index) => (acc[index] || 0) + (cell || 0))
-  );
+  scores.reduce((acc, row) => {
+    return row.map((cell, index) => (acc[index] || 0) + (cell || 0));
+  }, []);
 
 const getNewRow = ctx => {
-  const numOfTeams = teamNames.length;
+  const numOfTeams = teamNameGetter().length;
   const emptyRow = new Array(numOfTeams).fill(undefined);
   scores.push(emptyRow);
   totals = calculateTotals(scores);
@@ -66,6 +81,7 @@ const getNewRow = ctx => {
   console.log('getNewRow response: ', response);
   ctx.response.body = response;
   ctx.status = 200;
+  return ctx;
 };
 
 const koaBody = require('koa-body');
@@ -83,3 +99,12 @@ app.use(mount('/api', api));
 app.use(mount('/', ui));
 
 app.listen(3000);
+
+module.exports = {
+  calculateTotals,
+  getNewRow,
+  teamNamesSetter,
+  scoresGetter,
+  scoresSetter,
+  writeScores
+};
