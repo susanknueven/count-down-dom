@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link href="scoringSheet.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-    <div id="inGameTools">
-      <div id="loadTeams"></div>
-      <div class="scoreEntryTable">
-        <div>Update Team Scores</div>
-        <div id="scoreTableWrapper">
-        </div>
+
+<head>
+  <link href="scoringSheet.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div id="inGameTools">
+    <div id="loadTeams"></div>
+    <div class="scoreEntryTable" id="scoreEntryTable">
+      <div>Update Team Scores</div>
+      <div id="scoreTableWrapper">
       </div>
     </div>
-    <button onclick="getNewQuestion()">Next Question</button>
-  </body>
-  <script src="teamNames.js"></script>
-  <script src="scores.js"></script>
-  <script src="createScoringTable.js"></script>
+  </div>
+  <button id="nextQuestionButton">Next Question</button>
+</body>
+<script type="module" src="teamNames.js"></script>
+<script type="module" src="scores.js"></script>
+<script type="module" src="createScoringTable.js"></script>
+<script type="module">
+  import { loadPage, createClickEventListener } from '/functionalScoringDisplay/createScoringTable.js'
+  loadPage().then(createClickEventListener())
+</script>
+
 </html>

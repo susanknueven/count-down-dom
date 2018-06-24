@@ -1,4 +1,10 @@
-import { writeTeamNames } from './teamNames';
+import { getTeamNames, writeTeamNames } from './teamNames.js';
+import {
+  getScores,
+  writeScores,
+  updateTeamScore,
+  getNewRow
+} from './scores.js';
 
 export const writeRadioCell = (score, name) => {
   const YChecked = score > 0 ? 'checked' : '';
@@ -10,7 +16,7 @@ export const writeRadioCell = (score, name) => {
 
 const radioButton = (inputName, label, checked = '') => {
   return `<input type="radio" name="${inputName}"
-    value="${label}" ${checked} onclick="changeScore(this)"><label>${label}</label>`;
+    value="${label}" ${checked}><label>${label}</label>`;
 };
 
 export const getIndicesFromRadioName = string => {
@@ -62,7 +68,7 @@ const writeScoringTable = (teamNames, scores, totals) => {
 };
 
 //side-effects:
-const changeScore = el => {
+export const changeScore = el => {
   const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
   const points = el.value === 'Y' ? 1 : 0;
   generateScoreTable(
@@ -94,8 +100,27 @@ const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
     });
 };
 
-//initialize gameState
-const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
-const teamNames = ['hi', 'bye', 'c-ya', 'later'];
-// Promise.all([writeTeamNames(teamNames), writeScores(scores)])
-// .then(() => generateScoreTable(getTeamNames(), getScores()));
+export const loadPage = async () => {
+  //initialize gameState
+  const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
+  const teamNames = ['hi', 'bye', 'c-ya', 'later'];
+  return await Promise.all([
+    writeTeamNames(teamNames),
+    writeScores(scores)
+  ]).then(() => generateScoreTable(getTeamNames(), getScores()));
+};
+
+export const createClickEventListener = () => {
+  document.addEventListener('click', function(e) {
+    // listens for radio button clicks and updates score
+    if (e.target.tagName == 'INPUT') {
+      changeScore(e.target);
+    }
+    if (e.target.tagName == 'BUTTON') {
+      switch (e.target.id) {
+        case 'nextQuestionButton':
+          getNewQuestion();
+      }
+    }
+  });
+};
