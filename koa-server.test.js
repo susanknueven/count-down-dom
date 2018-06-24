@@ -5,7 +5,7 @@ import {
   scoresGetter,
   scoresSetter,
   writeScores
-} from './koa-server';
+} from './koa-server.js';
 
 describe('koa-server tests', () => {
   describe('calculates team totals from scores array', () => {

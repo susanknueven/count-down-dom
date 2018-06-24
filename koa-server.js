@@ -1,14 +1,9 @@
 const koa = require('koa');
 const Router = require('koa-router');
-const mount = require('koa-mount');
 const serve = require('koa-static');
 
-const ui = new koa();
-const api = new koa();
 const app = new koa();
 const router = new Router();
-
-ui.use(serve('ui'));
 
 let teamNames = [];
 const teamNameGetter = () => {
@@ -23,7 +18,7 @@ const getTeamNames = ctx => {
   ctx.status = 200;
 };
 const writeTeamNames = ctx => {
-  teamNamesSetter(ctx.request.body);
+  teamNamesSetter(JSON.parse(ctx.request.body));
   console.log('writeTeamNames: ', teamNameGetter());
   ctx.response.body = ctx.request.body;
   ctx.status = 200;
@@ -86,17 +81,15 @@ const getNewRow = ctx => {
 
 const koaBody = require('koa-body');
 router
-  .get('/teamNames', getTeamNames)
-  .post('/teamNames', koaBody(), writeTeamNames)
-  .get('/scores', getScores)
-  .post('/scores', koaBody(), writeScores)
-  .put('/scores', koaBody(), updateTeamScore)
-  .get('/getNewRow', getNewRow);
+  .get('/api/teamNames', getTeamNames)
+  .post('/api/teamNames', koaBody(), writeTeamNames)
+  .get('/api/scores', getScores)
+  .post('/api/scores', koaBody(), writeScores)
+  .put('/api/scores', koaBody(), updateTeamScore)
+  .get('/api/getNewRow', getNewRow);
 
-api.use(router.routes());
-
-app.use(mount('/api', api));
-app.use(mount('/', ui));
+app.use(router.routes());
+app.use(serve('ui'));
 
 app.listen(3000);
 
