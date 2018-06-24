@@ -1,11 +1,3 @@
-import { getTeamNames, writeTeamNames } from './teamNames.js';
-import {
-  getScores,
-  writeScores,
-  updateTeamScore,
-  getNewRow
-} from './scores.js';
-
 export const writeRadioCell = (score, name) => {
   const YChecked = score > 0 ? 'checked' : '';
   const NChecked = score === 0 ? 'checked' : '';
@@ -27,6 +19,10 @@ export const getIndicesFromRadioName = string => {
   return { teamIndex, qIndex };
 };
 
+const generateRadioName = (teamIndex, qIndex) => {
+  return `team${teamIndex}_Q${qIndex}`;
+};
+
 const identity = val => val;
 
 const writeTableRow = (
@@ -42,16 +38,16 @@ const writeTableRow = (
       </${tagType}>
       ${list
         .map(
-          (cellValue, index) => `
+          (cellValue, index) => ` 
         <${tagType}>
-        ${cellRenderer(cellValue, `team${index}_Q${rowHeader}`)}
+        ${cellRenderer(cellValue, generateRadioName(index, rowHeader))}
         </${tagType}>`
         )
         .join('\n')}
     </tr>`;
 };
 
-const writeScoringTable = (teamNames, scores, totals) => {
+export const writeScoringTable = (teamNames, scores, totals) => {
   return `<table>
             <thead>
               ${writeTableRow(teamNames, 'Q#', 'th')}
@@ -65,62 +61,4 @@ const writeScoringTable = (teamNames, scores, totals) => {
               ${writeTableRow(totals, 'total')}
             </tbody>
           </table>`;
-};
-
-//side-effects:
-export const changeScore = el => {
-  const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
-  const points = el.value === 'Y' ? 1 : 0;
-  generateScoreTable(
-    getTeamNames(),
-    updateTeamScore({ qIndex, teamIndex, points })
-  );
-};
-
-const getNewQuestion = () => {
-  generateScoreTable(getTeamNames(), getNewRow());
-};
-
-const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
-  const scoreTableWrapperElement = document.getElementById('scoreTableWrapper');
-  Promise.all([teamNamesPromise, scoresPromise])
-    .then(data => {
-      const teamNames = data[0];
-      const scores = data[1].scores;
-      const totals = data[1].totals;
-      scoreTableWrapperElement.innerHTML = writeScoringTable(
-        teamNames,
-        scores,
-        totals
-      );
-    })
-    .catch(error => {
-      console.log('error getting retrieving from server: ', error);
-      scoreTableWrapperElement.innerHTML = `<span>Houston, we have a problem: ${error}</span>`;
-    });
-};
-
-export const loadPage = async () => {
-  //initialize gameState
-  const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
-  const teamNames = ['hi', 'bye', 'c-ya', 'later'];
-  return await Promise.all([
-    writeTeamNames(teamNames),
-    writeScores(scores)
-  ]).then(() => generateScoreTable(getTeamNames(), getScores()));
-};
-
-export const createClickEventListener = () => {
-  document.addEventListener('click', function(e) {
-    // listens for radio button clicks and updates score
-    if (e.target.tagName == 'INPUT') {
-      changeScore(e.target);
-    }
-    if (e.target.tagName == 'BUTTON') {
-      switch (e.target.id) {
-        case 'nextQuestionButton':
-          getNewQuestion();
-      }
-    }
-  });
 };

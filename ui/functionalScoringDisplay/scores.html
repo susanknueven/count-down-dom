@@ -16,11 +16,9 @@
   </div>
   <button id="nextQuestionButton">Next Question</button>
 </body>
-<script type="module" src="teamNames.js"></script>
-<script type="module" src="scores.js"></script>
-<script type="module" src="createScoringTable.js"></script>
 <script type="module">
-  import { loadPage, createClickEventListener } from '/functionalScoringDisplay/createScoringTable.js'
+  import { loadPage, createClickEventListener } from
+    '/functionalScoringDisplay/loadPageAndEventListeners.js'
   loadPage().then(createClickEventListener())
 </script>
 
