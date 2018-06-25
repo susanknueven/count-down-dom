@@ -1,7 +1,5 @@
-import {
-  getIndicesFromRadioName,
-  writeScoringTable
-} from './createScoringTable.js';
+import { writeScoringTable } from './scoringTable.js';
+import { getIndicesFromRadioName } from './radioButton.js';
 import { getTeamNames } from './teamNamesApiCalls.js';
 import { updateTeamScore, getNewRow } from './scoresApiCalls.js';
 
