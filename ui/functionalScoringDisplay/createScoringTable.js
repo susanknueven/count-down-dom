@@ -7,8 +7,8 @@ export const writeRadioCell = (score, name) => {
 };
 
 const radioButton = (inputName, label, checked = '') => {
-  return `<input type="radio" name="${inputName}"
-    value="${label}" ${checked}><label>${label}</label>`;
+  return `<input type='radio' name='${inputName}'
+    value='${label}' ${checked}><label>${label}</label>`;
 };
 
 export const getIndicesFromRadioName = string => {
@@ -19,13 +19,13 @@ export const getIndicesFromRadioName = string => {
   return { teamIndex, qIndex };
 };
 
-const generateRadioName = (teamIndex, qIndex) => {
+export const generateRadioName = (teamIndex, qIndex) => {
   return `team${teamIndex}_Q${qIndex}`;
 };
 
 const identity = val => val;
 
-const writeTableRow = (
+export const writeTableRow = (
   list,
   rowHeader,
   tagType = 'td',
@@ -49,16 +49,18 @@ const writeTableRow = (
 
 export const writeScoringTable = (teamNames, scores, totals) => {
   return `<table>
-            <thead>
+            <thead id='thead'>
               ${writeTableRow(teamNames, 'Q#', 'th')}
             </thead>
-            <tbody>
+            <tbody id='tbody'>
               ${scores
                 .map((row, index) =>
                   writeTableRow(row, index, 'td', writeRadioCell)
                 )
                 .join('\n')}
-              ${writeTableRow(totals, 'total')}
             </tbody>
+            <tfoot id='tfoot'>
+              ${writeTableRow(totals, 'total')}
+            </tfoot>
           </table>`;
 };
