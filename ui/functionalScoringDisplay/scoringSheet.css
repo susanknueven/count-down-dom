@@ -14,6 +14,9 @@
   flex-grow: 1;
 }
 
+tr:nth-child(even) {background: #DFE3EE}
+tr:last-child {background: #3B5998; color: #DFE3EE}
+
 #scoreTableWrapper {
   overflow-x: scroll;
 }
@@ -45,14 +48,6 @@ td {
   height: 40px;
   text-align: center;
   vertical-align: center;
-}
-
-.plainColumn {
-  background-color: white;
-}
-
-.highlightColumn {
-  background-color: lightblue;
 }
 
 .triviaControls {
