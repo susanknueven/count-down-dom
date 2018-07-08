@@ -5,7 +5,9 @@
   "main": "koa-server.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "yarn test --watch"
+    "test:watch": "yarn test --watch",
+    "start": "node ./server/index.js",
+    "start:dummy": "node ./server/index.js dummy"
   },
   "repository": {
     "type": "git",
@@ -17,9 +19,13 @@
     "testRegex": "/.*\\.test\\.js$",
     "testPathIgnorePatterns": ["node_modules"]
   },
+  "prettier": {
+    "singleQuote": true
+  },
   "author": "susan",
   "license": "ISC",
   "dependencies": {
+    "babel-register": "^6.26.0",
     "koa": "2.5.0",
     "koa-body": "^2.5.0",
     "koa-router": "7.4.0",

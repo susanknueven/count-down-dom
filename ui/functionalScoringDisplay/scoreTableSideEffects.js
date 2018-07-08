@@ -7,27 +7,21 @@ import { updateTeamScore, getNewRow } from './scoresApiCalls.js';
 export const changeScore = el => {
   const { teamIndex, qIndex } = getIndicesFromRadioName(el.name);
   const points = el.value === 'Y' ? 1 : 0;
-  generateScoreTable(
-    getTeamNames(),
-    updateTeamScore({ qIndex, teamIndex, points })
-  );
+  generateScoreTable(updateTeamScore({ qIndex, teamIndex, points }));
 };
 
 export const getNewQuestion = () => {
-  generateScoreTable(getTeamNames(), getNewRow());
+  generateScoreTable(getNewRow());
 };
 
-export const generateScoreTable = async (teamNamesPromise, scoresPromise) => {
+export const generateScoreTable = async gameStatePromise => {
   const scoreTableWrapperElement = document.getElementById('scoreTableWrapper');
-  Promise.all([teamNamesPromise, scoresPromise])
+  gameStatePromise
     .then(data => {
-      const teamNames = data[0];
-      const scores = data[1].scores;
-      const totals = data[1].totals;
       scoreTableWrapperElement.innerHTML = writeScoringTable(
-        teamNames,
-        scores,
-        totals
+        data.teamNames,
+        data.scores,
+        data.totals
       );
     })
     .catch(error => {

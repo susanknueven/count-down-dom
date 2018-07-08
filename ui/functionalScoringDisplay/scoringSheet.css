@@ -15,7 +15,7 @@
 }
 
 tr:nth-child(even) {background: #DFE3EE}
-tr:last-child {background: #3B5998; color: #DFE3EE}
+thead, tfoot {background: #3B5998; color: #DFE3EE}
 
 #scoreTableWrapper {
   overflow-x: scroll;
