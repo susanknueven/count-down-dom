@@ -1,10 +1,3 @@
-export const getScores = () =>
-  fetch('http://localhost:3000/api/scores', { method: 'GET' }).then(
-    response => {
-      return response.json();
-    }
-  );
-
 export const writeScores = scores =>
   fetch('http://localhost:3000/api/scores', {
     method: 'POST',

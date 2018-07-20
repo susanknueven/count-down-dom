@@ -1,9 +1,16 @@
 import { calculateTotals } from './serverScores.js';
+import { WELCOME, REGISTER } from '../ui/utils/stateConstants.js';
 
-let gameState = {
-  teamNames: [],
-  scores: [],
-  totals: []
+let gameState;
+
+export const resetGameState = () => {
+  gameState = {
+    playerView: WELCOME,
+    gameOperatorView: REGISTER,
+    teamNames: [],
+    scores: [],
+    totals: []
+  };
 };
 
 export const gameStateGetter = () => {
@@ -20,14 +27,12 @@ export const gameStateSetter = stateChange => {
   if (stateChange.teamNames) {
     newState.teamNames = stateChange.teamNames;
   }
+  if (stateChange.gameOperatorView) {
+    newState.gameOperatorView = stateChange.gameOperatorView;
+  }
+  if (stateChange.playerView) {
+    newState.playerView = stateChange.playerView;
+  }
   gameState = Object.assign(state, newState);
   return gameState;
-};
-
-export const resetGameState = () => {
-  gameState = {
-    teamNames: [],
-    scores: [],
-    totals: []
-  };
 };

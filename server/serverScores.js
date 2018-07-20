@@ -27,15 +27,6 @@ export const calculateTotals = scores =>
     return row.map((cell, index) => (acc[index] || 0) + (cell || 0));
   }, []);
 
-// export const writeScores = ctx => {
-//   const newScores = JSON.parse(ctx.request.body);
-//   const newGameState = gameStateSetter({ scores: newScores });
-//   console.log('writeScores: ', newGameState);
-//   ctx.response.body = newGameState;
-//   ctx.status = 200;
-//   return ctx;
-// };
-
 export const getNewRow = ctx => {
   const gameState = gameStateGetter();
   const teamNames = gameState.teamNames;

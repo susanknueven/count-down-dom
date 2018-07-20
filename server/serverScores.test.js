@@ -1,9 +1,4 @@
-import {
-  calculateTotals,
-  updateTeamScore,
-  getScores,
-  getNewRow
-} from './serverScores.js';
+import { calculateTotals, updateTeamScore, getNewRow } from './serverScores.js';
 import { resetGameState, gameStateSetter } from './serverGameState.js';
 
 describe('calculates team totals from scores array', () => {
@@ -54,7 +49,7 @@ describe('add new row to scores array', () => {
     gameStateSetter({ teamNames, scores });
     const { response } = getNewRow(ctx);
 
-    expect(response.body).toEqual(expectedBody);
+    expect(response.body).toEqual(expect.objectContaining(expectedBody));
   });
 
   test('handles non-empty array', () => {
@@ -70,7 +65,7 @@ describe('add new row to scores array', () => {
     gameStateSetter({ teamNames, scores });
     const { response } = getNewRow(ctx);
 
-    expect(response.body).toEqual(expectedBody);
+    expect(response.body).toEqual(expect.objectContaining(expectedBody));
   });
   test('throws error when no teams registered', () => {
     const ctx = { response: {} };
@@ -100,12 +95,4 @@ describe('scores', () => {
     expect(response.body.totals).toEqual([1, 1]);
   });
   //test if indexes are bad in score update?? i.e. scores[qIndex][teamIndex] throws error
-  test('gets scores', () => {
-    const ctx = { response: {} };
-
-    const { response } = getScores(ctx);
-
-    expect(response.body.scores).toEqual([[0, 1]]);
-    expect(response.body.totals).toEqual([0, 1]);
-  });
 });

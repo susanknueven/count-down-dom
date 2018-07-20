@@ -10,7 +10,6 @@ export const getTeamNames = ctx => {
 
 export const writeTeamNames = ctx => {
   const requestBody = JSON.parse(ctx.request.body);
-  console.log('request', requestBody);
   if (!requestBody.teamNames || requestBody.teamNames.length == 0) {
     const err = new Error('No teams');
     err.status = 400;

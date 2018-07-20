@@ -1,10 +1,3 @@
-export const getTeamNames = () =>
-  fetch('http://localhost:3000/api/teamNames', { method: 'GET' }).then(
-    response => {
-      return response.json();
-    }
-  );
-
 export const writeTeamNames = teamNames =>
   fetch('http://localhost:3000/api/teamNames', {
     method: 'POST',
