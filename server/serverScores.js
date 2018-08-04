@@ -27,8 +27,7 @@ export const calculateTotals = scores =>
     return row.map((cell, index) => (acc[index] || 0) + (cell || 0));
   }, []);
 
-export const getNewRow = ctx => {
-  const gameState = gameStateGetter();
+export const createScoresForNextQuestion = gameState => {
   const teamNames = gameState.teamNames;
   const scores = gameState.scores;
 
@@ -41,9 +40,5 @@ export const getNewRow = ctx => {
   const emptyRow = new Array(teamNames.length).fill(undefined);
   scores.push(emptyRow);
 
-  const newGameState = gameStateSetter({ scores });
-  console.log('getNewRow response: ', newGameState);
-  ctx.response.body = newGameState;
-  ctx.status = 200;
-  return ctx;
+  return gameStateSetter({ scores });
 };

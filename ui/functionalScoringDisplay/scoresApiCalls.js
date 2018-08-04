@@ -22,8 +22,8 @@ export const updateTeamScore = score =>
       console.log('error updating team score:', err);
     });
 
-export const getNewRow = () =>
-  fetch('http://localhost:3000/api/getNewRow', { method: 'GET' })
+export const getNextQuestion = () =>
+  fetch('http://localhost:3000/api/getNextQuestion', { method: 'GET' })
     .then(response => {
       return response.json();
     })

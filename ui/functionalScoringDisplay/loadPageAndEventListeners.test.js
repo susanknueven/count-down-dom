@@ -1,6 +1,6 @@
 import { loadPage } from './loadPageAndEventListeners.js';
 import { getGameState } from './gameStateApiCalls.js';
-import { generateScoreTable } from './scoreTableSideEffects.js';
+import { displayScoreControls } from './scoreTableSideEffects.js';
 import { QUESTION_LOADED, REGISTER } from '../utils/stateConstants.js';
 
 jest.mock('./gameStateApiCalls.js');
@@ -16,7 +16,7 @@ const state = {
 describe('load page', () => {
   beforeEach(() => {
     getGameState.mockReset();
-    generateScoreTable.mockReset();
+    displayScoreControls.mockReset();
   });
   test('calls generate score board with state when gameOpView is not REGISTER', async () => {
     const newStatePromise = Promise.resolve(state);
@@ -24,8 +24,8 @@ describe('load page', () => {
     const html = await loadPage();
 
     expect(getGameState.mock.calls.length).toEqual(1);
-    expect(generateScoreTable.mock.calls.length).toEqual(1);
-    expect(generateScoreTable.mock.calls[0][0]).toEqual(state);
+    expect(displayScoreControls.mock.calls.length).toEqual(1);
+    expect(displayScoreControls.mock.calls[0][0]).toEqual(state);
   });
   test('does not call generate score board with state when gameOpView is REGISTER', async () => {
     const newStatePromise = Promise.resolve(
@@ -35,6 +35,6 @@ describe('load page', () => {
     const html = await loadPage();
 
     expect(getGameState.mock.calls.length).toEqual(1);
-    expect(generateScoreTable.mock.calls.length).toEqual(0);
+    expect(displayScoreControls.mock.calls.length).toEqual(0);
   });
 });

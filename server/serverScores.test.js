@@ -1,4 +1,8 @@
-import { calculateTotals, updateTeamScore, getNewRow } from './serverScores.js';
+import {
+  calculateTotals,
+  updateTeamScore,
+  createScoresForNextQuestion
+} from './serverScores.js';
 import { resetGameState, gameStateSetter } from './serverGameState.js';
 
 describe('calculates team totals from scores array', () => {
@@ -37,40 +41,30 @@ describe('add new row to scores array', () => {
     resetGameState();
   });
   test('handles empty array', () => {
-    const ctx = { response: {} };
-    const scores = [];
-    const teamNames = ['team1', 'team2'];
-    const expectedBody = {
-      scores: [[undefined, undefined]],
-      teamNames,
-      totals: [0, 0]
-    };
+    const gameState = { scores: [], teamNames: ['team1', 'team2'], totals: [] };
 
-    gameStateSetter({ teamNames, scores });
-    const { response } = getNewRow(ctx);
+    const { scores, totals } = createScoresForNextQuestion(gameState);
 
-    expect(response.body).toEqual(expect.objectContaining(expectedBody));
+    expect(scores).toEqual([[undefined, undefined]]);
+    expect(totals).toEqual([0, 0]);
   });
 
   test('handles non-empty array', () => {
-    const ctx = { response: {} };
-    const scores = [[1, 0, 0]];
-    const teamNames = ['team1', 'team2', 'team3'];
-    const expectedBody = {
-      scores: [[1, 0, 0], [undefined, undefined, undefined]],
-      totals: [1, 0, 0],
-      teamNames
+    const gameState = {
+      scores: [[1, 0, 0]],
+      teamNames: ['team1', 'team2', 'team3'],
+      totals: [1, 0, 0]
     };
 
-    gameStateSetter({ teamNames, scores });
-    const { response } = getNewRow(ctx);
+    const { scores, totals } = createScoresForNextQuestion(gameState);
 
-    expect(response.body).toEqual(expect.objectContaining(expectedBody));
+    expect(scores).toEqual([[1, 0, 0], [undefined, undefined, undefined]]);
+    expect(totals).toEqual([1, 0, 0]);
   });
+
   test('throws error when no teams registered', () => {
-    const ctx = { response: {} };
     expect(() => {
-      getNewRow(ctx);
+      createScoresForNextQuestion({ teamNames: [] });
     }).toThrow('Cannot retrieve scores when no teams registered.');
   });
 });

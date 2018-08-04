@@ -24,20 +24,24 @@ export const writeTableRow = (
     </tr>`;
 };
 
-export const writeScoringTable = (teamNames, scores, totals) => {
-  return `<table>
-            <thead id='thead'>
-              ${writeTableRow(teamNames, 'Q#', 'th')}
-            </thead>
-            <tbody id='tbody'>
-              ${scores
-                .map((row, index) =>
-                  writeTableRow(row, index, 'td', writeRadioCell)
-                )
-                .join('\n')}
-            </tbody>
-            <tfoot id='tfoot'>
-              ${writeTableRow(totals, 'total')}
-            </tfoot>
-          </table>`;
+const scoreTableLabel = () => {
+  return '<div class="scoreTableLabel">Team Scores:</div>';
+};
+
+export const generateScoringTable = (teamNames, scores, totals) => {
+  return `
+    ${scoreTableLabel()}
+    <table>
+      <thead id='thead'>
+        ${writeTableRow(teamNames, 'Q#', 'th')}
+      </thead>
+      <tbody id='tbody'>
+        ${scores
+          .map((row, index) => writeTableRow(row, index, 'td', writeRadioCell))
+          .join('\n')}
+      </tbody>
+      <tfoot id='tfoot'>
+        ${writeTableRow(totals, 'total')}
+      </tfoot>
+    </table>`;
 };

@@ -20,7 +20,12 @@ describe('server game state', () => {
       playerView: TRIVIA,
       scores: [[0, 1], [1, 1]],
       teamNames: ['hi', 'bye'],
-      totals: [1, 2]
+      totals: [1, 2],
+      trivia: {
+        category: 'pope',
+        question: 'who is the pope',
+        answer: 'pope francis'
+      }
     };
     gameStateSetter(gameState);
     expect(gameStateGetter()).toEqual(gameState);
@@ -32,7 +37,8 @@ describe('server game state', () => {
       playerView: WELCOME,
       scores: [],
       teamNames: [],
-      totals: []
+      totals: [],
+      trivia: {}
     });
   });
   describe('game state setter', () => {
@@ -100,6 +106,27 @@ describe('server game state', () => {
       expect(originalState.totals).toEqual([0, 1]);
       expect(originalState.teamNames).toEqual(teamNames);
       expect(originalState.otherProp).toBeUndefined();
+    });
+    test('replaces trivia with new trivia', () => {
+      const origTrivia = {
+        category: 'dog',
+        question: 'What is Lynnie scared of?',
+        answer: 'all the things'
+      };
+      gameStateSetter({ trivia: origTrivia });
+      const originalState = gameStateGetter();
+
+      expect(originalState.trivia).toEqual(origTrivia);
+
+      const newTrivia = {
+        category: 'cat',
+        question: 'What does Garfield like to eat?',
+        answer: 'lasagna!'
+      };
+      gameStateSetter({ trivia: newTrivia });
+      const newState = gameStateGetter();
+
+      expect(newState.trivia).toEqual(newTrivia);
     });
   });
 });

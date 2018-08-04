@@ -1,4 +1,4 @@
-import { writeTableRow, writeScoringTable } from './scoringTable.js';
+import { writeTableRow, generateScoringTable } from './scoringTable.js';
 
 describe('create scoring table', () => {
   describe('write table row', () => {
@@ -79,7 +79,7 @@ describe('create scoring table', () => {
     let tableDiv;
 
     beforeAll(() => {
-      const html = writeScoringTable(teamNames, scores, totals);
+      const html = generateScoringTable(teamNames, scores, totals);
       tableDiv = document.createElement('div');
       tableDiv.innerHTML = html;
     });

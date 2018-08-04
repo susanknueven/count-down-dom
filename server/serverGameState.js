@@ -9,7 +9,8 @@ export const resetGameState = () => {
     gameOperatorView: REGISTER,
     teamNames: [],
     scores: [],
-    totals: []
+    totals: [],
+    trivia: {}
   };
 };
 
@@ -32,6 +33,9 @@ export const gameStateSetter = stateChange => {
   }
   if (stateChange.playerView) {
     newState.playerView = stateChange.playerView;
+  }
+  if (stateChange.trivia) {
+    newState.trivia = stateChange.trivia;
   }
   gameState = Object.assign(state, newState);
   return gameState;
