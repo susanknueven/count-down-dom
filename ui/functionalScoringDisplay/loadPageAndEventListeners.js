@@ -1,7 +1,7 @@
 import { displayScoreControls } from './scoreTableSideEffects.js';
 import { getGameState } from './gameStateApiCalls.js';
 import { getIndicesFromRadioName } from './radioButton.js';
-import { updateTeamScore, getNewRow } from './scoresApiCalls.js';
+import { updateTeamScore, getNextQuestion } from './scoresApiCalls.js';
 import {
   displayCategory,
   displayQuestion,
@@ -48,7 +48,7 @@ export const createClickEventListener = () => {
     if (e.target.tagName == 'BUTTON') {
       switch (e.target.id) {
         case 'nextQuestionButton':
-          displayGameOpView(getNewRow());
+          displayGameOpView(getNextQuestion());
           break;
         case 'showCategory':
           displayGameOpView(displayCategory());

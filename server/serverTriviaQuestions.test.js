@@ -16,4 +16,10 @@ describe('trivia questions', () => {
     getNextTriviaQuestion();
     expect(origLength - mockTrivia.length).toBe(1);
   });
+  test('loads json from file', () => {
+    const getNextQuestion = loadTrivia(require('./trivia_questions.json'));
+    console.log('getNext', getNextQuestion());
+    console.log('getNext2', getNextQuestion());
+    console.log('getNext3', getNextQuestion());
+  });
 });

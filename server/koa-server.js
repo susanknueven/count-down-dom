@@ -15,11 +15,27 @@ import koa from 'koa';
 import Router from 'koa-router';
 import serve from 'koa-static';
 import koaBody from 'koa-body';
+import { loadTrivia } from './serverTriviaQuestions.js';
+import { createScoresForNextQuestion } from './serverScores.js';
 
 const app = new koa();
 const router = new Router();
 
 resetGameState();
+const popTrivia = loadTrivia(require('./trivia_questions.json'));
+
+const getNextTrivia = ctx => {
+  const gameState = gameStateGetter();
+  const { scores, totals } = createScoresForNextQuestion(gameState);
+  const trivia = popTrivia();
+  console.log('popTrivia', popTrivia);
+  console.log('newTrivia', trivia);
+  const newGameState = gameStateSetter({ scores, totals, trivia });
+  console.log('next Trivia', newGameState);
+  ctx.response.body = newGameState;
+  ctx.status = 200;
+  return ctx;
+};
 
 //dummy mode has non-empty game state
 if (process.argv[2] === 'dummy') {
@@ -52,7 +68,7 @@ router
   .get('/api/gameState', getGameState)
   .post('/api/teamNames', koaBody(), writeTeamNames)
   .put('/api/scores', koaBody(), updateTeamScore)
-  // .get('/api/getNextQuestion', getNextQuestion)
+  .get('/api/getNextQuestion', getNextTrivia)
   .get('/api/displayCategory', displayCategory)
   .get('/api/displayQuestion', displayQuestion)
   .get('/api/displayAnswer', displayAnswer);
