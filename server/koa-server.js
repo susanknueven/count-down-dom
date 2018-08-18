@@ -27,17 +27,16 @@ if (process.argv[2] === 'dummy') {
   const gameOperatorView = QUESTION_LOADED;
   const scores = [[0, 1, 1, 0], [0, 0, 1, 0], [0, 1, 0, 1]];
   const teamNames = ['hi', 'bye', 'c-ya', 'later'];
-  const triviaCategory = 'Random';
-  const triviaQuestion = 'Name the colors in a rainbow';
-  const triviaAnswer = 'ROY G BIV';
+  const category = 'Random';
+  const question = 'Name the colors in a rainbow';
+  const answer = 'ROY G BIV';
+  const trivia = { category, question, answer };
   gameStateSetter({
     scores,
     teamNames,
     playerView,
     gameOperatorView,
-    triviaCategory,
-    triviaQuestion,
-    triviaAnswer
+    trivia
   });
 }
 
@@ -53,7 +52,7 @@ router
   .get('/api/gameState', getGameState)
   .post('/api/teamNames', koaBody(), writeTeamNames)
   .put('/api/scores', koaBody(), updateTeamScore)
-  .get('/api/getNextQuestion', getNextQuestion)
+  // .get('/api/getNextQuestion', getNextQuestion)
   .get('/api/displayCategory', displayCategory)
   .get('/api/displayQuestion', displayQuestion)
   .get('/api/displayAnswer', displayAnswer);
