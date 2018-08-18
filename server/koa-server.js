@@ -28,9 +28,12 @@ const getNextTrivia = ctx => {
   const gameState = gameStateGetter();
   const { scores, totals } = createScoresForNextQuestion(gameState);
   const trivia = popTrivia();
-  console.log('popTrivia', popTrivia);
-  console.log('newTrivia', trivia);
-  const newGameState = gameStateSetter({ scores, totals, trivia });
+  const newGameState = gameStateSetter({
+    scores,
+    totals,
+    trivia,
+    gameOperatorView: QUESTION_LOADED
+  });
   console.log('next Trivia', newGameState);
   ctx.response.body = newGameState;
   ctx.status = 200;

@@ -14,8 +14,14 @@
   flex-grow: 1;
 }
 
-tr:nth-child(even) {background: #DFE3EE}
-thead, tfoot {background: #3B5998; color: #DFE3EE}
+tr:nth-child(even) {
+  background: #dfe3ee;
+}
+thead,
+tfoot {
+  background: #3b5998;
+  color: #dfe3ee;
+}
 
 #scoreTableWrapper {
   overflow-x: scroll;
@@ -54,4 +60,8 @@ td {
   margin-top: 3em;
   min-width: 250px;
   padding-left: 10px;
+}
+
+.display {
+  font-weight: bold;
 }

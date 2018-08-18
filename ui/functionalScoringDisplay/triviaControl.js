@@ -66,17 +66,19 @@ const getDisplayClass = gameState => {
 
 export const triviaPreviewText = gameState => {
   const displayClass = getDisplayClass(gameState);
+  const trivia = gameState.trivia ? gameState.trivia : {};
+
   return `
     <div id="questionPreviewText">
       <div id="questionPreviewLabel">Question Loaded:</div>
       <div id="triviaCategory" class=${displayClass.triviaCategory}>Category: ${
-    gameState.triviaCategory
+    trivia.category
   }</div>
       <div id="triviaQuestion" class=${displayClass.triviaQuestion}>Question: ${
-    gameState.triviaQuestion
+    trivia.question
   }</div>
       <div id="triviaAnswer" class=${displayClass.triviaAnswer}>Answer: ${
-    gameState.triviaAnswer
+    trivia.answer
   }</div>
     </div>
   `;

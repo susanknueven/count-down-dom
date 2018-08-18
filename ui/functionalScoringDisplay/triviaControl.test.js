@@ -49,21 +49,40 @@ describe('triviaControls', () => {
 describe('triviaPreviewText', () => {
   test('returns category, question and answer', () => {
     const state = {
-      triviaCategory: 'Sesame Street',
-      triviaQuestion: 'Best friend of Big Bird',
-      triviaAnswer: 'Snuffy'
+      trivia: {
+        category: 'Sesame Street',
+        question: 'Best friend of Big Bird',
+        answer: 'Snuffy'
+      }
     };
 
     document.body.innerHTML = triviaPreviewText(state);
 
     expect(getById('triviaCategory').innerHTML).toEqual(
-      expect.stringContaining(state.triviaCategory)
+      expect.stringContaining(state.trivia.category)
     );
     expect(getById('triviaQuestion').innerHTML).toEqual(
-      expect.stringContaining(state.triviaQuestion)
+      expect.stringContaining(state.trivia.question)
     );
     expect(getById('triviaAnswer').innerHTML).toEqual(
-      expect.stringContaining(state.triviaAnswer)
+      expect.stringContaining(state.trivia.answer)
+    );
+  });
+  test('returns undefined when no trivia', () => {
+    const state = {
+      trivia: {}
+    };
+
+    document.body.innerHTML = triviaPreviewText(state);
+
+    expect(getById('triviaCategory').innerHTML).toEqual(
+      expect.stringContaining('undefined')
+    );
+    expect(getById('triviaQuestion').innerHTML).toEqual(
+      expect.stringContaining('undefined')
+    );
+    expect(getById('triviaAnswer').innerHTML).toEqual(
+      expect.stringContaining('undefined')
     );
   });
   test('highlight trivia category when category is displayed', () => {
@@ -92,5 +111,14 @@ describe('triviaPreviewText', () => {
     expect(getById('triviaCategory').classList.contains('display')).toBe(true);
     expect(getById('triviaQuestion').classList.contains('display')).toBe(true);
     expect(getById('triviaAnswer').classList.contains('display')).toBe(true);
+  });
+  test('remove highlights when next question loaded', () => {
+    document.body.innerHTML = triviaPreviewText({
+      gameOperatorView: QUESTION_LOADED
+    });
+
+    expect(getById('triviaCategory').classList.contains('display')).toBe(false);
+    expect(getById('triviaQuestion').classList.contains('display')).toBe(false);
+    expect(getById('triviaAnswer').classList.contains('display')).toBe(false);
   });
 });
