@@ -1,4 +1,4 @@
-import { displayScoreControls } from './scoreTableSideEffects.js';
+import { displayScoreControls } from './displayScoreControls.js';
 import { getGameState } from './gameStateApiCalls.js';
 import { getIndicesFromRadioName } from './radioButton.js';
 import { updateTeamScore, getNextQuestion } from './scoresApiCalls.js';
