@@ -7,7 +7,7 @@ import {
   displayQuestion,
   displayAnswer
 } from './displayApiCalls.js';
-import { REGISTER } from '../utils/stateConstants.js';
+import { REGISTER, GENERAL_TRIVIA } from '../utils/stateConstants.js';
 
 export const loadPage = () => {
   displayGameOpView(getGameState());
@@ -24,6 +24,7 @@ export const changeScore = el => {
 const displayGameOpView = gameStatePromise => {
   gameStatePromise
     .then(gameState => {
+      console.log('gamestate', gameState)
       if (gameState.gameOperatorView == REGISTER) {
         //make way to register teams
       } else {
@@ -48,7 +49,7 @@ export const createClickEventListener = () => {
     if (e.target.tagName == 'BUTTON') {
       switch (e.target.id) {
         case 'nextQuestionButton':
-          displayGameOpView(getNextQuestion());
+          displayGameOpView(getNextQuestion(GENERAL_TRIVIA));
           break;
         case 'showCategory':
           displayGameOpView(displayCategory());

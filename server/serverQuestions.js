@@ -13,6 +13,7 @@ export const getNextTrivia = ctx => {
     gameOperatorView: QUESTION_LOADED
   });
   ctx.response.body = newGameState;
+  console.log('getNextQuestion', newGameState);
   ctx.status = 200;
   return ctx;
 };

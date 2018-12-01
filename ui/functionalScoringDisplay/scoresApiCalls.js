@@ -22,11 +22,20 @@ export const updateTeamScore = score =>
       console.log('error updating team score:', err);
     });
 
-export const getNextQuestion = () =>
-  fetch('http://localhost:3000/api/getNextQuestion', { method: 'GET' })
-    .then(response => {
-      return response.json();
-    })
+export const getNextQuestion = (group) =>
+  fetch('http://localhost:3000/api/getNextQuestion', {
+    method: 'POST',
+    body: JSON.stringify({ group })
+  })
+    .then(status)
     .catch(err => {
-      console.log('error getting new question:', err);
+      console.log('error getting next question:', err);
     });
+
+const status = response => {
+  console.log('apiCall Response', response)
+  if(!response.ok) {
+    return Promise.reject(response.json());
+  }
+  return response.json();
+}
