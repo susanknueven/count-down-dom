@@ -10,35 +10,19 @@ import {
   displayQuestion,
   displayAnswer
 } from './serverDisplay.js';
-import { QUESTION_LOADED, TRIVIA } from '../ui/utils/stateConstants.js';
+import { QUESTION_LOADED, TRIVIA, GENERAL_TRIVIA } from '../ui/utils/stateConstants.js';
 import koa from 'koa';
 import Router from 'koa-router';
 import serve from 'koa-static';
 import koaBody from 'koa-body';
-import { loadTrivia } from './serverTriviaQuestions.js';
-import { createScoresForNextQuestion } from './serverScores.js';
+import { trivia } from './serverTrivia.js';
+import { getNextTrivia } from './serverQuestions.js';
 
 const app = new koa();
 const router = new Router();
 
 resetGameState();
-const popTrivia = loadTrivia(require('./trivia_questions.json'));
-
-const getNextTrivia = ctx => {
-  const gameState = gameStateGetter();
-  const { scores, totals } = createScoresForNextQuestion(gameState);
-  const trivia = popTrivia();
-  const newGameState = gameStateSetter({
-    scores,
-    totals,
-    trivia,
-    gameOperatorView: QUESTION_LOADED
-  });
-  console.log('next Trivia', newGameState);
-  ctx.response.body = newGameState;
-  ctx.status = 200;
-  return ctx;
-};
+trivia.load(GENERAL_TRIVIA, './trivia_questions.json');
 
 //dummy mode has non-empty game state
 if (process.argv[2] === 'dummy') {
@@ -71,7 +55,7 @@ router
   .get('/api/gameState', getGameState)
   .post('/api/teamNames', koaBody(), writeTeamNames)
   .put('/api/scores', koaBody(), updateTeamScore)
-  .get('/api/getNextQuestion', getNextTrivia)
+  .post('/api/getNextQuestion', koaBody(), getNextTrivia)
   .get('/api/displayCategory', displayCategory)
   .get('/api/displayQuestion', displayQuestion)
   .get('/api/displayAnswer', displayAnswer);

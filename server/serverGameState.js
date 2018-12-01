@@ -3,16 +3,18 @@ import { WELCOME, REGISTER } from '../ui/utils/stateConstants.js';
 
 let gameState;
 
-export const resetGameState = () => {
-  gameState = {
-    playerView: WELCOME,
-    gameOperatorView: REGISTER,
-    teamNames: [],
-    scores: [],
-    totals: [],
-    trivia: {}
-  };
+export const initialGameState = {
+  playerView: WELCOME,
+  gameOperatorView: REGISTER,
+  teamNames: [],
+  scores: [],
+  totals: [],
+  trivia: undefined 
 };
+
+export const resetGameState = () => {
+  gameState = Object.assign({}, initialGameState);
+}
 
 export const gameStateGetter = () => {
   return gameState;

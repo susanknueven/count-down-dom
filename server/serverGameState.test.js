@@ -1,7 +1,8 @@
 import {
   gameStateGetter,
   gameStateSetter,
-  resetGameState
+  resetGameState,
+  initialGameState
 } from './serverGameState';
 import {
   SHOW_CATEGORY,
@@ -32,14 +33,7 @@ describe('server game state', () => {
 
     resetGameState();
 
-    expect(gameStateGetter()).toEqual({
-      gameOperatorView: REGISTER,
-      playerView: WELCOME,
-      scores: [],
-      teamNames: [],
-      totals: [],
-      trivia: {}
-    });
+    expect(gameStateGetter()).toEqual(initialGameState);
   });
   describe('game state setter', () => {
     test('changes teamNames and returns game state', () => {
