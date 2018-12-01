@@ -1,9 +1,9 @@
 import { loadPage } from './loadPageAndEventListeners.js';
-import { getGameState } from './gameStateApiCalls.js';
+import { getGameState } from './apiCalls/gameStateApiCalls.js';
 import { displayScoreControls } from './displayScoreControls.js';
 import { QUESTION_LOADED, REGISTER } from '../utils/stateConstants.js';
 
-jest.mock('./gameStateApiCalls.js');
+jest.mock('./apiCalls/gameStateApiCalls.js');
 jest.mock('./displayScoreControls.js');
 
 const state = {

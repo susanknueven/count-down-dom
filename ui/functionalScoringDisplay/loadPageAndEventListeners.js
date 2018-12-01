@@ -1,12 +1,12 @@
 import { displayScoreControls } from './displayScoreControls.js';
-import { getGameState } from './gameStateApiCalls.js';
+import { getGameState } from './apiCalls/gameStateApiCalls.js';
 import { getIndicesFromRadioName } from './radioButton.js';
-import { updateTeamScore, getNextQuestion } from './scoresApiCalls.js';
+import { updateTeamScore, getNextQuestion } from './apiCalls/scoresApiCalls.js';
 import {
   displayCategory,
   displayQuestion,
   displayAnswer
-} from './displayApiCalls.js';
+} from './apiCalls/displayApiCalls.js';
 import { REGISTER, GENERAL_TRIVIA } from '../utils/stateConstants.js';
 
 export const loadPage = () => {
