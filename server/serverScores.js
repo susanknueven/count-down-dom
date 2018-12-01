@@ -27,6 +27,15 @@ export const calculateTotals = scores =>
     return row.map((cell, index) => (acc[index] || 0) + (cell || 0));
   }, []);
 
+export const initializeEmptyScores = ctx => {
+  // TODO: handle error if no teams
+  const newGameState = createScoresForNextQuestion(gameStateGetter());
+  console.log('initializeEmptyScores: ', newGameState);
+  ctx.response.body = newGameState;
+  ctx.status = 200;
+  return ctx;
+}
+
 export const createScoresForNextQuestion = gameState => {
   const teamNames = gameState.teamNames;
   const scores = gameState.scores;

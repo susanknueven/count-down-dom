@@ -1,5 +1,4 @@
-import { gameStateGetter, gameStateSetter } from './serverGameState.js';
-import { createScoresForNextQuestion } from './serverScores.js';
+import { gameStateSetter } from './serverGameState.js';
 import { QUESTION_LOADED, GENERAL_TRIVIA } from '../ui/utils/stateConstants.js';
 import { trivia } from './serverTrivia.js';
 
@@ -13,7 +12,7 @@ export const getNextTrivia = ctx => {
     gameOperatorView: QUESTION_LOADED
   });
   ctx.response.body = newGameState;
-  console.log('getNextQuestion', newGameState);
+  console.log('getNextTrivia', newGameState);
   ctx.status = 200;
   return ctx;
 };

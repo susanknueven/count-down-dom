@@ -88,5 +88,5 @@ describe('scores', () => {
     expect(response.body.scores).toEqual([[1, 1]]);
     expect(response.body.totals).toEqual([1, 1]);
   });
-  //test if indexes are bad in score update?? i.e. scores[qIndex][teamIndex] throws error
+  // TODO: test if indexes are bad in score update?? i.e. scores[qIndex][teamIndex] throws error
 });

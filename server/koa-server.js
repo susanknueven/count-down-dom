@@ -4,7 +4,7 @@ import {
   resetGameState
 } from './serverGameState.js';
 import { writeTeamNames } from './serverTeamNames.js';
-import { updateTeamScore } from './serverScores.js';
+import { updateTeamScore, initializeEmptyScores } from './serverScores.js';
 import {
   displayCategory,
   displayQuestion,
@@ -55,7 +55,8 @@ router
   .get('/api/gameState', getGameState)
   .post('/api/teamNames', koaBody(), writeTeamNames)
   .put('/api/scores', koaBody(), updateTeamScore)
-  .post('/api/getNextQuestion', koaBody(), getNextTrivia)
+  .get('/api/initializeEmptyScores', initializeEmptyScores)
+  .post('/api/getNextTrivia', koaBody(), getNextTrivia)
   .get('/api/displayCategory', displayCategory)
   .get('/api/displayQuestion', displayQuestion)
   .get('/api/displayAnswer', displayAnswer);

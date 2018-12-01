@@ -1,7 +1,8 @@
 import { displayScoreControls } from './displayScoreControls.js';
 import { getGameState } from './apiCalls/gameStateApiCalls.js';
 import { getIndicesFromRadioName } from './radioButton.js';
-import { updateTeamScore, getNextQuestion } from './apiCalls/scoresApiCalls.js';
+import { updateTeamScore, initializeEmptyScores } from './apiCalls/scoresApiCalls.js';
+import { getNextTrivia } from './apiCalls/triviaApiCalls.js';
 import {
   displayCategory,
   displayQuestion,
@@ -49,7 +50,8 @@ export const createClickEventListener = () => {
     if (e.target.tagName == 'BUTTON') {
       switch (e.target.id) {
         case 'nextQuestionButton':
-          displayGameOpView(getNextQuestion(GENERAL_TRIVIA));
+          displayGameOpView(getNextTrivia(GENERAL_TRIVIA));
+          displayGameOpView(initializeEmptyScores());
           break;
         case 'showCategory':
           displayGameOpView(displayCategory());

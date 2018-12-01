@@ -1,5 +1,3 @@
-import { GENERAL_TRIVIA } from "../ui/utils/stateConstants";
-
 export const trivia = (() => {
   let trivia = {};
   const pop = group => {
