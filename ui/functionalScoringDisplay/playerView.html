@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Client 1</title>
+</head>
+
+<body>
+  <div>HI- I Am PlayerView</div>
+  <div id="gameState">GameState:</div>
+  <div>gameOperatorView: <span id="gameOperatorViewState"></span></div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      // Register service worker
+      navigator.serviceWorker.register('/functionalScoringDisplay/service-worker.js').then(function (reg) {
+        console.log("SW registration succeeded. Scope is " + reg.scope);
+      }).catch(function (err) {
+        console.error("SW registration failed with error " + err);
+      });
+      // Handler for messages coming from the service worker
+      navigator.serviceWorker.addEventListener('message', function (event) {
+        console.log('playerView: ', event.data);
+        document.getElementById('gameOperatorViewState').innerHTML = event.data.gameState.gameOperatorView;
+        // event.ports[0].postMessage("Client 1 Says 'hi back!'");
+      });
+    }
+
+  </script>
+</body>
+
+</html>
